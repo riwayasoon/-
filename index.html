@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>رواية Soon</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         /* متغيرات الألوان الأساسية */
         :root {
@@ -12,6 +13,7 @@
             --darker-bg: #191b1f;
             --light-text: #ffffff;
             --gray-text: #9fadbd;
+            --transition: all 0.3s ease;
         }
 
         * {
@@ -25,6 +27,7 @@
             background-color: var(--darker-bg);
             color: var(--light-text);
             direction: rtl;
+            line-height: 1.6;
         }
 
         .container {
@@ -39,12 +42,14 @@
             align-items: center;
             padding: 15px 0;
             margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .logo {
             font-size: 2rem;
             font-weight: bold;
             color: var(--primary-color);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .save-btn {
@@ -55,7 +60,8 @@
             border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
-            transition: all 0.3s ease;
+            transition: var(--transition);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
         .save-btn:hover {
@@ -69,10 +75,11 @@
         }
 
         .sidebar {
-            width: 200px;
+            width: 250px;
             background-color: var(--dark-bg);
             border-radius: 10px;
             padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .arcs-list {
@@ -84,7 +91,7 @@
             padding: 10px;
             border-radius: 5px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition);
             color: var(--gray-text);
         }
 
@@ -93,14 +100,40 @@
             color: var(--light-text);
         }
 
+        .arc-name {
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .arc-name::after {
+            content: "▾";
+            font-size: 0.8rem;
+            transition: var(--transition);
+        }
+
+        .arc-item.active .arc-name::after {
+            transform: rotate(180deg);
+        }
+
         .chapters-list {
             list-style: none;
             margin-top: 10px;
             display: none;
+            padding-right: 10px;
+            border-right: 2px solid var(--primary-color);
+            margin-right: 5px;
         }
 
         .arc-item.active .chapters-list {
             display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .chapter-item {
@@ -110,12 +143,13 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 0.9rem;
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
 
         .chapter-item:hover, .chapter-item.active {
             background-color: var(--primary-color);
             opacity: 0.8;
+            transform: translateX(-5px);
         }
 
         .content {
@@ -124,11 +158,12 @@
             border-radius: 10px;
             overflow: hidden;
             position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .novel-viewer {
             width: 100%;
-            height: 500px;
+            height: 550px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -142,6 +177,7 @@
             align-items: center;
             justify-content: center;
             position: relative;
+            overflow: hidden;
         }
 
         .novel-image {
@@ -149,6 +185,10 @@
             max-height: 100%;
             object-fit: contain;
             transition: transform 0.3s ease;
+        }
+
+        .novel-image:hover {
+            transform: scale(1.02);
         }
 
         .navigation-btn {
@@ -167,11 +207,15 @@
             font-size: 1.5rem;
             cursor: pointer;
             z-index: 10;
-            transition: all 0.3s ease;
+            transition: var(--transition);
+            opacity: 0.7;
         }
 
         .navigation-btn:hover {
             background-color: var(--primary-color);
+            opacity: 1;
+            width: 50px;
+            height: 50px;
         }
 
         .prev-btn {
@@ -193,21 +237,31 @@
             align-items: center;
             justify-content: center;
             z-index: 100;
+            backdrop-filter: blur(5px);
         }
 
         .info-content {
             background-color: var(--dark-bg);
             border-radius: 10px;
-            padding: 20px;
+            padding: 25px;
             max-width: 500px;
             width: 90%;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .info-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--primary-color);
+            padding-bottom: 10px;
         }
 
         .info-title {
@@ -222,6 +276,12 @@
             color: var(--light-text);
             font-size: 1.5rem;
             cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-btn:hover {
+            color: var(--primary-color);
+            transform: rotate(90deg);
         }
 
         .info-details {
@@ -229,12 +289,20 @@
         }
 
         .info-item {
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
-        .info-item span {
+        .info-item span:first-child {
             color: var(--primary-color);
             font-weight: bold;
+            display: inline-block;
+            margin-left: 5px;
+        }
+
+        .info-description {
+            line-height: 1.7;
+            color: var(--gray-text);
+            margin-top: 10px;
         }
 
         .toast {
@@ -247,24 +315,77 @@
             padding: 10px 20px;
             border-radius: 5px;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.3s ease, transform 0.3s ease;
             z-index: 100;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .toast.active {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-10px);
         }
 
         .image-counter {
             position: absolute;
-            bottom: 10px;
+            bottom: 15px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.7);
             color: var(--light-text);
-            padding: 5px 10px;
-            border-radius: 5px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            z-index: 5;
+        }
+
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .controls-hint {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: var(--gray-text);
+            padding: 5px 15px;
+            border-radius: 20px;
             font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 5;
+        }
+
+        .content:hover .controls-hint {
+            opacity: 1;
         }
 
         /* تجاوبية */
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
             .novel-container {
                 flex-direction: column;
             }
@@ -274,7 +395,23 @@
             }
 
             .novel-viewer {
-                height: 400px;
+                height: 450px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .novel-viewer {
+                height: 350px;
+            }
+
+            .navigation-btn {
+                width: 35px;
+                height: 35px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 10px;
             }
         }
     </style>
@@ -298,9 +435,13 @@
                     <div class="image-container">
                         <img src="" alt="صورة الرواية" class="novel-image" id="novelImage">
                         <div class="image-counter" id="imageCounter">0/0</div>
+                        <div class="controls-hint" id="controlsHint">نقرتين: نسخ الرابط | ضغط مطول: معلومات الرواية</div>
                     </div>
                     <button class="navigation-btn prev-btn" id="prevBtn">&#10094;</button>
                     <button class="navigation-btn next-btn" id="nextBtn">&#10095;</button>
+                    <div class="loading-overlay" id="loadingOverlay">
+                        <div class="loading-spinner"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -315,7 +456,7 @@
             <div class="info-details">
                 <div class="info-item"><span>الكاتب:</span> <span id="infoAuthor">-</span></div>
                 <div class="info-item"><span>عدد الفصول:</span> <span id="infoChaptersCount">-</span></div>
-                <div class="info-item"><span>الوصف:</span> <div id="infoDescription">-</div></div>
+                <div class="info-item"><span>الوصف:</span> <div id="infoDescription" class="info-description">-</div></div>
             </div>
         </div>
     </div>
@@ -327,7 +468,7 @@
         const novelData = {
             title: "Soon",
             author: "كاتب القصة",
-            description: "وصف للرواية حيث يتم سرد أحداث مثيرة ومشوقة تجذب القارئ من البداية للنهاية.",
+            description: "وصف للرواية حيث يتم سرد أحداث مثيرة ومشوقة تجذب القارئ من البداية للنهاية. تتناول الرواية قضايا مختلفة وتأخذك في رحلة مليئة بالمفاجآت والانعطافات غير المتوقعة التي ستبقيك متشوقاً لمعرفة المزيد.",
             arcs: [
                 {
                     id: 1,
@@ -372,6 +513,8 @@
         const infoChaptersCount = document.getElementById('infoChaptersCount');
         const infoDescription = document.getElementById('infoDescription');
         const toast = document.getElementById('toast');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const controlsHint = document.getElementById('controlsHint');
 
         // متغيرات الحالة
         let currentArcId = null;
@@ -379,15 +522,21 @@
         let currentImageIndex = 0;
         let longPressTimer;
         let isSaved = false;
+        let isLoading = false;
 
         // تحميل المحفوظات
         function loadSavedState() {
             const savedNovel = localStorage.getItem('savedNovel');
             if (savedNovel) {
-                const saved = JSON.parse(savedNovel);
-                if (saved.title === novelData.title) {
-                    isSaved = true;
-                    updateSaveButton();
+                try {
+                    const saved = JSON.parse(savedNovel);
+                    if (saved.title === novelData.title) {
+                        isSaved = true;
+                        updateSaveButton();
+                    }
+                } catch (error) {
+                    console.error('خطأ في تحليل البيانات المحفوظة:', error);
+                    localStorage.removeItem('savedNovel');
                 }
             }
         }
@@ -426,11 +575,16 @@
 
                 // إضافة مستمع الحدث للنقر على الأرك
                 arcItem.querySelector('.arc-name').addEventListener('click', function() {
+                    const isActive = arcItem.classList.contains('active');
+                    
                     document.querySelectorAll('.arc-item').forEach(item => {
                         item.classList.remove('active');
                     });
-                    arcItem.classList.add('active');
-                    currentArcId = arc.id;
+                    
+                    if (!isActive) {
+                        arcItem.classList.add('active');
+                        currentArcId = arc.id;
+                    }
                 });
             });
 
@@ -462,7 +616,26 @@
             currentChapterId = chapterId;
             currentImageIndex = 0;
             
+            // حفظ الحالة الحالية مباشرة إذا كانت الرواية محفوظة
+            if (isSaved) {
+                saveCurrentState();
+            }
+            
             loadImage();
+        }
+
+        // عرض واجهة التحميل
+        function showLoading() {
+            isLoading = true;
+            loadingOverlay.style.display = 'flex';
+            novelImage.style.opacity = '0.5';
+        }
+
+        // إخفاء واجهة التحميل
+        function hideLoading() {
+            isLoading = false;
+            loadingOverlay.style.display = 'none';
+            novelImage.style.opacity = '1';
         }
 
         // تحميل صورة معينة من الفصل الحالي
@@ -473,17 +646,28 @@
                 return;
             }
             
+            showLoading();
+            
             const arc = novelData.arcs.find(a => a.id === currentArcId);
-            const chapter = arc.chapters.find(c => c.id === chapterId);
+            const chapter = arc.chapters.find(c => c.id === currentChapterId);
+            
+            // محاكاة تحميل الصورة
+            const newImage = new Image();
+            newImage.onload = function() {
+                novelImage.src = this.src;
+                hideLoading();
+                imageCounter.textContent = `${currentImageIndex + 1}/${chapter.images}`;
+                updateNavigationButtons();
+            };
+            
+            newImage.onerror = function() {
+                hideLoading();
+                showToast('فشل في تحميل الصورة');
+                novelImage.alt = 'فشل في تحميل الصورة';
+            };
             
             // في بيئة حقيقية، هنا سنقوم بتحميل صورة حقيقية من مصدر البيانات
-            // لكن هنا نستخدم صورة وهمية للعرض التوضيحي
-            novelImage.src = `https://via.placeholder.com/600x800?text=الفصل+${chapter.title}+صورة+${currentImageIndex + 1}`;
-            
-            imageCounter.textContent = `${currentImageIndex + 1}/${chapter.images}`;
-            
-            // تحديث زرار التنقل
-            updateNavigationButtons();
+            newImage.src = `https://via.placeholder.com/600x800?text=الفصل+${chapter.title}+صورة+${currentImageIndex + 1}`;
         }
 
         // تحديث أزرار التنقل (التالي/السابق)
@@ -503,20 +687,69 @@
 
         // الانتقال للصورة السابقة
         function goToPreviousImage() {
+            if (isLoading) return;
+            
             if (currentImageIndex > 0) {
                 currentImageIndex--;
                 loadImage();
+                
+                // حفظ الحالة الحالية مباشرة إذا كانت الرواية محفوظة
+                if (isSaved) {
+                    saveCurrentState();
+                }
             }
         }
 
         // الانتقال للصورة التالية
         function goToNextImage() {
+            if (isLoading) return;
+            
             const arc = novelData.arcs.find(a => a.id === currentArcId);
             const chapter = arc.chapters.find(c => c.id === currentChapterId);
             
             if (currentImageIndex < chapter.images - 1) {
                 currentImageIndex++;
                 loadImage();
+                
+                // حفظ الحالة الحالية مباشرة إذا كانت الرواية محفوظة
+                if (isSaved) {
+                    saveCurrentState();
+                }
+            } else {
+                // إذا كنا في نهاية الفصل، ننتقل إلى الفصل التالي إن وجد
+                const currentChapterIndex = arc.chapters.findIndex(c => c.id === currentChapterId);
+                if (currentChapterIndex < arc.chapters.length - 1) {
+                    // الانتقال إلى الفصل التالي في نفس الأرك
+                    const nextChapter = arc.chapters[currentChapterIndex + 1];
+                    loadChapter(currentArcId, nextChapter.id);
+                    
+                    // تحديث واجهة المستخدم
+                    document.querySelectorAll('.chapter-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    document.querySelector(`.chapter-item[data-arc-id="${currentArcId}"][data-chapter-id="${nextChapter.id}"]`).classList.add('active');
+                } else {
+                    // ابحث عن الأرك التالي إن وجد
+                    const currentArcIndex = novelData.arcs.findIndex(a => a.id === currentArcId);
+                    if (currentArcIndex < novelData.arcs.length - 1) {
+                        const nextArc = novelData.arcs[currentArcIndex + 1];
+                        const firstChapterInNextArc = nextArc.chapters[0];
+                        
+                        // تحديث واجهة المستخدم
+                        document.querySelectorAll('.arc-item').forEach(item => {
+                            item.classList.remove('active');
+                        });
+                        document.querySelector(`.arc-item[data-id="${nextArc.id}"]`).classList.add('active');
+                        
+                        loadChapter(nextArc.id, firstChapterInNextArc.id);
+                        
+                        // تحديث واجهة المستخدم للفصل
+                        document.querySelectorAll('.chapter-item').forEach(item => {
+                            item.classList.remove('active');
+                        });
+                        document.querySelector(`.chapter-item[data-arc-id="${nextArc.id}"][data-chapter-id="${firstChapterInNextArc.id}"]`).classList.add('active');
+                    }
+                }
             }
         }
 
@@ -524,7 +757,14 @@
         function showNovelInfo() {
             infoTitle.textContent = novelData.title;
             infoAuthor.textContent = novelData.author;
-            infoChaptersCount.textContent = novelData.arcs.reduce((total, arc) => total + arc.chapters.length, 0);
+            
+            // حساب إجمالي عدد الفصول والصور
+            const totalChapters = novelData.arcs.reduce((total, arc) => total + arc.chapters.length, 0);
+            const totalImages = novelData.arcs.reduce((total, arc) => {
+                return total + arc.chapters.reduce((chTotal, ch) => chTotal + ch.images, 0);
+            }, 0);
+            
+            infoChaptersCount.textContent = `${totalChapters} (${totalImages} صورة)`;
             infoDescription.textContent = novelData.description;
             
             infoModal.style.display = 'flex';
@@ -535,6 +775,21 @@
             infoModal.style.display = 'none';
         }
 
+        // حفظ الحالة الحالية
+        function saveCurrentState() {
+            if (!currentArcId || !currentChapterId) return;
+            
+            const savedData = {
+                title: novelData.title,
+                arcId: currentArcId,
+                chapterId: currentChapterId,
+                imageIndex: currentImageIndex,
+                timestamp: new Date().toISOString()
+            };
+            
+            localStorage.setItem('savedNovel', JSON.stringify(savedData));
+        }
+
         // نسخ رابط المشاركة
         function copyShareLink() {
             if (!currentArcId || !currentChapterId) return;
@@ -542,21 +797,23 @@
             // في بيئة حقيقية، يمكن إنشاء رابط مشاركة حقيقي
             const shareLink = `https://example.com/novel/soon?arc=${currentArcId}&chapter=${currentChapterId}&image=${currentImageIndex}`;
             
-            navigator.clipboard.writeText(shareLink).then(() => {
-                showToast('تم نسخ الرابط بنجاح!');
-            }).catch(err => {
-                showToast('حدث خطأ في نسخ الرابط');
-                console.error('حدث خطأ في نسخ الرابط:', err);
-            });
+            navigator.clipboard.writeText(shareLink)
+                .then(() => {
+                    showToast('تم نسخ الرابط بنجاح!');
+                })
+                .catch(err => {
+                    showToast('حدث خطأ في نسخ الرابط');
+                    console.error('حدث خطأ في نسخ الرابط:', err);
+                });
         }
 
         // عرض إشعار
         function showToast(message) {
             toast.textContent = message;
-            toast.style.opacity = '1';
+            toast.classList.add('active');
             
             setTimeout(() => {
-                toast.style.opacity = '0';
+                toast.classList.remove('active');
             }, 2000);
         }
 
@@ -565,19 +822,35 @@
             if (isSaved) {
                 localStorage.removeItem('savedNovel');
                 isSaved = false;
+                showToast('تم إزالة الرواية من المفضلة');
             } else {
-                const savedData = {
-                    title: novelData.title,
-                    arcId: currentArcId,
-                    chapterId: currentChapterId,
-                    imageIndex: currentImageIndex
-                };
-                localStorage.setItem('savedNovel', JSON.stringify(savedData));
+                if (!currentArcId || !currentChapterId) {
+                    showToast('يرجى اختيار فصل أولاً');
+                    return;
+                }
+                
+                saveCurrentState();
                 isSaved = true;
+                showToast('تم حفظ الرواية في المفضلة');
             }
             
             updateSaveButton();
-            showToast(isSaved ? 'تم حفظ الرواية في المفضلة' : 'تم إزالة الرواية من المفضلة');
+        }
+
+        // التعامل مع ضغطات المفاتيح
+        function handleKeyPress(e) {
+            // السهم الأيمن للصورة السابقة (في واجهة RTL)
+            if (e.key === 'ArrowRight') {
+                goToPreviousImage();
+            }
+            // السهم الأيسر للصورة التالية (في واجهة RTL)
+            else if (e.key === 'ArrowLeft') {
+                goToNextImage();
+            }
+            // ESC لإغلاق النوافذ المنبثقة
+            else if (e.key === 'Escape') {
+                hideNovelInfo();
+            }
         }
 
         // مستمعات الأحداث
@@ -591,6 +864,11 @@
             
             // زر إغلاق النافذة المنبثقة
             closeInfoBtn.addEventListener('click', hideNovelInfo);
+            infoModal.addEventListener('click', function(e) {
+                if (e.target === infoModal) {
+                    hideNovelInfo();
+                }
+            });
             
             // النقر المزدوج لنسخ الرابط
             novelImage.addEventListener('dblclick', function(e) {
@@ -599,7 +877,11 @@
             });
             
             // النقر المطول لعرض المعلومات
-            novelImage.addEventListener('mousedown', function() {
+            let touchStartTime;
+            let touchTimeout;
+            
+            // للكمبيوتر
+            novelImage.addEventListener('mousedown', function(e) {
                 longPressTimer = setTimeout(showNovelInfo, 700);
             });
             
@@ -611,15 +893,57 @@
                 clearTimeout(longPressTimer);
             });
             
-            // دعم اللمس للأجهزة المحمولة
-            novelImage.addEventListener('touchstart', function() {
-                longPressTimer = setTimeout(showNovelInfo, 700);
+            // للجوال - التعامل مع اللمس
+            novelImage.addEventListener('touchstart', function(e) {
+                touchStartTime = new Date().getTime();
+                touchTimeout = setTimeout(function() {
+                    showNovelInfo();
+                }, 700);
             });
             
-            novelImage.addEventListener('touchend', function() {
-                clearTimeout(longPressTimer);
+            novelImage.addEventListener('touchend', function(e) {
+                clearTimeout(touchTimeout);
+                const touchDuration = new Date().getTime() - touchStartTime;
+                
+                // إذا كان اللمس أقل من 300 مللي ثانية وكانت هناك نقرة مزدوجة خلال 300 مللي ثانية
+                if (touchDuration < 300 && (new Date().getTime() - lastTap) < 300) {
+                    e.preventDefault();
+                    copyShareLink();
+                }
+                
+                lastTap = new Date().getTime();
             });
+            
+            // التعامل مع لوحة المفاتيح
+            document.addEventListener('keydown', handleKeyPress);
+            
+            // تعامل مع حجم الصورة - التكبير عند النقر
+            let isZoomed = false;
+            novelImage.addEventListener('click', function(e) {
+                // نتجاهل إذا كان اللمس طويلاً
+                if (new Date().getTime() - touchStartTime > 500) return;
+                
+                if (!isZoomed) {
+                    this.style.transform = 'scale(1.5)';
+                    this.style.cursor = 'zoom-out';
+                    isZoomed = true;
+                } else {
+                    this.style.transform = 'scale(1)';
+                    this.style.cursor = 'zoom-in';
+                    isZoomed = false;
+                }
+            });
+            
+            // منع التمرير عند لمس الصورة في الجوال
+            novelViewer.addEventListener('touchmove', function(e) {
+                if (isZoomed) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
         }
+
+        // للتعامل مع النقر المزدوج في الأجهزة اللمسية
+        let lastTap = 0;
 
         // تهيئة التطبيق
         function initApp() {
@@ -630,19 +954,33 @@
             // تحقق من وجود حالة محفوظة
             const savedNovel = localStorage.getItem('savedNovel');
             if (savedNovel) {
-                const saved = JSON.parse(savedNovel);
-                if (saved.title === novelData.title && saved.arcId && saved.chapterId) {
-                    // تحميل الفصل المحفوظ
-                    document.querySelector(`.arc-item[data-id="${saved.arcId}"]`).classList.add('active');
-                    const chapterItem = document.querySelector(`.chapter-item[data-arc-id="${saved.arcId}"][data-chapter-id="${saved.chapterId}"]`);
-                    if (chapterItem) {
-                        chapterItem.classList.add('active');
-                        currentArcId = saved.arcId;
-                        currentChapterId = saved.chapterId;
-                        currentImageIndex = saved.imageIndex || 0;
-                        loadImage();
+                try {
+                    const saved = JSON.parse(savedNovel);
+                    if (saved.title === novelData.title && saved.arcId && saved.chapterId) {
+                        // تحميل الفصل المحفوظ
+                        const arcItem = document.querySelector(`.arc-item[data-id="${saved.arcId}"]`);
+                        if (arcItem) {
+                            arcItem.classList.add('active');
+                            
+                            const chapterItem = document.querySelector(`.chapter-item[data-arc-id="${saved.arcId}"][data-chapter-id="${saved.chapterId}"]`);
+                            if (chapterItem) {
+                                chapterItem.classList.add('active');
+                                currentArcId = saved.arcId;
+                                currentChapterId = saved.chapterId;
+                                currentImageIndex = saved.imageIndex || 0;
+                                loadImage();
+                                
+                                // عرض إشعار باستئناف القراءة
+                                showToast('تم استئناف القراءة من آخر موضع');
+                            }
+                        }
                     }
+                } catch (error) {
+                    console.error('خطأ في تحليل البيانات المحفوظة:', error);
                 }
+            } else {
+                // إذا لم تكن هناك حالة محفوظة، نعرض معلومات الرواية تلقائياً عند التحميل الأول
+                setTimeout(showNovelInfo, 500);
             }
         }
 
