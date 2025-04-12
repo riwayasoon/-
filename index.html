@@ -3,526 +3,263 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة الروايات المصورة</title>
+    <title>عارض الرواية التفاعلي</title>
+    <!-- إضافة المكتبات الخارجية -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.2/lottie.min.js"></script>
     <style>
         :root {
             --primary-color: #f47521;
-            --dark-bg: #23252b;
-            --darker-bg: #191b1f;
-            --light-text: #ffffff;
-            --gray-text: #9fadbd;
+            --bg-dark: #23252b;
+            --bg-darker: #191b1f;
+            --text-light: #ffffff;
+            --text-secondary: #9fadbd;
+            --transition: all 0.3s ease;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Tajawal', Arial, sans-serif;
+            font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
-            background-color: var(--darker-bg);
-            color: var(--light-text);
-            min-height: 100vh;
+            background-color: var(--bg-darker);
+            color: var(--text-light);
             overflow-x: hidden;
-            transition: all 0.3s ease;
+            direction: rtl;
         }
-        
-        body.night-mode {
-            filter: brightness(0.7) contrast(1.1) sepia(0.2);
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
+
+        /* Header Styles */
         header {
+            background-color: var(--bg-dark);
+            padding: 16px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 20px;
+            box-shadow: var(--shadow);
         }
-        
-        .logo {
-            color: var(--primary-color);
-            font-size: 24px;
+
+        .novel-title {
+            font-size: 1.5rem;
             font-weight: bold;
+            color: var(--primary-color);
+            flex-grow: 1;
+            text-align: center;
         }
-        
-        .controls {
+
+        .header-actions {
             display: flex;
-            gap: 15px;
+            gap: 12px;
         }
-        
+
         .btn {
-            background-color: var(--primary-color);
-            color: white;
+            background-color: var(--bg-darker);
+            color: var(--text-light);
             border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
             cursor: pointer;
-            font-size: 14px;
-            transition: all 0.2s ease;
+            transition: var(--transition);
             display: flex;
             align-items: center;
             gap: 5px;
         }
-        
+
         .btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-        
-        .btn-transparent {
-            background-color: transparent;
-            border: 1px solid var(--primary-color);
-        }
-        
-        .tabs {
-            display: flex;
-            margin-bottom: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            overflow-x: auto;
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: thin;
-            padding-bottom: 5px;
-        }
-        
-        .tab {
-            padding: 10px 20px;
-            margin-left: 10px;
-            cursor: pointer;
-            position: relative;
-            color: var(--gray-text);
-            transition: all 0.3s ease;
-        }
-        
-        .tab.active {
-            color: var(--primary-color);
-            font-weight: bold;
-        }
-        
-        .tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: -6px;
-            left: 0;
-            width: 100%;
-            height: 3px;
             background-color: var(--primary-color);
-            border-radius: 3px;
         }
-        
-        .arcs-container {
-            margin-bottom: 30px;
+
+        .btn-icon {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
         }
-        
-        .arc-title {
-            font-size: 20px;
-            margin-bottom: 15px;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .chapters-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .chapter-card {
-            background-color: var(--dark-bg);
-            border-radius: 10px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            position: relative;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        .chapter-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-        }
-        
-        .chapter-thumbnail {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            display: block;
-        }
-        
-        .chapter-info {
-            padding: 15px;
-        }
-        
-        .chapter-title {
-            font-size: 16px;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        
-        .chapter-meta {
-            color: var(--gray-text);
-            font-size: 12px;
-            display: flex;
-            justify-content: space-between;
-        }
-        
-        /* Viewer styles */
-        .viewer-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
-            z-index: 1000;
-            display: none;
-            flex-direction: column;
-        }
-        
-        .viewer-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            background-color: var(--darker-bg);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .viewer-title {
-            font-size: 18px;
-            color: var(--light-text);
-        }
-        
-        .viewer-controls {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .viewer-btn {
-            background-color: transparent;
-            color: var(--light-text);
-            border: none;
-            font-size: 22px;
-            cursor: pointer;
-            transition: all 0.2s;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-        }
-        
-        .viewer-btn:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        
-        .viewer-content {
-            flex: 1;
-            display: flex;
+
+        /* Image Viewer */
+        .image-viewer {
+            height: calc(100vh - 140px);
             position: relative;
             overflow: hidden;
         }
-        
-        .image-container {
-            position: absolute;
-            top: 0;
-            left: 0;
+
+        .swiper {
             width: 100%;
             height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.3s ease;
         }
-        
-        .viewer-image {
+
+        .swiper-slide {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--bg-darker);
+        }
+
+        .swiper-slide img {
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
-            transform-origin: center;
             transition: transform 0.3s ease;
         }
-        
-        .nav-buttons {
+
+        .loading-indicator {
             position: absolute;
-            top: 50%;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            padding: 0 20px;
-            transform: translateY(-50%);
-            z-index: 10;
-        }
-        
-        .nav-btn {
-            background-color: rgba(35, 37, 43, 0.7);
-            color: white;
-            border: none;
-            font-size: 24px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .nav-btn:hover {
-            background-color: var(--primary-color);
-        }
-        
-        .viewer-footer {
-            padding: 15px 20px;
-            background-color: var(--darker-bg);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .progress-container {
-            flex: 1;
-            height: 5px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            margin: 0 20px;
-            overflow: hidden;
-        }
-        
-        .progress-bar {
-            height: 100%;
-            background-color: var(--primary-color);
-            width: 0;
-            transition: width 0.3s ease;
-        }
-        
-        .page-indicator {
-            font-size: 14px;
-            color: var(--gray-text);
-        }
-        
-        /* Novel info modal */
-        .info-modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: var(--dark-bg);
-            width: 90%;
-            max-width: 600px;
-            border-radius: 10px;
-            z-index: 1100;
-            display: none;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-        }
-        
-        .info-header {
-            padding: 20px;
-            background-color: var(--primary-color);
-            color: white;
-            position: relative;
-        }
-        
-        .info-title {
-            font-size: 22px;
-            margin-bottom: 5px;
-        }
-        
-        .info-author {
-            font-size: 16px;
-            opacity: 0.9;
-        }
-        
-        .close-info {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 22px;
-            cursor: pointer;
-        }
-        
-        .info-content {
-            padding: 20px;
-        }
-        
-        .info-description {
-            margin-bottom: 20px;
-            line-height: 1.6;
-            color: var(--light-text);
-        }
-        
-        .info-meta {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-        
-        .info-item {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .info-label {
-            font-size: 12px;
-            color: var(--gray-text);
-            margin-bottom: 3px;
-        }
-        
-        .info-value {
-            color: var(--light-text);
-        }
-        
-        /* Saved novels drawer */
-        .saved-drawer {
-            position: fixed;
             top: 0;
             left: 0;
-            width: 300px;
-            height: 100%;
-            background-color: var(--dark-bg);
-            z-index: 1200;
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
-            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
-            overflow-y: auto;
-        }
-        
-        .saved-drawer.open {
-            transform: translateX(0);
-        }
-        
-        .saved-header {
-            padding: 20px;
+            width: 0%;
+            height: 4px;
             background-color: var(--primary-color);
-            color: white;
+            transition: width 0.2s ease;
+            z-index: 10;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: var(--bg-dark);
+            padding: 12px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 100;
         }
-        
-        .saved-title {
-            font-size: 18px;
-        }
-        
-        .close-saved {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 22px;
-            cursor: pointer;
-        }
-        
-        .saved-list {
-            padding: 15px;
-        }
-        
-        .saved-item {
+
+        .toolbar-section {
             display: flex;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .saved-thumb {
-            width: 70px;
-            height: 70px;
-            border-radius: 5px;
-            object-fit: cover;
-            margin-left: 15px;
-        }
-        
-        .saved-info {
-            flex: 1;
-        }
-        
-        .saved-name {
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: var(--light-text);
-        }
-        
-        .saved-chapter {
-            font-size: 12px;
-            color: var(--gray-text);
-        }
-        
-        .saved-actions {
-            display: flex;
-            margin-top: 10px;
             gap: 10px;
         }
-        
-        .saved-btn {
-            background-color: transparent;
-            color: var(--gray-text);
-            border: none;
-            font-size: 12px;
-            cursor: pointer;
-            padding: 3px 8px;
-            border-radius: 3px;
-            transition: all 0.2s;
+
+        .chapter-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
-        
-        .saved-btn:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: var(--light-text);
+
+        .chapter-title {
+            font-size: 0.9rem;
+            color: var(--primary-color);
         }
-        
-        .overlay {
+
+        .image-counter {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* Modals */
+        .modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.7);
-            z-index: 1050;
             display: none;
-        }
-        
-        /* Night mode toggle */
-        .night-mode-toggle {
-            display: flex;
+            justify-content: center;
             align-items: center;
-            margin-right: 15px;
+            z-index: 1000;
         }
-        
-        .toggle-label {
-            color: var(--gray-text);
-            margin-left: 8px;
-            font-size: 14px;
+
+        .modal-content {
+            background-color: var(--bg-dark);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow);
         }
-        
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--bg-darker);
+            padding-bottom: 10px;
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Settings styles */
+        .settings-group {
+            margin-bottom: 20px;
+        }
+
+        .settings-title {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 8px;
+            background-color: var(--bg-darker);
+            border-radius: var(--border-radius);
+        }
+
+        .setting-label {
+            color: var(--text-light);
+        }
+
+        /* Form elements */
+        input[type="text"],
+        input[type="password"],
+        select {
+            background-color: var(--bg-darker);
+            border: 1px solid var(--text-secondary);
+            color: var(--text-light);
+            padding: 8px;
+            border-radius: var(--border-radius);
+            width: 100%;
+        }
+
+        input[type="range"] {
+            width: 150px;
+        }
+
         .switch {
             position: relative;
             display: inline-block;
-            width: 40px;
-            height: 20px;
+            width: 46px;
+            height: 24px;
         }
-        
+
         .switch input {
             opacity: 0;
             width: 0;
             height: 0;
         }
-        
+
         .slider {
             position: absolute;
             cursor: pointer;
@@ -530,818 +267,1762 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 20px;
+            background-color: var(--bg-darker);
+            transition: var(--transition);
+            border-radius: 24px;
         }
-        
+
         .slider:before {
             position: absolute;
             content: "";
-            height: 16px;
-            width: 16px;
-            left: 2px;
-            bottom: 2px;
-            background-color: white;
-            transition: .4s;
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: var(--text-light);
+            transition: var(--transition);
             border-radius: 50%;
         }
-        
+
         input:checked + .slider {
             background-color: var(--primary-color);
         }
-        
-        input:focus + .slider {
-            box-shadow: 0 0 1px var(--primary-color);
-        }
-        
+
         input:checked + .slider:before {
-            transform: translateX(20px);
+            transform: translateX(22px);
         }
-        
-        /* Font size control */
-        .font-size-control {
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            z-index: 1001;
             display: flex;
             align-items: center;
-            margin-right: 20px;
+            gap: 10px;
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
         }
-        
-        .font-btn {
-            background-color: transparent;
-            color: var(--light-text);
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        /* Floating settings panel */
+        .floating-settings {
+            position: fixed;
+            top: 80px;
+            left: -250px;
+            width: 250px;
+            background-color: var(--bg-dark);
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            z-index: 99;
+            padding: 15px;
+        }
+
+        .floating-settings.open {
+            left: 0;
+        }
+
+        .settings-toggle {
+            position: absolute;
+            right: -40px;
+            top: 10px;
+            background-color: var(--bg-dark);
             border: none;
+            color: var(--text-light);
+            padding: 10px;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
             cursor: pointer;
-            width: 30px;
-            height: 30px;
+        }
+
+        /* Password protection */
+        .password-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-darker);
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
-            font-size: 16px;
-            border-radius: 50%;
-        }
-        
-        .font-btn:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        
-        .font-size-value {
-            color: var(--gray-text);
-            margin: 0 5px;
-            font-size: 14px;
-            min-width: 30px;
-            text-align: center;
-        }
-        
-        /* Auto-scroll toggle */
-        .auto-scroll-toggle {
-            display: flex;
             align-items: center;
-            margin-right: 20px;
+            z-index: 2000;
         }
-        
-        .auto-scroll-label {
-            color: var(--gray-text);
-            margin-left: 8px;
-            font-size: 14px;
+
+        .password-container {
+            background-color: var(--bg-dark);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
         }
-        
+
+        .password-input {
+            margin: 20px 0;
+        }
+
+        /* Add Arc Modal */
+        .add-ark-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Loading animation container */
+        .loading-animation {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px auto;
+        }
+
         /* Responsive styles */
         @media (max-width: 768px) {
-            .chapters-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-                gap: 15px;
-            }
-            
-            .chapter-thumbnail {
-                height: 200px;
-            }
-            
-            .chapter-info {
-                padding: 10px;
-            }
-            
-            .chapter-title {
-                font-size: 14px;
-            }
-            
-            .nav-btn {
-                width: 40px;
-                height: 40px;
-                font-size: 18px;
-            }
-            
-            .viewer-header, .viewer-footer {
-                padding: 10px 15px;
-            }
-            
-            .viewer-title {
-                font-size: 16px;
-            }
-            
-            .info-modal {
-                width: 95%;
-            }
-            
-            .saved-drawer {
-                width: 250px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .chapters-grid {
-                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-                gap: 10px;
-            }
-            
-            .chapter-thumbnail {
-                height: 180px;
-            }
-            
-            .controls {
-                gap: 8px;
+            .novel-title {
+                font-size: 1.2rem;
             }
             
             .btn {
                 padding: 6px 10px;
-                font-size: 12px;
+                font-size: 0.8rem;
             }
             
-            .viewer-btn {
-                width: 35px;
-                height: 35px;
-                font-size: 18px;
+            .image-viewer {
+                height: calc(100vh - 130px);
             }
             
-            .nav-btn {
-                width: 35px;
-                height: 35px;
-                font-size: 16px;
+            .toolbar {
+                padding: 8px 12px;
             }
-            
-            .info-meta {
-                grid-template-columns: 1fr;
-            }
+        }
+
+        /* Distraction-free mode */
+        .distraction-free header,
+        .distraction-free .toolbar,
+        .distraction-free .floating-settings {
+            transform: translateY(100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .distraction-free .image-viewer {
+            height: 100vh;
+        }
+        
+        /* Grid view */
+        .grid-view .swiper {
+            display: none;
+        }
+        
+        .image-grid {
+            display: none;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 15px;
+            height: 100%;
+            overflow-y: auto;
+        }
+        
+        .grid-view .image-grid {
+            display: grid;
+        }
+        
+        .grid-item {
+            position: relative;
+            aspect-ratio: 3/4;
+            overflow: hidden;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+        }
+        
+        .grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .grid-item img:hover {
+            transform: scale(1.05);
+        }
+        
+        .grid-number {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: var(--text-light);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">روايات مصورة</div>
-            <div class="controls">
-                <button class="btn btn-transparent" id="savedBtn">
-                    <i class="fas fa-bookmark"></i>
-                    المحفوظات
-                </button>
-                <button class="btn">
-                    <i class="fas fa-sign-in-alt"></i>
-                    تسجيل الدخول
-                </button>
+    <!-- قفل كلمة المرور -->
+    <div class="password-overlay" id="passwordOverlay" style="display: none;">
+        <div class="password-container">
+            <div class="loading-animation" id="lockAnimation"></div>
+            <h2>هذه الرواية محمية</h2>
+            <p>يرجى إدخال كلمة المرور للوصول إلى المحتوى</p>
+            <div class="password-input">
+                <input type="password" id="passwordInput" placeholder="كلمة المرور">
             </div>
-        </header>
-        
-        <div class="tabs">
-            <div class="tab active">الصفحة الرئيسية</div>
-            <div class="tab">المفضلة</div>
-            <div class="tab">الأحدث</div>
-            <div class="tab">الأكثر مشاهدة</div>
-            <div class="tab">الفانتازيا</div>
-            <div class="tab">الأكشن</div>
-            <div class="tab">المغامرات</div>
-        </div>
-        
-        <div class="arcs-container">
-            <div class="arc-title">
-                <i class="fas fa-fire"></i>
-                أرك البداية
-            </div>
-            
-            <div class="chapters-grid">
-                <!-- Chapter card 1 -->
-                <div class="chapter-card" data-title="الفصل الأول: البداية الغامضة">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='250' viewBox='0 0 200 250'%3E%3Crect width='200' height='250' fill='%2323252b'/%3E%3Ctext x='100' y='125' font-family='Arial' font-size='16' fill='%23f47521' text-anchor='middle'%3Eالفصل الأول%3C/text%3E%3C/svg%3E" alt="الفصل الأول" class="chapter-thumbnail">
-                    <div class="chapter-info">
-                        <div class="chapter-title">الفصل الأول: البداية الغامضة</div>
-                        <div class="chapter-meta">
-                            <span>16 صفحة</span>
-                            <span>تاريخ: 10/4/2025</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Chapter card 2 -->
-                <div class="chapter-card" data-title="الفصل الثاني: التحدي الأول">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='250' viewBox='0 0 200 250'%3E%3Crect width='200' height='250' fill='%2323252b'/%3E%3Ctext x='100' y='125' font-family='Arial' font-size='16' fill='%23f47521' text-anchor='middle'%3Eالفصل الثاني%3C/text%3E%3C/svg%3E" alt="الفصل الثاني" class="chapter-thumbnail">
-                    <div class="chapter-info">
-                        <div class="chapter-title">الفصل الثاني: التحدي الأول</div>
-                        <div class="chapter-meta">
-                            <span>16 صفحة</span>
-                            <span>تاريخ: 8/4/2025</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Chapter card 3 -->
-                <div class="chapter-card" data-title="الفصل الثالث: التحول">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='250' viewBox='0 0 200 250'%3E%3Crect width='200' height='250' fill='%2323252b'/%3E%3Ctext x='100' y='125' font-family='Arial' font-size='16' fill='%23f47521' text-anchor='middle'%3Eالفصل الثالث%3C/text%3E%3C/svg%3E" alt="الفصل الثالث" class="chapter-thumbnail">
-                    <div class="chapter-info">
-                        <div class="chapter-title">الفصل الثالث: التحول</div>
-                        <div class="chapter-meta">
-                            <span>16 صفحة</span>
-                            <span>تاريخ: 5/4/2025</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Chapter card 4 -->
-                <div class="chapter-card" data-title="الفصل الرابع: المواجهة">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='250' viewBox='0 0 200 250'%3E%3Crect width='200' height='250' fill='%2323252b'/%3E%3Ctext x='100' y='125' font-family='Arial' font-size='16' fill='%23f47521' text-anchor='middle'%3Eالفصل الرابع%3C/text%3E%3C/svg%3E" alt="الفصل الرابع" class="chapter-thumbnail">
-                    <div class="chapter-info">
-                        <div class="chapter-title">الفصل الرابع: المواجهة</div>
-                        <div class="chapter-meta">
-                            <span>16 صفحة</span>
-                            <span>تاريخ: 1/4/2025</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="arc-title">
-                <i class="fas fa-dragon"></i>
-                أرك المعركة الكبرى
-            </div>
-            
-            <div class="chapters-grid">
-                <!-- Chapter card 5 -->
-                <div class="chapter-card" data-title="الفصل الخامس: استعداد للمعركة">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='250' viewBox='0 0 200 250'%3E%3Crect width='200' height='250' fill='%2323252b'/%3E%3Ctext x='100' y='125' font-family='Arial' font-size='16' fill='%23f47521' text-anchor='middle'%3Eالفصل الخامس%3C/text%3E%3C/svg%3E" alt="الفصل الخامس" class="chapter-thumbnail">
-                    <div class="chapter-info">
-                        <div class="chapter-title">الفصل الخامس: استعداد للمعركة</div>
-                        <div class="chapter-meta">
-                            <span>16 صفحة</span>
-                            <span>تاريخ: 28/3/2025</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Chapter card 6 -->
-                <div class="chapter-card" data-title="الفصل السادس: المواجهة الحاسمة">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='250' viewBox='0 0 200 250'%3E%3Crect width='200' height='250' fill='%2323252b'/%3E%3Ctext x='100' y='125' font-family='Arial' font-size='16' fill='%23f47521' text-anchor='middle'%3Eالفصل السادس%3C/text%3E%3C/svg%3E" alt="الفصل السادس" class="chapter-thumbnail">
-                    <div class="chapter-info">
-                        <div class="chapter-title">الفصل السادس: المواجهة الحاسمة</div>
-                        <div class="chapter-meta">
-                            <span>16 صفحة</span>
-                            <span>تاريخ: 25/3/2025</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Chapter card 7 -->
-                <div class="chapter-card" data-title="الفصل السابع: انتصار مؤقت">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='250' viewBox='0 0 200 250'%3E%3Crect width='200' height='250' fill='%2323252b'/%3E%3Ctext x='100' y='125' font-family='Arial' font-size='16' fill='%23f47521' text-anchor='middle'%3Eالفصل السابع%3C/text%3E%3C/svg%3E" alt="الفصل السابع" class="chapter-thumbnail">
-                    <div class="chapter-info">
-                        <div class="chapter-title">الفصل السابع: انتصار مؤقت</div>
-                        <div class="chapter-meta">
-                            <span>16 صفحة</span>
-                            <span>تاريخ: 22/3/2025</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Chapter card 8 -->
-                <div class="chapter-card" data-title="الفصل الثامن: التهديد الجديد">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='250' viewBox='0 0 200 250'%3E%3Crect width='200' height='250' fill='%2323252b'/%3E%3Ctext x='100' y='125' font-family='Arial' font-size='16' fill='%23f47521' text-anchor='middle'%3Eالفصل الثامن%3C/text%3E%3C/svg%3E" alt="الفصل الثامن" class="chapter-thumbnail">
-                    <div class="chapter-info">
-                        <div class="chapter-title">الفصل الثامن: التهديد الجديد</div>
-                        <div class="chapter-meta">
-                            <span>16 صفحة</span>
-                            <span>تاريخ: 19/3/2025</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <button class="btn" id="unlockBtn">فتح الرواية</button>
         </div>
     </div>
-    
-    <!-- Chapter viewer overlay -->
-    <div class="viewer-overlay" id="chapterViewer">
-        <div class="viewer-header">
-            <div class="viewer-title" id="viewerTitle">عنوان الفصل</div>
-            <div class="viewer-controls">
-                <div class="night-mode-toggle">
-                    <label class="switch">
-                        <input type="checkbox" id="nightModeToggle">
-                        <span class="slider"></span>
-                    </label>
-                    <span class="toggle-label">وضع الليل</span>
-                </div>
-                
-                <div class="font-size-control">
-                    <button class="font-btn" id="decreaseFont">-</button>
-                    <span class="font-size-value" id="fontSizeValue">100%</span>
-                    <button class="font-btn" id="increaseFont">+</button>
-                </div>
-                
-                <div class="auto-scroll-toggle">
-                    <label class="switch">
-                        <input type="checkbox" id="autoScrollToggle">
-                        <span class="slider"></span>
-                    </label>
-                    <span class="auto-scroll-label">تمرير تلقائي</span>
-                </div>
-                
-                <button class="viewer-btn" id="saveChapter">
-                    <i class="fas fa-bookmark"></i>
-                </button>
-                
-                <button class="viewer-btn" id="infoButton">
-                    <i class="fas fa-info-circle"></i>
-                </button>
-                
-                <button class="viewer-btn" id="closeViewer">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
+
+    <!-- رأس الصفحة -->
+    <header>
+        <button class="btn" id="infoBtn">
+            <svg class="btn-icon" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+            </svg>
+            معلومات
+        </button>
+        <h1 class="novel-title" id="novelTitle">عنوان الرواية</h1>
+        <div class="header-actions">
+            <button class="btn" id="shareBtn">
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>
+                </svg>
+                مشاركة
+            </button>
+            <button class="btn" id="settingsBtn">
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+                </svg>
+                الإعدادات
+            </button>
         </div>
+    </header>
+
+    <!-- عارض الصور -->
+    <div class="image-viewer" id="imageViewer">
+        <div class="loading-indicator" id="loadingIndicator"></div>
         
-        <div class="viewer-content">
-            <div class="image-container" id="imageContainer">
-                <!-- Images will be loaded dynamically -->
+        <!-- عارض الصور بالتمرير -->
+        <div class="swiper" id="imageSwiper">
+            <div class="swiper-wrapper" id="imageWrapper">
+                <!-- سيتم إضافة الصور هنا بشكل ديناميكي -->
             </div>
             
-            <div class="nav-buttons">
-                <button class="nav-btn" id="prevBtn">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-                <button class="nav-btn" id="nextBtn">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-            </div>
+            <!-- أدوات التحكم بالتمرير -->
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
         </div>
         
-        <div class="viewer-footer">
-            <div class="page-indicator" id="pageIndicator">صفحة 1 من 16</div>
-            <div class="progress-container">
-                <div class="progress-bar" id="progressBar"></div>
-            </div>
+        <!-- عرض شبكي للصور (مخفي افتراضيًا) -->
+        <div class="image-grid" id="imageGrid">
+            <!-- سيتم إضافة الصور هنا بشكل ديناميكي -->
         </div>
     </div>
-    
-    <!-- Novel info modal -->
-    <div class="info-modal" id="infoModal">
-        <div class="info-header">
-            <div class="info-title" id="novelTitle">عنوان الرواية</div>
-            <div class="info-author" id="novelAuthor">اسم الكاتب</div>
-            <button class="close-info" id="closeInfo">
-                <i class="fas fa-times"></i>
+
+    <!-- شريط الأدوات -->
+    <div class="toolbar">
+        <div class="toolbar-section">
+            <button class="btn" id="prevChapterBtn">
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+                السابق
+            </button>
+            <button class="btn" id="downloadBtn">
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                </svg>
+                تحميل
             </button>
         </div>
         
-        <div class="info-content">
-            <div class="info-description" id="novelDescription">
-                هذه الرواية تحكي قصة بطل شاب يكتشف قوى خارقة ويبدأ رحلته في عالم مليء بالمغامرات والتحديات. من خلال رحلته، سيتعلم عن أصول قوته ويواجه أعداء أقوياء، ويكوّن صداقات مع شخصيات مختلفة تساعده في مغامراته.
-            </div>
-            
-            <div class="info-meta">
-                <div class="info-item">
-                    <div class="info-label">تصنيف الرواية</div>
-                    <div class="info-value">فانتازيا، مغامرة، أكشن</div>
-                </div>
-                
-                <div class="info-item">
-                    <div class="info-label">تاريخ النشر</div>
-                    <div class="info-value">مارس 2025</div>
-                </div>
-                
-                <div class="info-item">
-                    <div class="info-label">عدد الفصول</div>
-                    <div class="info-value">12 فصل</div>
-                </div>
-                
-                <div class="info-item">
-                    <div class="info-label">حالة الرواية</div>
-                    <div class="info-value">مستمرة</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Saved novels drawer -->
-    <div class="saved-drawer" id="savedDrawer">
-        <div class="saved-header">
-            <div class="saved-title">الروايات المحفوظة</div>
-            <button class="close-saved" id="closeSaved">
-                <i class="fas fa-times"></i>
-            </button>
+        <div class="chapter-info">
+            <span class="chapter-title" id="currentChapterTitle">أرك 1 - فصل 1</span>
+            <span class="image-counter" id="imageCounter">1 / 16</span>
         </div>
         
-        <div class="saved-list" id="savedList">
-            <!-- Will be populated dynamically -->
+        <div class="toolbar-section">
+            <button class="btn" id="lockBtn">
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                </svg>
+                قفل
+            </button>
+            <button class="btn" id="nextChapterBtn">
+                التالي
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12l-4.58 4.59z"/>
+                </svg>
+            </button>
         </div>
     </div>
-    
-    <!-- Overlay backdrop -->
-    <div class="overlay" id="overlay"></div>
-    
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    
+
+    <!-- الإعدادات العائمة -->
+    <div class="floating-settings" id="floatingSettings">
+        <button class="settings-toggle" id="settingsToggle">
+            <svg width="20" height="20" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+            </svg>
+        </button>
+        
+        <div class="settings-group">
+            <h3 class="settings-title">طريقة العرض</h3>
+            <div class="setting-row">
+                <label class="setting-label" for="viewMode">نوع العرض:</label>
+                <select id="viewMode">
+                    <option value="slide">متتالي</option>
+                    <option value="grid">شبكي</option>
+                </select>
+            </div>
+            <div class="setting-row">
+                <label class="setting-label" for="zoomLevel">مستوى التكبير:</label>
+                <input type="range" id="zoomLevel" min="50" max="150" value="100">
+            </div>
+        </div>
+        
+        <div class="settings-group">
+            <h3 class="settings-title">الظهور</h3>
+            <div class="setting-row">
+                <label class="setting-label">الوضع الليلي</label>
+                <label class="switch">
+                    <input type="checkbox" id="darkModeToggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="setting-row">
+                <label class="setting-label">وضع القراءة</label>
+                <label class="switch">
+                    <input type="checkbox" id="distractionFreeToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="settings-group">
+            <h3 class="settings-title">اللغة</h3>
+            <div class="setting-row">
+                <label class="setting-label" for="languageSelect">لغة الواجهة:</label>
+                <select id="languageSelect">
+                    <option value="ar" selected>العربية</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="settings-group">
+            <button class="btn" id="resetSettingsBtn" style="width: 100%;">استعادة الإعدادات الافتراضية</button>
+        </div>
+    </div>
+
+    <!-- نافذة معلومات الرواية -->
+    <div class="modal" id="infoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">معلومات الرواية</h2>
+                <button class="close-modal" data-modal="infoModal">&times;</button>
+            </div>
+            <div id="novelInfo">
+                <div class="settings-group">
+                    <h3 class="settings-title">التفاصيل</h3>
+                    <div class="setting-row">
+                        <span class="setting-label">العنوان:</span>
+                        <span id="infoNovelTitle">عنوان الرواية</span>
+                    </div>
+                    <div class="setting-row">
+                        <span class="setting-label">تاريخ الإنشاء:</span>
+                        <span id="infoCreationDate">-</span>
+                    </div>
+                    <div class="setting-row">
+                        <span class="setting-label">آخر تحديث:</span>
+                        <span id="infoLastUpdate">-</span>
+                    </div>
+                </div>
+                
+                <div class="settings-group">
+                    <h3 class="settings-title">المحتوى</h3>
+                    <div id="infoArksContainer">
+                        <!-- سيتم إضافة محتوى الأركات هنا بشكل ديناميكي -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة الإعدادات -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">إعدادات الرواية</h2>
+                <button class="close-modal" data-modal="settingsModal">&times;</button>
+            </div>
+            
+            <div class="settings-group">
+                <h3 class="settings-title">معلومات الرواية</h3>
+                <div class="setting-row">
+                    <label class="setting-label" for="editNovelTitle">عنوان الرواية:</label>
+                    <input type="text" id="editNovelTitle" placeholder="أدخل عنوان الرواية">
+                </div>
+            </div>
+            
+            <div class="settings-group">
+                <h3 class="settings-title">تنظيم المحتوى</h3>
+                <div class="setting-row">
+                    <span class="setting-label">إدارة الأركات والفصول:</span>
+                    <button class="btn" id="manageContentBtn">إدارة</button>
+                </div>
+                <div class="setting-row">
+                    <button class="btn" id="addArkBtn" style="width: 100%;">إضافة أرك جديد</button>
+                </div>
+            </div>
+            
+            <div class="settings-group">
+                <h3 class="settings-title">الأمان</h3>
+                <div class="setting-row">
+                    <label class="setting-label">تفعيل حماية كلمة المرور</label>
+                    <label class="switch">
+                        <input type="checkbox" id="passwordProtectionToggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting-row" id="passwordSettingRow" style="display: none;">
+                    <label class="setting-label" for="novelPassword">كلمة المرور:</label>
+                    <input type="password" id="novelPassword" placeholder="أدخل كلمة المرور">
+                </div>
+            </div>
+            
+            <div class="settings-group">
+                <h3 class="settings-title">مشاركة وتحميل</h3>
+                <div class="setting-row">
+                    <label class="setting-label">السماح بالمشاركة</label>
+                    <label class="switch">
+                        <input type="checkbox" id="allowSharingToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting-row">
+                    <label class="setting-label">السماح بالتحميل</label>
+                    <label class="switch">
+                        <input type="checkbox" id="allowDownloadToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="settings-group">
+                <button class="btn" id="saveSettingsBtn" style="width: 100%;">حفظ الإعدادات</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة إضافة أرك جديد -->
+    <div class="modal" id="addArkModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">إضافة أرك جديد</h2>
+                <button class="close-modal" data-modal="addArkModal">&times;</button>
+            </div>
+            
+            <form class="add-ark-form" id="addArkForm">
+                <div class="setting-row">
+                    <label class="setting-label" for="newArkTitle">عنوان الأرك:</label>
+                    <input type="text" id="newArkTitle" placeholder="أدخل عنوان الأرك" required>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">إضافة</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- نافذة إدارة المحتوى -->
+    <div class="modal" id="manageContentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">إدارة المحتوى</h2>
+                <button class="close-modal" data-modal="manageContentModal">&times;</button>
+            </div>
+            
+            <div class="settings-group">
+                <h3 class="settings-title">الأركات والفصول</h3>
+                <div id="contentManagerContainer">
+                    <!-- سيتم إضافة عناصر التحكم بالمحتوى هنا بشكل ديناميكي -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة إضافة فصل جديد -->
+    <div class="modal" id="addChapterModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">إضافة فصل جديد</h2>
+                <button class="close-modal" data-modal="addChapterModal">&times;</button>
+            </div>
+            
+            <form class="add-ark-form" id="addChapterForm">
+                <div class="setting-row">
+                    <label class="setting-label" for="newChapterTitle">عنوان الفصل:</label>
+                    <input type="text" id="newChapterTitle" placeholder="أدخل عنوان الفصل" required>
+                </div>
+                <input type="hidden" id="parentArkId">
+                <button type="submit" class="btn" style="width: 100%;">إضافة</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- عنصر الإشعارات -->
+    <div class="notification" id="notification">
+        <svg class="btn-icon" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+        </svg>
+        <span id="notificationText">تم بنجاح</span>
+    </div>
+
     <script>
+        // التهيئة الأساسية للتطبيق
         document.addEventListener('DOMContentLoaded', function() {
-            // Sample data for chapters and pages
-            const samplePages = Array.from({length: 16}, (_, i) => 
-                `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='1200' viewBox='0 0 800 1200'%3E%3Crect width='800' height='1200' fill='%23ffffff'/%3E%3Crect x='50' y='50' width='700' height='1100' fill='%23f9f9f9' stroke='%23dddddd' stroke-width='1'/%3E%3Ctext x='400' y='600' font-family='Arial' font-size='32' fill='%23333333' text-anchor='middle'%3Eصفحة ${i+1}%3C/text%3E%3C/svg%3E`
-            );
+            // تهيئة متغيرات التطبيق
+            let currentNovel = {
+                title: "عنوان الرواية",
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                arks: [],
+                settings: {
+                    passwordProtected: false,
+                    password: "",
+                    allowSharing: true,
+                    allowDownload: true,
+                    language: "ar",
+                    darkMode: true,
+                    viewMode: "slide"
+                },
+                currentArkIndex: 0,
+                currentChapterIndex: 0,
+                currentImageIndex: 0
+            };
             
-            // DOM Elements
-            const chapterCards = document.querySelectorAll('.chapter-card');
-            const chapterViewer = document.getElementById('chapterViewer');
-            const imageContainer = document.getElementById('imageContainer');
-            const viewerTitle = document.getElementById('viewerTitle');
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            const pageIndicator = document.getElementById('pageIndicator');
-            const progressBar = document.getElementById('progressBar');
-            const closeViewer = document.getElementById('closeViewer');
-            const saveChapter = document.getElementById('saveChapter');
-            const infoButton = document.getElementById('infoButton');
-            const infoModal = document.getElementById('infoModal');
-            const closeInfo = document.getElementById('closeInfo');
-            const savedBtn = document.getElementById('savedBtn');
-            const savedDrawer = document.getElementById('savedDrawer');
-            const closeSaved = document.getElementById('closeSaved');
-            const savedList = document.getElementById('savedList');
-            const overlay = document.getElementById('overlay');
-            const nightModeToggle = document.getElementById('nightModeToggle');
-            const increaseFont = document.getElementById('increaseFont');
-            const decreaseFont = document.getElementById('decreaseFont');
-            const fontSizeValue = document.getElementById('fontSizeValue');
-            const autoScrollToggle = document.getElementById('autoScrollToggle');
+            // تهيئة Swiper
+            let swiper;
             
-            // State variables
-            let currentPage = 0;
-            let totalPages = 0;
-            let currentChapter = '';
-            let zoomLevel = 1;
-            let autoScrollInterval = null;
-            let savedNovels = JSON.parse(localStorage.getItem('savedNovels')) || [];
-            let imageScale = 100;
-            let touchStartX = 0;
-            let touchEndX = 0;
-            let longPressTimer = null;
+            // تحميل البيانات المخزنة مسبقًا إن وجدت
+            loadNovelData();
             
-            // Initialize saved novels list
-            updateSavedList();
+            // تهيئة السوايبر للصور
+            initializeSwiper();
             
-            // Chapter card click event
-            chapterCards.forEach(card => {
-                card.addEventListener('click', function() {
-                    openChapter(this.dataset.title);
-                });
-                
-                // Double-tap to share
-                let tapCount = 0;
-                let tapTimer = null;
-                
-                card.addEventListener('click', function() {
-                    tapCount++;
-                    if (tapCount === 1) {
-                        tapTimer = setTimeout(function() {
-                            tapCount = 0;
-                        }, 300);
-                    } else if (tapCount === 2) {
-                        clearTimeout(tapTimer);
-                        tapCount = 0;
-                        // Share functionality
-                        shareChapter(this.dataset.title);
+            // تهيئة استمعات الأحداث
+            initializeEventListeners();
+            
+            // تحديث واجهة المستخدم بالبيانات الحالية
+            updateUI();
+            
+            // إذا كانت الرواية محمية بكلمة مرور، عرض نافذة القفل
+            if (currentNovel.settings.passwordProtected) {
+                showPasswordOverlay();
+            }
+            
+            // إنشاء أرك أول إذا لم يكن موجودًا
+            if (currentNovel.arks.length === 0) {
+                addNewArk("أرك 1");
+            }
+            
+            // وظائف التطبيق الأساسية
+            
+            // تهيئة Swiper
+            function initializeSwiper() {
+                swiper = new Swiper('#imageSwiper', {
+                    slidesPerView: 1,
+                    spaceBetween: 30,
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                    on: {
+                        slideChange: function() {
+                            updateCurrentImage(this.activeIndex);
+                        }
                     }
                 });
-                
-                // Long press for info
-                card.addEventListener('mousedown', function() {
-                    longPressTimer = setTimeout(() => {
-                        showNovelInfo(this.dataset.title);
-                    }, 500);
-                });
-                
-                card.addEventListener('mouseup', function() {
-                    clearTimeout(longPressTimer);
-                });
-                
-                card.addEventListener('mouseleave', function() {
-                    clearTimeout(longPressTimer);
-                });
-                
-                // Touch events for mobile
-                card.addEventListener('touchstart', function(e) {
-                    longPressTimer = setTimeout(() => {
-                        showNovelInfo(this.dataset.title);
-                    }, 500);
-                    touchStartX = e.changedTouches[0].screenX;
-                });
-                
-                card.addEventListener('touchend', function(e) {
-                    clearTimeout(longPressTimer);
-                    touchEndX = e.changedTouches[0].screenX;
-                    handleSwipeGesture();
-                });
-            });
-            
-            // Open chapter function
-            function openChapter(title) {
-                currentChapter = title;
-                viewerTitle.textContent = title;
-                currentPage = 0;
-                totalPages = samplePages.length;
-                
-                // Clear any existing images
-                imageContainer.innerHTML = '';
-                
-                // Load all images
-                samplePages.forEach((src, index) => {
-                    const img = document.createElement('img');
-                    img.src = src;
-                    img.className = 'viewer-image';
-                    img.style.display = index === 0 ? 'block' : 'none';
-                    imageContainer.appendChild(img);
-                });
-                
-                updatePageIndicator();
-                updateProgressBar();
-                chapterViewer.style.display = 'flex';
             }
             
-            // Navigation functions
-            function goToPage(page) {
-                if (page >= 0 && page < totalPages) {
-                    // Hide all images
-                    const images = imageContainer.querySelectorAll('.viewer-image');
-                    images.forEach((img, index) => {
-                        img.style.display = 'none';
-                    });
-                    
-                    // Show the selected page
-                    images[page].style.display = 'block';
-                    
-                    currentPage = page;
-                    updatePageIndicator();
-                    updateProgressBar();
-                }
-            }
-            
-            function nextPage() {
-                goToPage(currentPage + 1);
-            }
-            
-            function prevPage() {
-                goToPage(currentPage - 1);
-            }
-            
-            // Update UI elements
-            function updatePageIndicator() {
-                pageIndicator.textContent = `صفحة ${currentPage + 1} من ${totalPages}`;
-            }
-            
-            function updateProgressBar() {
-                const progress = ((currentPage + 1) / totalPages) * 100;
-                progressBar.style.width = `${progress}%`;
-            }
-            
-            // Save chapter to favorites
-            function saveChapter() {
-                const isAlreadySaved = savedNovels.some(novel => novel.title === currentChapter);
+            // تحديث واجهة المستخدم
+            function updateUI() {
+                // تحديث عنوان الرواية
+                document.getElementById('novelTitle').textContent = currentNovel.title;
+                document.getElementById('infoNovelTitle').textContent = currentNovel.title;
+                document.getElementById('editNovelTitle').value = currentNovel.title;
                 
-                if (!isAlreadySaved) {
-                    savedNovels.push({
-                        title: currentChapter,
-                        page: currentPage,
-                        timestamp: Date.now(),
-                        thumbnail: samplePages[0] // Use first page as thumbnail
-                    });
-                    
-                    localStorage.setItem('savedNovels', JSON.stringify(savedNovels));
-                    updateSavedList();
-                    alert('تم حفظ الفصل بنجاح!');
+                // تحديث معلومات الإنشاء والتحديث
+                document.getElementById('infoCreationDate').textContent = new Date(currentNovel.createdAt).toLocaleDateString();
+                document.getElementById('infoLastUpdate').textContent = new Date(currentNovel.updatedAt).toLocaleDateString();
+                
+                // تحديث عنوان الفصل الحالي
+                updateChapterTitle();
+                
+                // تحديث إعدادات الواجهة
+                document.getElementById('darkModeToggle').checked = currentNovel.settings.darkMode;
+                document.getElementById('allowSharingToggle').checked = currentNovel.settings.allowSharing;
+                document.getElementById('allowDownloadToggle').checked = currentNovel.settings.allowDownload;
+                document.getElementById('passwordProtectionToggle').checked = currentNovel.settings.passwordProtected;
+                document.getElementById('viewMode').value = currentNovel.settings.viewMode;
+                document.getElementById('languageSelect').value = currentNovel.settings.language;
+                
+                // تحديث حالة حماية كلمة المرور
+                if (currentNovel.settings.passwordProtected) {
+                    document.getElementById('passwordSettingRow').style.display = 'flex';
+                    document.getElementById('novelPassword').value = currentNovel.settings.password;
                 } else {
-                    // Update existing saved chapter
-                    const novelIndex = savedNovels.findIndex(novel => novel.title === currentChapter);
-                    savedNovels[novelIndex].page = currentPage;
-                    savedNovels[novelIndex].timestamp = Date.now();
-                    
-                    localStorage.setItem('savedNovels', JSON.stringify(savedNovels));
-                    updateSavedList();
-                    alert('تم تحديث موضع القراءة!');
+                    document.getElementById('passwordSettingRow').style.display = 'none';
                 }
+                
+                // تحديث طريقة العرض
+                if (currentNovel.settings.viewMode === 'grid') {
+                    document.getElementById('imageViewer').classList.add('grid-view');
+                } else {
+                    document.getElementById('imageViewer').classList.remove('grid-view');
+                }
+                
+                // تحديث معلومات الأركات في نافذة المعلومات
+                updateArksInfo();
+                
+                // تحميل الصور للفصل الحالي
+                loadCurrentChapterImages();
             }
             
-            // Update saved novels list
-            function updateSavedList() {
-                savedList.innerHTML = '';
+            // تحديث معلومات الفصل الحالي في العنوان
+            function updateChapterTitle() {
+                if (currentNovel.arks.length === 0) return;
                 
-                if (savedNovels.length === 0) {
-                    savedList.innerHTML = '<div style="padding: 20px; color: var(--gray-text); text-align: center;">لا توجد روايات محفوظة</div>';
+                const currentArk = currentNovel.arks[currentNovel.currentArkIndex];
+                if (!currentArk || !currentArk.chapters || currentArk.chapters.length === 0) return;
+                
+                const currentChapter = currentArk.chapters[currentNovel.currentChapterIndex];
+                if (!currentChapter) return;
+                
+                const arkTitle = currentArk.title || `أرك ${currentNovel.currentArkIndex + 1}`;
+                const chapterTitle = currentChapter.title || `فصل ${currentNovel.currentChapterIndex + 1}`;
+                
+                document.getElementById('currentChapterTitle').textContent = `${arkTitle} - ${chapterTitle}`;
+                
+                // تحديث عداد الصور
+                updateImageCounter();
+            }
+            
+            // تحديث عداد الصور
+            function updateImageCounter() {
+                const currentArk = currentNovel.arks[currentNovel.currentArkIndex];
+                if (!currentArk || !currentArk.chapters || currentArk.chapters.length === 0) return;
+                
+                const currentChapter = currentArk.chapters[currentNovel.currentChapterIndex];
+                if (!currentChapter) return;
+                
+                const totalImages = currentChapter.images ? currentChapter.images.length : 0;
+                const currentImage = currentNovel.currentImageIndex + 1;
+                
+                document.getElementById('imageCounter').textContent = `${currentImage} / ${totalImages || 16}`;
+            }
+            
+            // تحميل الصور للفصل الحالي
+            function loadCurrentChapterImages() {
+                if (currentNovel.arks.length === 0) return;
+                
+                const currentArk = currentNovel.arks[currentNovel.currentArkIndex];
+                if (!currentArk || !currentArk.chapters || currentArk.chapters.length === 0) return;
+                
+                const currentChapter = currentArk.chapters[currentNovel.currentChapterIndex];
+                if (!currentChapter) return;
+                
+                // تفريغ حاويات الصور
+                const imageWrapper = document.getElementById('imageWrapper');
+                const imageGrid = document.getElementById('imageGrid');
+                imageWrapper.innerHTML = '';
+                imageGrid.innerHTML = '';
+                
+                // إنشاء صور افتراضية إذا لم تكن موجودة
+                if (!currentChapter.images || currentChapter.images.length === 0) {
+                    currentChapter.images = Array(16).fill().map((_, index) => {
+                        return {
+                            id: `img_${Date.now()}_${index}`,
+                            src: generatePlaceholderImage(`صورة ${index + 1}`),
+                            title: `صورة ${index + 1}`,
+                            order: index
+                        };
+                    });
+                }
+                
+                // إضافة الصور إلى Swiper
+                currentChapter.images.forEach((image, index) => {
+                    // إضافة الصورة إلى Swiper
+                    const slide = document.createElement('div');
+                    slide.className = 'swiper-slide';
+                    slide.innerHTML = `<img src="${image.src}" alt="${image.title || `صورة ${index + 1}`}" data-index="${index}">`;
+                    imageWrapper.appendChild(slide);
+                    
+                    // إضافة الصورة إلى العرض الشبكي
+                    const gridItem = document.createElement('div');
+                    gridItem.className = 'grid-item';
+                    gridItem.innerHTML = `
+                        <img src="${image.src}" alt="${image.title || `صورة ${index + 1}`}" data-index="${index}">
+                        <div class="grid-number">${index + 1}</div>
+                    `;
+                    gridItem.addEventListener('click', function() {
+                        document.getElementById('imageViewer').classList.remove('grid-view');
+                        document.getElementById('viewMode').value = 'slide';
+                        currentNovel.settings.viewMode = 'slide';
+                        saveNovelData();
+                        updateCurrentImage(index);
+                        swiper.slideTo(index);
+                    });
+                    imageGrid.appendChild(gridItem);
+                });
+                
+                // تحديث Swiper
+                swiper.update();
+                swiper.slideTo(currentNovel.currentImageIndex, 0);
+                
+                // تحديث عداد الصور
+                updateImageCounter();
+            }
+            
+            // تحديث معلومات الأركات في نافذة المعلومات
+            function updateArksInfo() {
+                const arksContainer = document.getElementById('infoArksContainer');
+                arksContainer.innerHTML = '';
+                
+                if (currentNovel.arks.length === 0) {
+                    arksContainer.innerHTML = '<p>لا توجد أركات حتى الآن</p>';
                     return;
                 }
                 
-                // Sort by most recent
-                savedNovels.sort((a, b) => b.timestamp - a.timestamp);
-                
-                savedNovels.forEach(novel => {
-                    const item = document.createElement('div');
-                    item.className = 'saved-item';
+                currentNovel.arks.forEach((ark, arkIndex) => {
+                    const arkElement = document.createElement('div');
+                    arkElement.className = 'setting-row';
+                    arkElement.style.flexDirection = 'column';
+                    arkElement.style.alignItems = 'flex-start';
                     
-                    const dateFormatted = new Date(novel.timestamp).toLocaleDateString('ar-SA');
+                    const arkTitle = document.createElement('div');
+                    arkTitle.className = 'setting-label';
+                    arkTitle.style.fontWeight = 'bold';
+                    arkTitle.style.marginBottom = '5px';
+                    arkTitle.textContent = ark.title || `أرك ${arkIndex + 1}`;
                     
-                    item.innerHTML = `
-                        <img src="${novel.thumbnail}" alt="${novel.title}" class="saved-thumb">
-                        <div class="saved-info">
-                            <div class="saved-name">${novel.title}</div>
-                            <div class="saved-chapter">الصفحة ${novel.page + 1} - ${dateFormatted}</div>
-                            <div class="saved-actions">
-                                <button class="saved-btn continue-btn" data-title="${novel.title}" data-page="${novel.page}">
-                                    <i class="fas fa-play"></i> متابعة القراءة
-                                </button>
-                                <button class="saved-btn delete-btn" data-title="${novel.title}">
-                                    <i class="fas fa-trash"></i> حذف
-                                </button>
-                            </div>
-                        </div>
-                    `;
+                    const chaptersContainer = document.createElement('div');
+                    chaptersContainer.style.width = '100%';
+                    chaptersContainer.style.paddingRight = '15px';
                     
-                    savedList.appendChild(item);
-                });
-                
-                // Add event listeners to new buttons
-                document.querySelectorAll('.continue-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const title = this.dataset.title;
-                        const page = parseInt(this.dataset.page);
-                        
-                        savedDrawer.classList.remove('open');
-                        overlay.style.display = 'none';
-                        
-                        openChapter(title);
-                        goToPage(page);
-                    });
-                });
-                
-                document.querySelectorAll('.delete-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const title = this.dataset.title;
-                        savedNovels = savedNovels.filter(novel => novel.title !== title);
-                        localStorage.setItem('savedNovels', JSON.stringify(savedNovels));
-                        updateSavedList();
-                    });
+                    if (ark.chapters && ark.chapters.length > 0) {
+                        ark.chapters.forEach((chapter, chapterIndex) => {
+                            const chapterElement = document.createElement('div');
+                            chapterElement.className = 'setting-row';
+                            chapterElement.style.backgroundColor = 'var(--bg-darker)';
+                            chapterElement.style.padding = '5px 10px';
+                            chapterElement.style.marginBottom = '5px';
+                            chapterElement.style.cursor = 'pointer';
+                            
+                            const chapterTitle = document.createElement('span');
+                            chapterTitle.textContent = chapter.title || `فصل ${chapterIndex + 1}`;
+                            
+                            const imagesCount = document.createElement('span');
+                            imagesCount.style.fontSize = '0.8rem';
+                            imagesCount.style.color = 'var(--text-secondary)';
+                            imagesCount.textContent = `${chapter.images ? chapter.images.length : 0} صورة`;
+                            
+                            chapterElement.appendChild(chapterTitle);
+                            chapterElement.appendChild(imagesCount);
+                            
+                            // عند النقر على الفصل، الانتقال إليه
+                            chapterElement.addEventListener('click', function() {
+                                currentNovel.currentArkIndex = arkIndex;
+                                currentNovel.currentChapterIndex = chapterIndex;
+                                currentNovel.currentImageIndex = 0;
+                                saveNovelData();
+                                updateUI();
+                                closeModal('infoModal');
+                            });
+                            
+                            chaptersContainer.appendChild(chapterElement);
+                        });
+                    } else {
+                        const noChaptersMsg = document.createElement('p');
+                        noChaptersMsg.textContent = 'لا توجد فصول في هذا الأرك';
+                        noChaptersMsg.style.color = 'var(--text-secondary)';
+                        noChaptersMsg.style.fontSize = '0.9rem';
+                        noChaptersMsg.style.padding = '5px 0';
+                        chaptersContainer.appendChild(noChaptersMsg);
+                    }
+                    
+                    arkElement.appendChild(arkTitle);
+                    arkElement.appendChild(chaptersContainer);
+                    arksContainer.appendChild(arkElement);
                 });
             }
             
-            // Share functionality
-            function shareChapter(title) {
-                if (navigator.share) {
-                    navigator.share({
-                        title: title,
-                        text: `أنا أقرأ ${title} على منصة الروايات المصورة`,
-                        url: window.location.href,
-                    })
-                    .catch(error => console.log('Error sharing', error));
-                } else {
-                    alert(`مشاركة: ${title}`);
+            // تحديث محتوى إدارة المحتوى
+            function updateContentManager() {
+                const contentContainer = document.getElementById('contentManagerContainer');
+                contentContainer.innerHTML = '';
+                
+                if (currentNovel.arks.length === 0) {
+                    contentContainer.innerHTML = '<p>لا توجد أركات حتى الآن</p>';
+                    return;
                 }
-            }
-            
-            // Show novel info
-            function showNovelInfo(title) {
-                document.getElementById('novelTitle').textContent = title.split(':')[0];
-                document.getElementById('novelAuthor').textContent = 'الكاتب: أحمد المصري';
-                overlay.style.display = 'block';
-                infoModal.style.display = 'block';
-            }
-            
-            // Toggle night mode
-            function toggleNightMode() {
-                document.body.classList.toggle('night-mode');
-            }
-            
-            // Auto scroll function
-            function toggleAutoScroll() {
-                if (autoScrollInterval) {
-                    clearInterval(autoScrollInterval);
-                    autoScrollInterval = null;
-                } else {
-                    autoScrollInterval = setInterval(() => {
-                        if (currentPage < totalPages - 1) {
-                            nextPage();
-                        } else {
-                            // Stop auto-scroll when reaching the end
-                            clearInterval(autoScrollInterval);
-                            autoScrollInterval = null;
-                            autoScrollToggle.checked = false;
+                
+                currentNovel.arks.forEach((ark, arkIndex) => {
+                    const arkElement = document.createElement('div');
+                    arkElement.className = 'setting-row';
+                    arkElement.style.flexDirection = 'column';
+                    arkElement.style.alignItems = 'flex-start';
+                    arkElement.style.marginBottom = '20px';
+                    
+                    const arkHeader = document.createElement('div');
+                    arkHeader.style.display = 'flex';
+                    arkHeader.style.justifyContent = 'space-between';
+                    arkHeader.style.width = '100%';
+                    arkHeader.style.marginBottom = '10px';
+                    
+                    const arkTitle = document.createElement('div');
+                    arkTitle.className = 'setting-label';
+                    arkTitle.style.fontWeight = 'bold';
+                    arkTitle.textContent = ark.title || `أرك ${arkIndex + 1}`;
+                    
+                    const arkActions = document.createElement('div');
+                    arkActions.style.display = 'flex';
+                    arkActions.style.gap = '5px';
+                    
+                    const editArkBtn = document.createElement('button');
+                    editArkBtn.className = 'btn';
+                    editArkBtn.innerHTML = '<svg class="btn-icon" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>';
+                    editArkBtn.style.padding = '4px';
+                    
+                    const deleteArkBtn = document.createElement('button');
+                    deleteArkBtn.className = 'btn';
+                    deleteArkBtn.innerHTML = '<svg class="btn-icon" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>';
+                    deleteArkBtn.style.padding = '4px';
+                    
+                    const addChapterBtn = document.createElement('button');
+                    addChapterBtn.className = 'btn';
+                    addChapterBtn.innerHTML = '<svg class="btn-icon" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg> إضافة فصل';
+                    
+                    // أحداث أزرار الأرك
+                    editArkBtn.addEventListener('click', function() {
+                        const newTitle = prompt('أدخل عنوان الأرك الجديد:', ark.title);
+                        if (newTitle !== null && newTitle.trim() !== '') {
+                            ark.title = newTitle.trim();
+                            currentNovel.updatedAt = new Date().toISOString();
+                            saveNovelData();
+                            updateUI();
+                            updateContentManager();
+                            showNotification('تم تعديل عنوان الأرك بنجاح');
                         }
-                    }, 3000); // Change page every 3 seconds
-                }
+                    });
+                    
+                    deleteArkBtn.addEventListener('click', function() {
+                        if (confirm(`هل أنت متأكد من حذف "${ark.title}"؟ لا يمكن التراجع عن هذا الإجراء.`)) {
+                            currentNovel.arks.splice(arkIndex, 1);
+                            
+                            // تعديل المؤشرات الحالية إذا لزم الأمر
+                            if (currentNovel.currentArkIndex >= currentNovel.arks.length) {
+                                currentNovel.currentArkIndex = Math.max(0, currentNovel.arks.length - 1);
+                                currentNovel.currentChapterIndex = 0;
+                                currentNovel.currentImageIndex = 0;
+                            }
+                            
+                            currentNovel.updatedAt = new Date().toISOString();
+                            saveNovelData();
+                            updateUI();
+                            updateContentManager();
+                            showNotification('تم حذف الأرك بنجاح');
+                        }
+                    });
+                    
+                    addChapterBtn.addEventListener('click', function() {
+                        document.getElementById('parentArkId').value = arkIndex;
+                        openModal('addChapterModal');
+                    });
+                    
+                    arkActions.appendChild(editArkBtn);
+                    arkActions.appendChild(deleteArkBtn);
+                    
+                    arkHeader.appendChild(arkTitle);
+                    arkHeader.appendChild(arkActions);
+                    
+                    arkElement.appendChild(arkHeader);
+                    arkElement.appendChild(addChapterBtn);
+                    
+                    // إضافة الفصول
+                    const chaptersContainer = document.createElement('div');
+                    chaptersContainer.style.width = '100%';
+                    chaptersContainer.style.paddingRight = '15px';
+                    chaptersContainer.style.marginTop = '10px';
+                    
+                    if (ark.chapters && ark.chapters.length > 0) {
+                        ark.chapters.forEach((chapter, chapterIndex) => {
+                            const chapterElement = document.createElement('div');
+                            chapterElement.className = 'setting-row';
+                            chapterElement.style.backgroundColor = 'var(--bg-darker)';
+                            chapterElement.style.marginBottom = '5px';
+                            
+                            const chapterTitle = document.createElement('span');
+                            chapterTitle.textContent = chapter.title || `فصل ${chapterIndex + 1}`;
+                            
+                            const chapterActions = document.createElement('div');
+                            chapterActions.style.display = 'flex';
+                            chapterActions.style.gap = '5px';
+                            
+                            const editChapterBtn = document.createElement('button');
+                            editChapterBtn.className = 'btn';
+                            editChapterBtn.innerHTML = '<svg class="btn-icon" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>';
+                            editChapterBtn.style.padding = '4px';
+                            
+                            const deleteChapterBtn = document.createElement('button');
+                            deleteChapterBtn.className = 'btn';
+                            deleteChapterBtn.innerHTML = '<svg class="btn-icon" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>';
+                            deleteChapterBtn.style.padding = '4px';
+                            
+                            const uploadImagesBtn = document.createElement('button');
+                            uploadImagesBtn.className = 'btn';
+                            uploadImagesBtn.innerHTML = '<svg class="btn-icon" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>';
+                            uploadImagesBtn.style.padding = '4px';
+                            
+                            // أحداث أزرار الفصل
+                            editChapterBtn.addEventListener('click', function() {
+                                const newTitle = prompt('أدخل عنوان الفصل الجديد:', chapter.title);
+                                if (newTitle !== null && newTitle.trim() !== '') {
+                                    chapter.title = newTitle.trim();
+                                    currentNovel.updatedAt = new Date().toISOString();
+                                    saveNovelData();
+                                    updateUI();
+                                    updateContentManager();
+                                    showNotification('تم تعديل عنوان الفصل بنجاح');
+                                }
+                            });
+                            
+                            deleteChapterBtn.addEventListener('click', function() {
+                                if (confirm(`هل أنت متأكد من حذف "${chapter.title}"؟ لا يمكن التراجع عن هذا الإجراء.`)) {
+                                    ark.chapters.splice(chapterIndex, 1);
+                                    
+                                    // تعديل المؤشرات الحالية إذا لزم الأمر
+                                    if (currentNovel.currentArkIndex === arkIndex && currentNovel.currentChapterIndex >= ark.chapters.length) {
+                                        currentNovel.currentChapterIndex = Math.max(0, ark.chapters.length - 1);
+                                        currentNovel.currentImageIndex = 0;
+                                    }
+                                    
+                                    currentNovel.updatedAt = new Date().toISOString();
+                                    saveNovelData();
+                                    updateUI();
+                                    updateContentManager();
+                                    showNotification('تم حذف الفصل بنجاح');
+                                }
+                            });
+                            
+                            uploadImagesBtn.addEventListener('click', function() {
+                                // حدث تحميل الصور للفصل
+                                const fileInput = document.createElement('input');
+                                fileInput.type = 'file';
+                                fileInput.multiple = true;
+                                fileInput.accept = 'image/*';
+                                
+                                fileInput.onchange = function(e) {
+                                    const files = e.target.files;
+                                    if (!files || files.length === 0) return;
+                                    
+                                    // عرض مؤشر التحميل
+                                    const loadingIndicator = document.getElementById('loadingIndicator');
+                                    
+                                    // إنشاء مصفوفة جديدة للصور إذا لم تكن موجودة
+                                    if (!chapter.images) {
+                                        chapter.images = [];
+                                    }
+                                    
+                                    // تحميل كل صورة وإضافتها للفصل
+                                    const totalFiles = files.length;
+                                    let loadedFiles = 0;
+                                    
+                                    Array.from(files).forEach((file, index) => {
+                                        const reader = new FileReader();
+                                        
+                                        reader.onload = function(event) {
+                                            const imageData = event.target.result;
+                                            
+                                            // إضافة الصورة إلى الفصل
+                                            chapter.images.push({
+                                                id: `img_${Date.now()}_${index}`,
+                                                src: imageData,
+                                                title: file.name,
+                                                order: chapter.images.length
+                                            });
+                                            
+                                            // تحديث شريط التقدم
+                                            loadedFiles++;
+                                            loadingIndicator.style.width = `${(loadedFiles / totalFiles) * 100}%`;
+                                            
+                                            // إذا تم تحميل جميع الصور
+                                            if (loadedFiles === totalFiles) {
+                                                // إخفاء شريط التقدم بعد فترة قصيرة
+                                                setTimeout(() => {
+                                                    loadingIndicator.style.width = '0%';
+                                                }, 500);
+                                                
+                                                // حفظ البيانات وتحديث الواجهة
+                                                currentNovel.updatedAt = new Date().toISOString();
+                                                saveNovelData();
+                                                
+                                                // إذا كان هذا هو الفصل الحالي، قم بتحديث العرض
+                                                if (currentNovel.currentArkIndex === arkIndex && currentNovel.currentChapterIndex === chapterIndex) {
+                                                    loadCurrentChapterImages();
+                                                }
+                                                
+                                                showNotification(`تم تحميل ${totalFiles} صورة بنجاح`);
+                                                closeModal('manageContentModal');
+                                            }
+                                        };
+                                        
+                                        reader.onerror = function() {
+                                            showNotification('حدث خطأ أثناء تحميل الصور', 'error');
+                                        };
+                                        
+                                        reader.readAsDataURL(file);
+                                    });
+                                };
+                                
+                                fileInput.click();
+                            });
+                            
+                            chapterActions.appendChild(editChapterBtn);
+                            chapterActions.appendChild(deleteChapterBtn);
+                            chapterActions.appendChild(uploadImagesBtn);
+                            
+                            chapterElement.appendChild(chapterTitle);
+                            chapterElement.appendChild(chapterActions);
+                            
+                            chaptersContainer.appendChild(chapterElement);
+                        });
+                    } else {
+                        const noChaptersMsg = document.createElement('p');
+                        noChaptersMsg.textContent = 'لا توجد فصول في هذا الأرك';
+                        noChaptersMsg.style.color = 'var(--text-secondary)';
+                        noChaptersMsg.style.fontSize = '0.9rem';
+                        noChaptersMsg.style.padding = '5px 0';
+                        chaptersContainer.appendChild(noChaptersMsg);
+                    }
+                    
+                    arkElement.appendChild(chaptersContainer);
+                    contentContainer.appendChild(arkElement);
+                });
             }
             
-            // Handle swipe gesture for touch devices
-            function handleSwipeGesture() {
-                const swipeDistance = touchEndX - touchStartX;
-                
-                if (swipeDistance > 100) {
-                    // Right swipe (previous)
-                    prevPage();
-                } else if (swipeDistance < -100) {
-                    // Left swipe (next)
-                    nextPage();
-                }
+            // تحديث الصورة الحالية
+            function updateCurrentImage(index) {
+                currentNovel.currentImageIndex = index;
+                saveNovelData();
+                updateImageCounter();
             }
             
-            // Adjust font size (image scale)
-            function adjustFontSize(increase) {
-                if (increase) {
-                    imageScale = Math.min(imageScale + 10, 200);
-                } else {
-                    imageScale = Math.max(imageScale - 10, 50);
-                }
+            // إضافة أرك جديد
+            function addNewArk(title) {
+                const newArk = {
+                    id: `ark_${Date.now()}`,
+                    title: title,
+                    chapters: [{
+                        id: `chapter_${Date.now()}`,
+                        title: 'فصل 1',
+                        images: []
+                    }]
+                };
                 
-                const images = imageContainer.querySelectorAll('.viewer-image');
-                images.forEach(img => {
-                    img.style.transform = `scale(${imageScale/100})`;
+                currentNovel.arks.push(newArk);
+                currentNovel.updatedAt = new Date().toISOString();
+                saveNovelData();
+                return newArk;
+            }
+            
+            // إضافة فصل جديد
+            function addNewChapter(arkIndex, title) {
+                if (arkIndex < 0 || arkIndex >= currentNovel.arks.length) return null;
+                
+                const newChapter = {
+                    id: `chapter_${Date.now()}`,
+                    title: title,
+                    images: []
+                };
+                
+                currentNovel.arks[arkIndex].chapters.push(newChapter);
+                currentNovel.updatedAt = new Date().toISOString();
+                saveNovelData();
+                return newChapter;
+            }
+            
+            // عرض نافذة دخول كلمة المرور
+            function showPasswordOverlay() {
+                const overlay = document.getElementById('passwordOverlay');
+                overlay.style.display = 'flex';
+                
+                // تهيئة رسم متحرك للقفل
+                const lockAnimation = lottie.loadAnimation({
+                    container: document.getElementById('lockAnimation'),
+                    renderer: 'svg',
+                    loop: true,
+                    autoplay: true,
+                    path: 'https://assets3.lottiefiles.com/packages/lf20_yzoqyyqf.json'
                 });
                 
-                fontSizeValue.textContent = `${imageScale}%`;
+                // حدث فتح الرواية
+                document.getElementById('unlockBtn').addEventListener('click', function() {
+                    const password = document.getElementById('passwordInput').value;
+                    
+                    if (password === currentNovel.settings.password) {
+                        overlay.style.display = 'none';
+                        showNotification('تم فتح الرواية بنجاح');
+                    } else {
+                        showNotification('كلمة المرور غير صحيحة', 'error');
+                        // هز حقل كلمة المرور
+                        const input = document.getElementById('passwordInput');
+                        input.classList.add('shake');
+                        setTimeout(() => input.classList.remove('shake'), 500);
+                    }
+                });
+                
+                // السماح بالضغط على Enter لفتح الرواية
+                document.getElementById('passwordInput').addEventListener('keyup', function(event) {
+                    if (event.key === 'Enter') {
+                        document.getElementById('unlockBtn').click();
+                    }
+                });
             }
             
-            // Event listeners
-            prevBtn.addEventListener('click', prevPage);
-            nextBtn.addEventListener('click', nextPage);
-            closeViewer.addEventListener('click', () => {
-                chapterViewer.style.display = 'none';
-                if (autoScrollInterval) {
-                    clearInterval(autoScrollInterval);
-                    autoScrollInterval = null;
-                    autoScrollToggle.checked = false;
+            // حفظ بيانات الرواية
+            function saveNovelData() {
+                try {
+                    localStorage.setItem('novelData', JSON.stringify(currentNovel));
+                } catch (error) {
+                    console.error('فشل في حفظ بيانات الرواية:', error);
+                    showNotification('فشل في حفظ البيانات بسبب امتلاء التخزين المحلي', 'error');
                 }
-            });
+            }
             
-            saveChapter.addEventListener('click', saveChapter);
+            // تحميل بيانات الرواية
+            function loadNovelData() {
+                try {
+                    const savedData = localStorage.getItem('novelData');
+                    if (savedData) {
+                        currentNovel = JSON.parse(savedData);
+                    }
+                } catch (error) {
+                    console.error('فشل في تحميل بيانات الرواية:', error);
+                }
+            }
             
-            infoButton.addEventListener('click', () => {
-                showNovelInfo(currentChapter);
-            });
+            // عرض إشعار
+            function showNotification(message, type = 'success') {
+                const notification = document.getElementById('notification');
+                const notificationText = document.getElementById('notificationText');
+                
+                notificationText.textContent = message;
+                
+                if (type === 'error') {
+                    notification.style.backgroundColor = '#ff4d4d';
+                } else {
+                    notification.style.backgroundColor = 'var(--primary-color)';
+                }
+                
+                notification.classList.add('show');
+                
+                // إخفاء الإشعار بعد 3 ثوانٍ
+                setTimeout(function() {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
             
-            closeInfo.addEventListener('click', () => {
-                infoModal.style.display = 'none';
-                overlay.style.display = 'none';
-            });
+            // فتح النوافذ المنبثقة
+            function openModal(modalId) {
+                document.getElementById(modalId).style.display = 'flex';
+                
+                // إذا كانت نافذة إدارة المحتوى، قم بتحديث محتواها
+                if (modalId === 'manageContentModal') {
+                    updateContentManager();
+                }
+            }
             
-            savedBtn.addEventListener('click', () => {
-                savedDrawer.classList.add('open');
-                overlay.style.display = 'block';
-            });
+            // إغلاق النوافذ المنبثقة
+            function closeModal(modalId) {
+                document.getElementById(modalId).style.display = 'none';
+            }
             
-            closeSaved.addEventListener('click', () => {
-                savedDrawer.classList.remove('open');
-                overlay.style.display = 'none';
-            });
+            // إنشاء صورة افتراضية مع نص
+            function generatePlaceholderImage(text) {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                
+                canvas.width = 800;
+                canvas.height = 1200;
+                
+                // تعيين خلفية داكنة
+                ctx.fillStyle = '#23252b';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // إضافة حدود
+                ctx.strokeStyle = '#f47521';
+                ctx.lineWidth = 10;
+                ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+                
+                // إضافة نص
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 48px Tajawal, Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('اضغط هنا', canvas.width / 2, canvas.height / 2 - 50);
+                ctx.fillText('لإضافة صورة', canvas.width / 2, canvas.height / 2 + 50);
+                
+                // إضافة رقم/عنوان الصورة
+                ctx.fillStyle = '#9fadbd';
+                ctx.font = '36px Tajawal, Arial';
+                ctx.fillText(text, canvas.width / 2, canvas.height / 2 + 150);
+                
+                return canvas.toDataURL('image/png');
+            }
             
-            overlay.addEventListener('click', () => {
-                infoModal.style.display = 'none';
-                savedDrawer.classList.remove('open');
-                overlay.style.display = 'none';
-            });
-            
-            nightModeToggle.addEventListener('change', toggleNightMode);
-            autoScrollToggle.addEventListener('change', toggleAutoScroll);
-            
-            increaseFont.addEventListener('click', () => adjustFontSize(true));
-            decreaseFont.addEventListener('click', () => adjustFontSize(false));
-            
-            // Touch events for chapter viewer
-            imageContainer.addEventListener('touchstart', function(e) {
-                touchStartX = e.changedTouches[0].screenX;
-            });
-            
-            imageContainer.addEventListener('touchend', function(e) {
-                touchEndX = e.changedTouches[0].screenX;
-                handleSwipeGesture();
-            });
-            
-            // Keyboard navigation
-            document.addEventListener('keydown', function(e) {
-                if (chapterViewer.style.display === 'flex') {
+            // تهيئة استمعات الأحداث
+            function initializeEventListeners() {
+                // أزرار شريط الأدوات
+                document.getElementById('nextChapterBtn').addEventListener('click', function() {
+                    navigateToNextChapter();
+                });
+                
+                document.getElementById('prevChapterBtn').addEventListener('click', function() {
+                    navigateToPrevChapter();
+                });
+                
+                document.getElementById('downloadBtn').addEventListener('click', function() {
+                    if (!currentNovel.settings.allowDownload) {
+                        showNotification('التحميل غير مسموح به من قبل المؤلف', 'error');
+                        return;
+                    }
+                    
+                    downloadCurrentChapter();
+                });
+                
+                document.getElementById('lockBtn').addEventListener('click', function() {
+                    // إذا كانت الرواية محمية بالفعل، اطلب كلمة المرور أولاً
+                    if (currentNovel.settings.passwordProtected) {
+                        const unlock = confirm('هل تريد إلغاء حماية الرواية بكلمة المرور؟');
+                        if (unlock) {
+                            currentNovel.settings.passwordProtected = false;
+                            saveNovelData();
+                            showNotification('تم إلغاء حماية الرواية بنجاح');
+                        }
+                    } else {
+                        // إذا لم تكن محمية، اطلب كلمة مرور جديدة
+                        const password = prompt('أدخل كلمة مرور لحماية الرواية:');
+                        if (password !== null && password.trim() !== '') {
+                            currentNovel.settings.passwordProtected = true;
+                            currentNovel.settings.password = password;
+                            saveNovelData();
+                            showNotification('تم تفعيل حماية الرواية بنجاح');
+                        }
+                    }
+                });
+                
+                // أزرار الرأس
+                document.getElementById('infoBtn').addEventListener('click', function() {
+                    openModal('infoModal');
+                });
+                
+                document.getElementById('shareBtn').addEventListener('click', function() {
+                    if (!currentNovel.settings.allowSharing) {
+                        showNotification('المشاركة غير مسموح بها من قبل المؤلف', 'error');
+                        return;
+                    }
+                    
+                    shareCurrentChapter();
+                });
+                
+                document.getElementById('settingsBtn').addEventListener('click', function() {
+                    openModal('settingsModal');
+                });
+                
+                // أزرار الإعدادات العائمة
+                document.getElementById('settingsToggle').addEventListener('click', function() {
+                    document.getElementById('floatingSettings').classList.toggle('open');
+                });
+                
+                document.getElementById('viewMode').addEventListener('change', function() {
+                    currentNovel.settings.viewMode = this.value;
+                    
+                    if (this.value === 'grid') {
+                        document.getElementById('imageViewer').classList.add('grid-view');
+                    } else {
+                        document.getElementById('imageViewer').classList.remove('grid-view');
+                    }
+                    
+                    saveNovelData();
+                });
+                
+                document.getElementById('darkModeToggle').addEventListener('change', function() {
+                    currentNovel.settings.darkMode = this.checked;
+                    saveNovelData();
+                });
+                
+                document.getElementById('distractionFreeToggle').addEventListener('change', function() {
+                    if (this.checked) {
+                        document.body.classList.add('distraction-free');
+                    } else {
+                        document.body.classList.remove('distraction-free');
+                    }
+                });
+                
+                document.getElementById('languageSelect').addEventListener('change', function() {
+                    currentNovel.settings.language = this.value;
+                    saveNovelData();
+                    
+                    // تحديث اتجاه الصفحة واللغة
+                    if (this.value === 'ar') {
+                        document.documentElement.setAttribute('dir', 'rtl');
+                        document.documentElement.setAttribute('lang', 'ar');
+                    } else {
+                        document.documentElement.setAttribute('dir', 'ltr');
+                        document.documentElement.setAttribute('lang', 'en');
+                    }
+                });
+                
+                document.getElementById('resetSettingsBtn').addEventListener('click', function() {
+                    if (confirm('هل أنت متأكد من استعادة الإعدادات الافتراضية؟')) {
+                        currentNovel.settings = {
+                            passwordProtected: false,
+                            password: "",
+                            allowSharing: true,
+                            allowDownload: true,
+                            language: "ar",
+                            darkMode: true,
+                            viewMode: "slide"
+                        };
+                        
+                        saveNovelData();
+                        updateUI();
+                        showNotification('تم استعادة الإعدادات الافتراضية بنجاح');
+                    }
+                });
+                
+                // نماذج الإعدادات
+                document.getElementById('passwordProtectionToggle').addEventListener('change', function() {
+                    const passwordRow = document.getElementById('passwordSettingRow');
+                    
+                    if (this.checked) {
+                        passwordRow.style.display = 'flex';
+                    } else {
+                        passwordRow.style.display = 'none';
+                    }
+                });
+                
+                document.getElementById('saveSettingsBtn').addEventListener('click', function() {
+                    // حفظ عنوان الرواية
+                    const novelTitle = document.getElementById('editNovelTitle').value.trim();
+                    if (novelTitle !== '') {
+                        currentNovel.title = novelTitle;
+                    }
+                    
+                    // حفظ إعدادات الأمان
+                    currentNovel.settings.passwordProtected = document.getElementById('passwordProtectionToggle').checked;
+                    if (currentNovel.settings.passwordProtected) {
+                        const password = document.getElementById('novelPassword').value.trim();
+                        if (password !== '') {
+                            currentNovel.settings.password = password;
+                        }
+                    }
+                    
+                    // حفظ إعدادات المشاركة والتحميل
+                    currentNovel.settings.allowSharing = document.getElementById('allowSharingToggle').checked;
+                    currentNovel.settings.allowDownload = document.getElementById('allowDownloadToggle').checked;
+                    
+                    // حفظ التغييرات وتحديث الواجهة
+                    currentNovel.updatedAt = new Date().toISOString();
+                    saveNovelData();
+                    updateUI();
+                    
+                    // إغلاق النافذة وعرض إشعار
+                    closeModal('settingsModal');
+                    showNotification('تم حفظ الإعدادات بنجاح');
+                });
+                
+                // إدارة المحتوى
+                document.getElementById('manageContentBtn').addEventListener('click', function() {
+                    openModal('manageContentModal');
+                });
+                
+                // نافذة إضافة أرك
+                document.getElementById('addArkBtn').addEventListener('click', function() {
+                    openModal('addArkModal');
+                });
+                
+                document.getElementById('addArkForm').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const arkTitle = document.getElementById('newArkTitle').value.trim();
+                    if (arkTitle !== '') {
+                        addNewArk(arkTitle);
+                        document.getElementById('newArkTitle').value = '';
+                        closeModal('addArkModal');
+                        
+                        // تحديث الواجهة بعد إضافة الأرك
+                        updateUI();
+                        showNotification('تم إضافة الأرك الجديد بنجاح');
+                    }
+                });
+                
+                // نافذة إضافة فصل
+                document.getElementById('addChapterForm').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const chapterTitle = document.getElementById('newChapterTitle').value.trim();
+                    const arkIndex = parseInt(document.getElementById('parentArkId').value);
+                    
+                    if (chapterTitle !== '' && !isNaN(arkIndex) && arkIndex >= 0 && arkIndex < currentNovel.arks.length) {
+                        addNewChapter(arkIndex, chapterTitle);
+                        document.getElementById('newChapterTitle').value = '';
+                        closeModal('addChapterModal');
+                        
+                        // تحديث الواجهة بعد إضافة الفصل
+                        updateUI();
+                        updateContentManager();
+                        showNotification('تم إضافة الفصل الجديد بنجاح');
+                    }
+                });
+                
+                // إغلاق النوافذ المنبثقة
+                document.querySelectorAll('.close-modal').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const modalId = this.getAttribute('data-modal');
+                        closeModal(modalId);
+                    });
+                });
+                
+                // إغلاق النوافذ المنبثقة عند النقر خارجها
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.addEventListener('click', function(e) {
+                        if (e.target === this) {
+                            this.style.display = 'none';
+                        }
+                    });
+                });
+                
+                // النقر المزدوج لمشاركة الفصل
+                document.getElementById('imageViewer').addEventListener('dblclick', function() {
+                    if (currentNovel.settings.allowSharing) {
+                        shareCurrentChapter();
+                    }
+                });
+                
+                // النقر المطول لعرض معلومات الرواية
+                let longPressTimer;
+                document.getElementById('imageViewer').addEventListener('mousedown', function() {
+                    longPressTimer = setTimeout(function() {
+                        openModal('infoModal');
+                    }, 800);
+                });
+                
+                document.getElementById('imageViewer').addEventListener('mouseup', function() {
+                    clearTimeout(longPressTimer);
+                });
+                
+                document.getElementById('imageViewer').addEventListener('mouseleave', function() {
+                    clearTimeout(longPressTimer);
+                });
+                
+                // اختصارات لوحة المفاتيح
+                document.addEventListener('keydown', function(e) {
+                    // التالي: السهم الأيمن
                     if (e.key === 'ArrowRight') {
-                        prevPage();
-                    } else if (e.key === 'ArrowLeft') {
-                        nextPage();
-                    } else if (e.key === 'Escape') {
-                        chapterViewer.style.display = 'none';
-                        if (autoScrollInterval) {
-                            clearInterval(autoScrollInterval);
-                            autoScrollInterval = null;
-                            autoScrollToggle.checked = false;
+                        if (swiper.activeIndex < swiper.slides.length - 1) {
+                            swiper.slideNext();
+                        } else {
+                            navigateToNextChapter();
+                        }
+                    }
+                    
+                    // السابق: السهم الأيسر
+                    if (e.key === 'ArrowLeft') {
+                        if (swiper.activeIndex > 0) {
+                            swiper.slidePrev();
+                        } else {
+                            navigateToPrevChapter();
+                        }
+                    }
+                    
+                    // الوضع الليلي: D
+                    if (e.key === 'd' && !e.ctrlKey && !e.altKey) {
+                        const darkModeToggle = document.getElementById('darkModeToggle');
+                        darkModeToggle.checked = !darkModeToggle.checked;
+                        darkModeToggle.dispatchEvent(new Event('change'));
+                    }
+                    
+                    // وضع القراءة: F
+                    if (e.key === 'f' && !e.ctrlKey && !e.altKey) {
+                        const distractionFreeToggle = document.getElementById('distractionFreeToggle');
+                        distractionFreeToggle.checked = !distractionFreeToggle.checked;
+                        distractionFreeToggle.dispatchEvent(new Event('change'));
+                    }
+                    
+                    // المشاركة: S
+                    if (e.key === 's' && !e.ctrlKey && !e.altKey) {
+                        if (currentNovel.settings.allowSharing) {
+                            shareCurrentChapter();
+                        }
+                    }
+                    
+                    // التحميل: X
+                    if (e.key === 'x' && !e.ctrlKey && !e.altKey) {
+                        if (currentNovel.settings.allowDownload) {
+                            downloadCurrentChapter();
+                        }
+                    }
+                    
+                    // الإعدادات: ESC
+                    if (e.key === 'Escape') {
+                        document.getElementById('floatingSettings').classList.toggle('open');
+                    }
+                });
+                
+                // استمعات التمرير اللمسي للأجهزة المحمولة
+                let touchStartX = 0;
+                let touchEndX = 0;
+                
+                document.getElementById('imageViewer').addEventListener('touchstart', function(e) {
+                    touchStartX = e.changedTouches[0].screenX;
+                    
+                    // ابدأ مؤقت الضغط المطول
+                    longPressTimer = setTimeout(function() {
+                        openModal('infoModal');
+                    }, 800);
+                });
+                
+                document.getElementById('imageViewer').addEventListener('touchend', function(e) {
+                    clearTimeout(longPressTimer);
+                    touchEndX = e.changedTouches[0].screenX;
+                    handleSwipe();
+                });
+                
+                function handleSwipe() {
+                    // احسب المسافة
+                    const swipeDistance = touchEndX - touchStartX;
+                    
+                    // تجاهل التمريرات الصغيرة
+                    if (Math.abs(swipeDistance) < 50) return;
+                    
+                    if (swipeDistance > 0) {
+                        // تمرير من اليسار إلى اليمين (السابق)
+                        if (swiper.activeIndex > 0) {
+                            swiper.slidePrev();
+                        } else {
+                            navigateToPrevChapter();
+                        }
+                    } else {
+                        // تمرير من اليمين إلى اليسار (التالي)
+                        if (swiper.activeIndex < swiper.slides.length - 1) {
+                            swiper.slideNext();
+                        } else {
+                            navigateToNextChapter();
                         }
                     }
                 }
-            });
+            }
+            
+            // التنقل للفصل التالي
+            function navigateToNextChapter() {
+                if (currentNovel.arks.length === 0) return;
+                
+                const currentArk = currentNovel.arks[currentNovel.currentArkIndex];
+                if (!currentArk || !currentArk.chapters || currentArk.chapters.length === 0) return;
+                
+                // هل هناك فصل تالي في الأرك الحالي؟
+                if (currentNovel.currentChapterIndex < currentArk.chapters.length - 1) {
+                    currentNovel.currentChapterIndex++;
+                    currentNovel.currentImageIndex = 0;
+                } else {
+                    // هل هناك أرك تالي؟
+                    if (currentNovel.currentArkIndex < currentNovel.arks.length - 1) {
+                        currentNovel.currentArkIndex++;
+                        currentNovel.currentChapterIndex = 0;
+                        currentNovel.currentImageIndex = 0;
+                    } else {
+                        // نحن في آخر فصل من آخر أرك
+                        showNotification('أنت في نهاية الرواية');
+                        return;
+                    }
+                }
+                
+                saveNovelData();
+                updateUI();
+            }
+            
+            // التنقل للفصل السابق
+            function navigateToPrevChapter() {
+                if (currentNovel.arks.length === 0) return;
+                
+                // هل هناك فصل سابق في الأرك الحالي؟
+                if (currentNovel.currentChapterIndex > 0) {
+                    currentNovel.currentChapterIndex--;
+                    currentNovel.currentImageIndex = 0;
+                } else {
+                    // هل هناك أرك سابق؟
+                    if (currentNovel.currentArkIndex > 0) {
+                        currentNovel.currentArkIndex--;
+                        const prevArk = currentNovel.arks[currentNovel.currentArkIndex];
+                        currentNovel.currentChapterIndex = prevArk.chapters.length - 1;
+                        currentNovel.currentImageIndex = 0;
+                    } else {
+                        // نحن في أول فصل من أول أرك
+                        showNotification('أنت في بداية الرواية');
+                        return;
+                    }
+                }
+                
+                saveNovelData();
+                updateUI();
+            }
+            
+            // مشاركة الفصل الحالي
+            function shareCurrentChapter() {
+                // إنشاء معلمات الرابط للفصل الحالي
+                const params = new URLSearchParams(window.location.search);
+                params.set('arkIndex', currentNovel.currentArkIndex);
+                params.set('chapterIndex', currentNovel.currentChapterIndex);
+                params.set('imageIndex', currentNovel.currentImageIndex);
+                
+                // إنشاء الرابط
+                const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+                
+                // نسخ الرابط إلى الحافظة
+                navigator.clipboard.writeText(shareUrl)
+                    .then(() => {
+                        showNotification('تم نسخ رابط المشاركة إلى الحافظة');
+                    })
+                    .catch(() => {
+                        // إذا فشل النسخ المباشر، اعرض الرابط للمستخدم
+                        prompt('انسخ رابط المشاركة:', shareUrl);
+                    });
+            }
+            
+            // تحميل الفصل الحالي
+            function downloadCurrentChapter() {
+                if (!window.JSZip || !window.saveAs) {
+                    showNotification('لم يتم تحميل مكتبات الضغط والتنزيل', 'error');
+                    return;
+                }
+                
+                if (currentNovel.arks.length === 0) return;
+                
+                const currentArk = currentNovel.arks[currentNovel.currentArkIndex];
+                if (!currentArk || !currentArk.chapters || currentArk.chapters.length === 0) return;
+                
+                const currentChapter = currentArk.chapters[currentNovel.currentChapterIndex];
+                if (!currentChapter || !currentChapter.images || currentChapter.images.length === 0) {
+                    showNotification('لا توجد صور للتحميل في هذا الفصل', 'error');
+                    return;
+                }
+                
+                // إنشاء ملف مضغوط جديد
+                const zip = new JSZip();
+                
+                // إنشاء مجلد للفصل
+                const folder = zip.folder(`${currentArk.title} - ${currentChapter.title}`);
+                
+                // إضافة الصور إلى الملف المضغوط
+                let processedImages = 0;
+                const totalImages = currentChapter.images.length;
+                
+                // عرض مؤشر التقدم
+                const loadingIndicator = document.getElementById('loadingIndicator');
+                loadingIndicator.style.width = '0%';
+                
+                // معالجة كل صورة
+                currentChapter.images.forEach((image, index) => {
+                    // استخراج نوع الملف وبيانات الـbase64 من Data URL
+                    const matches = image.src.match(/^data:(.+);base64,(.+)$/);
+                    
+                    if (matches && matches.length === 3) {
+                        const imageType = matches[1].split('/')[1];
+                        const imageData = matches[2];
+                        
+                        // إضافة الصورة إلى الملف المضغوط
+                        folder.file(`image_${index + 1}.${imageType}`, imageData, { base64: true });
+                        
+                        // تحديث شريط التقدم
+                        processedImages++;
+                        loadingIndicator.style.width = `${(processedImages / totalImages) * 100}%`;
+                        
+                        // عند الانتهاء من جميع الصور
+                        if (processedImages === totalImages) {
+                            // إنشاء الملف المضغوط وتنزيله
+                            zip.generateAsync({ type: 'blob' })
+                                .then(function(content) {
+                                    // تنزيل الملف المضغوط
+                                    saveAs(content, `${currentArk.title} - ${currentChapter.title}.zip`);
+                                    
+                                    // إخفاء شريط التقدم بعد فترة قصيرة
+                                    setTimeout(() => {
+                                        loadingIndicator.style.width = '0%';
+                                    }, 500);
+                                    
+                                    showNotification('تم تحميل الفصل بنجاح');
+                                })
+                                .catch(function(error) {
+                                    console.error('فشل في إنشاء الملف المضغوط:', error);
+                                    showNotification('فشل في تحميل الفصل', 'error');
+                                    
+                                    // إخفاء شريط التقدم
+                                    loadingIndicator.style.width = '0%';
+                                });
+                        }
+                    } else {
+                        console.error('تنسيق صورة غير صالح:', image.src);
+                        processedImages++;
+                    }
+                });
+            }
+            
+            // التحقق من معلمات URL عند تحميل الصفحة
+            function checkUrlParams() {
+                const params = new URLSearchParams(window.location.search);
+                
+                if (params.has('arkIndex') && params.has('chapterIndex')) {
+                    const arkIndex = parseInt(params.get('arkIndex'));
+                    const chapterIndex = parseInt(params.get('chapterIndex'));
+                    const imageIndex = params.has('imageIndex') ? parseInt(params.get('imageIndex')) : 0;
+                    
+                    // التحقق من صحة المعلمات
+                    if (!isNaN(arkIndex) && !isNaN(chapterIndex) && !isNaN(imageIndex) &&
+                        arkIndex >= 0 && arkIndex < currentNovel.arks.length &&
+                        chapterIndex >= 0 && chapterIndex < currentNovel.arks[arkIndex].chapters.length &&
+                        imageIndex >= 0) {
+                        
+                        // تعيين المؤشرات الحالية
+                        currentNovel.currentArkIndex = arkIndex;
+                        currentNovel.currentChapterIndex = chapterIndex;
+                        currentNovel.currentImageIndex = imageIndex;
+                        
+                        // حفظ التغييرات وتحديث الواجهة
+                        saveNovelData();
+                        updateUI();
+                        
+                        // التمرير إلى الصورة المحددة
+                        swiper.slideTo(imageIndex, 0);
+                    }
+                }
+            }
+            
+            // استدعاء دالة فحص المعلمات بعد التهيئة
+            checkUrlParams();
         });
     </script>
 </body>
