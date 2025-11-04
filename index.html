@@ -3,2026 +3,2050 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>عارض الرواية التفاعلي</title>
-    <!-- إضافة المكتبات الخارجية -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.2/lottie.min.js"></script>
+    <meta name="description" content="متجر إلكتروني احترافي لعرض المنتجات بتصميم عصري وأنيق">
+    <meta name="keywords" content="تسوق، منتجات، متجر إلكتروني، عروض">
+    <meta name="author" content="تسوق مع زكريا">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="تسوق مع زكريا - تسوق بذكاء">
+    <meta property="og:description" content="اكتشف أفضل المنتجات بأسعار تنافسية">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630">
+    
+    <title>تسوق مع زكريا - تسوق بذكاء</title>
+    
+    <!-- Google Fonts - Cairo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
     <style>
+        /* ===== متغيرات CSS للألوان والإعدادات ===== */
         :root {
-            --primary-color: #f47521;
-            --bg-dark: #23252b;
-            --bg-darker: #191b1f;
-            --text-light: #ffffff;
-            --text-secondary: #9fadbd;
-            --transition: all 0.3s ease;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --border-radius: 8px;
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary-color: #10b981;
+            --accent-color: #f59e0b;
+            --danger-color: #ef4444;
+            --dark-color: #1f2937;
+            --light-color: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+            --white: #ffffff;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --border-radius: 12px;
+        }
+
+        /* وضع الداكن */
+        [data-theme="dark"] {
+            --primary-color: #3b82f6;
+            --primary-hover: #2563eb;
+            --dark-color: #f9fafb;
+            --light-color: #111827;
+            --gray-100: #1f2937;
+            --gray-200: #374151;
+            --gray-300: #4b5563;
+            --gray-600: #d1d5db;
+            --gray-800: #f3f4f6;
+            --white: #1f2937;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background-color: var(--bg-darker);
-            color: var(--text-light);
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
             overflow-x: hidden;
-            direction: rtl;
         }
 
-        /* Header Styles */
-        header {
-            background-color: var(--bg-dark);
-            padding: 16px;
-            position: sticky;
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ===== رأس الصفحة ===== */
+        .header {
+            position: fixed;
             top: 0;
-            z-index: 100;
+            right: 0;
+            left: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-md);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        [data-theme="dark"] .header {
+            background: rgba(31, 41, 55, 0.95);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: var(--shadow);
+            gap: 2rem;
         }
 
-        .novel-title {
-            font-size: 1.5rem;
-            font-weight: bold;
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 900;
             color: var(--primary-color);
-            flex-grow: 1;
-            text-align: center;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .header-actions {
             display: flex;
-            gap: 12px;
+            align-items: center;
+            gap: 1.5rem;
         }
 
-        .btn {
-            background-color: var(--bg-darker);
-            color: var(--text-light);
+        .cart-btn {
+            position: relative;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1.75rem;
             border: none;
-            padding: 8px 12px;
+            border-radius: 50px;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .cart-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .cart-btn:active {
+            transform: translateY(0);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            background: var(--danger-color);
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .theme-toggle {
+            background: var(--gray-200);
+            border: none;
+            padding: 0.625rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            background: var(--gray-300);
+            transform: rotate(20deg);
+        }
+
+        .theme-toggle:active {
+            transform: rotate(0deg);
+        }
+
+        /* ===== المحتوى الرئيسي ===== */
+        .main-content {
+            margin-top: 80px;
+            padding: 2rem 1rem;
+        }
+
+        /* ===== لافتة الخصم المتحركة ===== */
+        .discount-banner {
+            background: linear-gradient(135deg, var(--accent-color), var(--danger-color));
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            animation: pulse 2s infinite;
+            margin-bottom: 2rem;
             border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        /* ===== قسم المنتج ===== */
+        .product-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            padding: 2rem;
+        }
+
+        /* ===== معرض الصور ===== */
+        .gallery-container {
+            position: relative;
+        }
+
+        .main-image-container {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+            margin-bottom: 1.5rem;
+            cursor: zoom-in;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .main-image-container:hover .main-image {
+            transform: scale(1.05);
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
             cursor: pointer;
             transition: var(--transition);
             display: flex;
             align-items: center;
-            gap: 5px;
-        }
-
-        .btn:hover {
-            background-color: var(--primary-color);
-        }
-
-        .btn-icon {
-            width: 16px;
-            height: 16px;
-            fill: currentColor;
-        }
-
-        /* Image Viewer */
-        .image-viewer {
-            height: calc(100vh - 140px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .swiper {
-            width: 100%;
-            height: 100%;
-        }
-
-        .swiper-slide {
-            display: flex;
             justify-content: center;
-            align-items: center;
-            background-color: var(--bg-darker);
-        }
-
-        .swiper-slide img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            transition: transform 0.3s ease;
-        }
-
-        .loading-indicator {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 0%;
-            height: 4px;
-            background-color: var(--primary-color);
-            transition: width 0.2s ease;
+            font-size: 1.5rem;
+            color: var(--dark-color);
             z-index: 10;
         }
 
-        /* Toolbar */
-        .toolbar {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: var(--bg-dark);
-            padding: 12px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
-            z-index: 100;
+        .carousel-btn:hover {
+            background: white;
+            transform: translateY(-50%) scale(1.1);
         }
 
-        .toolbar-section {
-            display: flex;
-            gap: 10px;
+        .carousel-btn:active {
+            transform: translateY(-50%) scale(0.95);
         }
 
-        .chapter-info {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+        .carousel-btn.prev {
+            right: 20px;
         }
 
-        .chapter-title {
-            font-size: 0.9rem;
-            color: var(--primary-color);
+        .carousel-btn.next {
+            left: 20px;
         }
 
-        .image-counter {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
+        .thumbnails {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
         }
 
-        /* Modals */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .thumbnail {
+            height: 120px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: var(--transition);
+            opacity: 0.6;
+        }
+
+        .thumbnail:hover {
+            opacity: 1;
+            transform: translateY(-5px);
+        }
+
+        .thumbnail:active {
+            transform: translateY(-2px);
+        }
+
+        .thumbnail.active {
+            border-color: var(--primary-color);
+            opacity: 1;
+        }
+
+        .thumbnail img {
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
+            object-fit: cover;
         }
 
-        .modal-content {
-            background-color: var(--bg-dark);
-            border-radius: var(--border-radius);
-            padding: 20px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: var(--shadow);
-        }
-
-        .modal-header {
+        /* ===== تفاصيل المنتج ===== */
+        .product-details {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .rating {
+            display: flex;
             align-items: center;
-            margin-bottom: 15px;
-            border-bottom: 1px solid var(--bg-darker);
-            padding-bottom: 10px;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
         }
 
-        .modal-title {
-            font-size: 1.3rem;
-            color: var(--primary-color);
+        .stars {
+            color: var(--accent-color);
+            font-size: 1.25rem;
         }
 
-        .close-modal {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
+        .rating-count {
+            color: var(--gray-600);
+            font-size: 0.95rem;
+        }
+
+        .price-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .original-price {
             font-size: 1.5rem;
-            cursor: pointer;
+            color: var(--gray-600);
+            text-decoration: line-through;
         }
 
-        /* Settings styles */
-        .settings-group {
-            margin-bottom: 20px;
-        }
-
-        .settings-title {
+        .discount-price {
+            font-size: 2.5rem;
+            font-weight: 900;
             color: var(--primary-color);
-            font-size: 1.1rem;
-            margin-bottom: 10px;
         }
 
-        .setting-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            padding: 8px;
-            background-color: var(--bg-darker);
-            border-radius: var(--border-radius);
+        .discount-badge {
+            background: var(--danger-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
         }
 
-        .setting-label {
-            color: var(--text-light);
+        .description {
+            color: var(--gray-600);
+            line-height: 1.8;
+            font-size: 1.05rem;
         }
 
-        /* Form elements */
-        input[type="text"],
-        input[type="password"],
-        select {
-            background-color: var(--bg-darker);
-            border: 1px solid var(--text-secondary);
-            color: var(--text-light);
-            padding: 8px;
-            border-radius: var(--border-radius);
-            width: 100%;
-        }
-
-        input[type="range"] {
-            width: 150px;
-        }
-
-        .switch {
+        .description.collapsed {
+            max-height: 100px;
+            overflow: hidden;
             position: relative;
-            display: inline-block;
-            width: 46px;
-            height: 24px;
         }
 
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
+        .description.collapsed::after {
+            content: '';
             position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: linear-gradient(transparent, var(--light-color));
+        }
+
+        .read-more-btn {
+            background: transparent;
+            border: none;
+            color: var(--primary-color);
+            font-weight: 700;
             cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
+            padding: 0.5rem 0;
+            transition: var(--transition);
+        }
+
+        .read-more-btn:hover {
+            color: var(--primary-hover);
+        }
+
+        .read-more-btn:active {
+            transform: scale(0.98);
+        }
+
+        .quantity-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .quantity-label {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--gray-100);
+            padding: 0.5rem;
+            border-radius: var(--border-radius);
+        }
+
+        .quantity-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.25rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quantity-btn:hover {
+            background: var(--primary-hover);
+            transform: scale(1.1);
+        }
+
+        .quantity-btn:active {
+            transform: scale(0.95);
+        }
+
+        .quantity-input {
+            width: 60px;
+            text-align: center;
+            border: none;
+            background: transparent;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .order-btn {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 1.25rem 2.5rem;
+            border-radius: var(--border-radius);
+            font-size: 1.25rem;
+            font-weight: 700;
+            font-family: 'Cairo', sans-serif;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .order-btn:hover {
+            background: #059669;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .order-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* ===== نموذج الطلب ===== */
+        .modal-overlay {
+            position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: var(--bg-darker);
-            transition: var(--transition);
-            border-radius: 24px;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
         }
 
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 3px;
-            background-color: var(--text-light);
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 2rem;
+            border-bottom: 2px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.75rem;
+            font-weight: 900;
+            color: var(--dark-color);
+        }
+
+        .close-modal {
+            background: transparent;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--gray-600);
             transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             border-radius: 50%;
         }
 
-        input:checked + .slider {
-            background-color: var(--primary-color);
+        .close-modal:hover {
+            background: var(--gray-100);
+            color: var(--dark-color);
+            transform: rotate(90deg);
         }
 
-        input:checked + .slider:before {
-            transform: translateX(22px);
+        .close-modal:active {
+            transform: rotate(0deg) scale(0.9);
         }
 
-        /* Notifications */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            background-color: var(--primary-color);
-            color: var(--text-light);
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .order-summary {
+            background: var(--gray-100);
+            padding: 1.5rem;
             border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            z-index: 1001;
+            margin-bottom: 2rem;
+        }
+
+        .summary-item {
             display: flex;
-            align-items: center;
-            gap: 10px;
-            transform: translateX(120%);
-            transition: transform 0.3s ease;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-size: 1.05rem;
         }
 
-        .notification.show {
-            transform: translateX(0);
+        .summary-item.total {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--primary-color);
+            border-top: 2px solid var(--gray-300);
+            padding-top: 0.75rem;
+            margin-top: 0.75rem;
         }
 
-        /* Floating settings panel */
-        .floating-settings {
-            position: fixed;
-            top: 80px;
-            left: -250px;
-            width: 250px;
-            background-color: var(--bg-dark);
-            border-radius: 0 var(--border-radius) var(--border-radius) 0;
-            box-shadow: var(--shadow);
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+            font-size: 1rem;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--border-radius);
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
             transition: var(--transition);
-            z-index: 99;
-            padding: 15px;
+            background: var(--white);
+            color: var(--dark-color);
         }
 
-        .floating-settings.open {
-            left: 0;
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
-        .settings-toggle {
-            position: absolute;
-            right: -40px;
-            top: 10px;
-            background-color: var(--bg-dark);
+        .form-input::placeholder {
+            color: var(--gray-600);
+        }
+
+        .submit-order-btn {
+            width: 100%;
+            padding: 1.25rem;
+            background: var(--primary-color);
+            color: white;
             border: none;
-            color: var(--text-light);
-            padding: 10px;
-            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            border-radius: var(--border-radius);
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .submit-order-btn:hover:not(:disabled) {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .submit-order-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .submit-order-btn:disabled {
+            background: var(--gray-300);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ===== المنتجات المشابهة ===== */
+        .similar-products {
+            max-width: 1400px;
+            margin: 4rem auto;
+            padding: 2rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: var(--dark-color);
+        }
+
+        .products-slider {
+            position: relative;
+            overflow: hidden;
+            padding: 2rem 0;
+            margin: 0 3rem;
+        }
+
+        .products-track {
+            display: flex;
+            gap: 2rem;
+            transition: transform 0.5s ease;
+            will-change: transform;
+        }
+
+        .product-card {
+            min-width: 320px;
+            flex-shrink: 0;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
             cursor: pointer;
         }
 
-        /* Password protection */
-        .password-overlay {
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .product-card:active {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .product-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .product-btn:hover {
+            background: var(--primary-hover);
+            transform: scale(1.05);
+        }
+
+        .product-btn:active {
+            transform: scale(0.98);
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-lg);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .slider-btn:hover {
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .slider-btn:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        .slider-btn.prev-slide {
+            right: -25px;
+        }
+
+        .slider-btn.next-slide {
+            left: -25px;
+        }
+
+        .slider-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .slider-btn:disabled:hover {
+            transform: translateY(-50%) scale(1);
+        }
+
+        /* ===== قسم التعليقات والتقييمات ===== */
+        .reviews-section {
+            max-width: 1400px;
+            margin: 4rem auto;
+            padding: 2rem;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+        }
+
+        .reviews-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        .reviews-stats {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .average-rating {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .rating-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--primary-color);
+        }
+
+        .add-review-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .add-review-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .add-review-btn:active {
+            transform: translateY(0);
+        }
+
+        .review-form {
+            background: var(--gray-100);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            display: none;
+        }
+
+        .review-form.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .rating-input {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+            direction: ltr;
+            justify-content: flex-end;
+        }
+
+        .star-input {
+            cursor: pointer;
+            color: var(--gray-300);
+            transition: var(--transition);
+        }
+
+        .star-input.active,
+        .star-input:hover {
+            color: var(--accent-color);
+        }
+
+        .review-textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--border-radius);
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
+            min-height: 120px;
+            resize: vertical;
+            transition: var(--transition);
+            background: var(--white);
+            color: var(--dark-color);
+        }
+
+        .review-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .submit-review-btn {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.875rem 2rem;
+            border-radius: var(--border-radius);
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 1rem;
+        }
+
+        .submit-review-btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .submit-review-btn:active {
+            transform: translateY(0);
+        }
+
+        .reviews-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .review-item {
+            padding: 1.5rem;
+            background: var(--gray-100);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .review-item:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .reviewer-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--dark-color);
+        }
+
+        .review-date {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        .review-rating {
+            color: var(--accent-color);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .review-text {
+            color: var(--gray-600);
+            line-height: 1.6;
+        }
+
+        /* ===== نافذة تكبير الصورة ===== */
+        .image-lightbox {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--bg-darker);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
             align-items: center;
-            z-index: 2000;
+            justify-content: center;
+            z-index: 3000;
+            animation: fadeIn 0.3s ease;
         }
 
-        .password-container {
-            background-color: var(--bg-dark);
-            padding: 30px;
-            border-radius: var(--border-radius);
-            text-align: center;
-            width: 90%;
-            max-width: 400px;
-        }
-
-        .password-input {
-            margin: 20px 0;
-        }
-
-        /* Add Arc Modal */
-        .add-ark-form {
+        .image-lightbox.show {
             display: flex;
-            flex-direction: column;
-            gap: 15px;
         }
 
-        /* Loading animation container */
-        .loading-animation {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 20px auto;
-        }
-
-        /* Responsive styles */
-        @media (max-width: 768px) {
-            .novel-title {
-                font-size: 1.2rem;
-            }
-            
-            .btn {
-                padding: 6px 10px;
-                font-size: 0.8rem;
-            }
-            
-            .image-viewer {
-                height: calc(100vh - 130px);
-            }
-            
-            .toolbar {
-                padding: 8px 12px;
-            }
-        }
-
-        /* Distraction-free mode */
-        .distraction-free header,
-        .distraction-free .toolbar,
-        .distraction-free .floating-settings {
-            transform: translateY(100%);
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .distraction-free .image-viewer {
-            height: 100vh;
-        }
-        
-        /* Grid view */
-        .grid-view .swiper {
-            display: none;
-        }
-        
-        .image-grid {
-            display: none;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            padding: 15px;
-            height: 100%;
-            overflow-y: auto;
-        }
-        
-        .grid-view .image-grid {
-            display: grid;
-        }
-        
-        .grid-item {
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
             position: relative;
-            aspect-ratio: 3/4;
-            overflow: hidden;
+        }
+
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
             border-radius: var(--border-radius);
-            cursor: pointer;
         }
-        
-        .grid-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-        
-        .grid-item img:hover {
-            transform: scale(1.05);
-        }
-        
-        .grid-number {
+
+        .close-lightbox {
             position: absolute;
-            top: 5px;
-            right: 5px;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: var(--text-light);
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
+            top: -50px;
+            left: 0;
+            background: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--dark-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .close-lightbox:hover {
+            background: var(--gray-200);
+            transform: rotate(90deg);
+        }
+
+        .close-lightbox:active {
+            transform: rotate(0deg) scale(0.9);
+        }
+
+        /* ===== التذييل ===== */
+        .footer {
+            background: var(--dark-color);
+            color: var(--gray-300);
+            padding: 3rem 2rem 1rem;
+            margin-top: 4rem;
+        }
+
+        [data-theme="dark"] .footer {
+            background: var(--gray-800);
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: white;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--gray-300);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: var(--gray-600);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+            font-weight: bold;
+        }
+
+        .social-link:hover {
+            background: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .social-link:active {
+            transform: translateY(0);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        /* ===== إشعار Toast ===== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(200px);
+            background: var(--secondary-color);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-xl);
+            font-weight: 700;
+            z-index: 3000;
+            transition: var(--transition);
+            opacity: 0;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast.error {
+            background: var(--danger-color);
+        }
+
+        /* ===== التصميم المتجاوب ===== */
+        @media (max-width: 1024px) {
+            .product-section {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .main-image-container {
+                height: 500px;
+            }
+
+            .products-slider {
+                margin: 0 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .product-title {
+                font-size: 2rem;
+            }
+
+            .main-image-container {
+                height: 400px;
+            }
+
+            .thumbnails {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .product-card {
+                min-width: 280px;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+
+            .modal {
+                width: 95%;
+            }
+
+            .modal-header,
+            .modal-body {
+                padding: 1.5rem;
+            }
+
+            .reviews-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .products-slider {
+                margin: 0 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-container {
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .cart-btn {
+                padding: 0.625rem 1.25rem;
+                font-size: 0.9rem;
+            }
+
+            .product-title {
+                font-size: 1.75rem;
+            }
+
+            .discount-price {
+                font-size: 2rem;
+            }
+
+            .main-image-container {
+                height: 300px;
+            }
+
+            .carousel-btn, .slider-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.25rem;
+            }
+
+            .modal-title {
+                font-size: 1.5rem;
+            }
+
+            .rating-number {
+                font-size: 2rem;
+            }
+
+            .product-card {
+                min-width: 250px;
+            }
+        }
+
+        /* ===== تأثيرات الحركة ===== */
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-in-right {
+            animation: slideInRight 0.8s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
     </style>
 </head>
 <body>
-    <!-- قفل كلمة المرور -->
-    <div class="password-overlay" id="passwordOverlay" style="display: none;">
-        <div class="password-container">
-            <div class="loading-animation" id="lockAnimation"></div>
-            <h2>هذه الرواية محمية</h2>
-            <p>يرجى إدخال كلمة المرور للوصول إلى المحتوى</p>
-            <div class="password-input">
-                <input type="password" id="passwordInput" placeholder="كلمة المرور">
-            </div>
-            <button class="btn" id="unlockBtn">فتح الرواية</button>
-        </div>
-    </div>
-
     <!-- رأس الصفحة -->
-    <header>
-        <button class="btn" id="infoBtn">
-            <svg class="btn-icon" viewBox="0 0 24 24">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
-            </svg>
-            معلومات
-        </button>
-        <h1 class="novel-title" id="novelTitle">عنوان الرواية</h1>
-        <div class="header-actions">
-            <button class="btn" id="shareBtn">
-                <svg class="btn-icon" viewBox="0 0 24 24">
-                    <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>
-                </svg>
-                مشاركة
-            </button>
-            <button class="btn" id="settingsBtn">
-                <svg class="btn-icon" viewBox="0 0 24 24">
-                    <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
-                </svg>
-                الإعدادات
-            </button>
+    <header class="header">
+        <div class="header-container">
+            <a href="#" class="logo">تسوق مع زكريا</a>
+            
+            <div class="header-actions">
+                <button class="cart-btn" onclick="viewCart()">
+                    السلة
+                    <span class="cart-badge" id="cartBadge">0</span>
+                </button>
+                <button class="theme-toggle" onclick="toggleTheme()">☾</button>
+            </div>
         </div>
     </header>
 
-    <!-- عارض الصور -->
-    <div class="image-viewer" id="imageViewer">
-        <div class="loading-indicator" id="loadingIndicator"></div>
-        
-        <!-- عارض الصور بالتمرير -->
-        <div class="swiper" id="imageSwiper">
-            <div class="swiper-wrapper" id="imageWrapper">
-                <!-- سيتم إضافة الصور هنا بشكل ديناميكي -->
-            </div>
-            
-            <!-- أدوات التحكم بالتمرير -->
-            <div class="swiper-pagination"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content">
+        <!-- لافتة الخصم -->
+        <div class="discount-banner">
+            خصم خاص! وفر حتى 40% على جميع المنتجات - عرض محدود
         </div>
-        
-        <!-- عرض شبكي للصور (مخفي افتراضيًا) -->
-        <div class="image-grid" id="imageGrid">
-            <!-- سيتم إضافة الصور هنا بشكل ديناميكي -->
-        </div>
-    </div>
 
-    <!-- شريط الأدوات -->
-    <div class="toolbar">
-        <div class="toolbar-section">
-            <button class="btn" id="prevChapterBtn">
-                <svg class="btn-icon" viewBox="0 0 24 24">
-                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-                </svg>
-                السابق
-            </button>
-            <button class="btn" id="downloadBtn">
-                <svg class="btn-icon" viewBox="0 0 24 24">
-                    <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
-                </svg>
-                تحميل
-            </button>
-        </div>
-        
-        <div class="chapter-info">
-            <span class="chapter-title" id="currentChapterTitle">أرك 1 - فصل 1</span>
-            <span class="image-counter" id="imageCounter">1 / 16</span>
-        </div>
-        
-        <div class="toolbar-section">
-            <button class="btn" id="lockBtn">
-                <svg class="btn-icon" viewBox="0 0 24 24">
-                    <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
-                </svg>
-                قفل
-            </button>
-            <button class="btn" id="nextChapterBtn">
-                التالي
-                <svg class="btn-icon" viewBox="0 0 24 24">
-                    <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12l-4.58 4.59z"/>
-                </svg>
-            </button>
-        </div>
-    </div>
+        <!-- قسم المنتج -->
+        <section class="product-section fade-in">
+            <!-- معرض الصور -->
+            <div class="gallery-container">
+                <div class="main-image-container" onclick="openLightbox()">
+                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=800&fit=crop" alt="منتج رائع" class="main-image" id="mainImage">
+                    <button class="carousel-btn prev" onclick="event.stopPropagation(); changeImage(-1)">‹</button>
+                    <button class="carousel-btn next" onclick="event.stopPropagation(); changeImage(1)">›</button>
+                </div>
+                
+                <div class="thumbnails" id="thumbnails">
+                    <!-- سيتم إضافة الصور المصغرة بواسطة JavaScript -->
+                </div>
+            </div>
 
-    <!-- الإعدادات العائمة -->
-    <div class="floating-settings" id="floatingSettings">
-        <button class="settings-toggle" id="settingsToggle">
-            <svg width="20" height="20" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
-            </svg>
-        </button>
-        
-        <div class="settings-group">
-            <h3 class="settings-title">طريقة العرض</h3>
-            <div class="setting-row">
-                <label class="setting-label" for="viewMode">نوع العرض:</label>
-                <select id="viewMode">
-                    <option value="slide">متتالي</option>
-                    <option value="grid">شبكي</option>
-                </select>
-            </div>
-            <div class="setting-row">
-                <label class="setting-label" for="zoomLevel">مستوى التكبير:</label>
-                <input type="range" id="zoomLevel" min="50" max="150" value="100">
-            </div>
-        </div>
-        
-        <div class="settings-group">
-            <h3 class="settings-title">الظهور</h3>
-            <div class="setting-row">
-                <label class="setting-label">الوضع الليلي</label>
-                <label class="switch">
-                    <input type="checkbox" id="darkModeToggle" checked>
-                    <span class="slider"></span>
-                </label>
-            </div>
-            <div class="setting-row">
-                <label class="setting-label">وضع القراءة</label>
-                <label class="switch">
-                    <input type="checkbox" id="distractionFreeToggle">
-                    <span class="slider"></span>
-                </label>
-            </div>
-        </div>
-        
-        <div class="settings-group">
-            <h3 class="settings-title">اللغة</h3>
-            <div class="setting-row">
-                <label class="setting-label" for="languageSelect">لغة الواجهة:</label>
-                <select id="languageSelect">
-                    <option value="ar" selected>العربية</option>
-                    <option value="en">English</option>
-                </select>
-            </div>
-        </div>
-        
-        <div class="settings-group">
-            <button class="btn" id="resetSettingsBtn" style="width: 100%;">استعادة الإعدادات الافتراضية</button>
-        </div>
-    </div>
-
-    <!-- نافذة معلومات الرواية -->
-    <div class="modal" id="infoModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">معلومات الرواية</h2>
-                <button class="close-modal" data-modal="infoModal">&times;</button>
-            </div>
-            <div id="novelInfo">
-                <div class="settings-group">
-                    <h3 class="settings-title">التفاصيل</h3>
-                    <div class="setting-row">
-                        <span class="setting-label">العنوان:</span>
-                        <span id="infoNovelTitle">عنوان الرواية</span>
-                    </div>
-                    <div class="setting-row">
-                        <span class="setting-label">تاريخ الإنشاء:</span>
-                        <span id="infoCreationDate">-</span>
-                    </div>
-                    <div class="setting-row">
-                        <span class="setting-label">آخر تحديث:</span>
-                        <span id="infoLastUpdate">-</span>
+            <!-- تفاصيل المنتج -->
+            <div class="product-details slide-in-right">
+                <h1 class="product-title">ساعة ذكية فاخرة - الجيل الجديد</h1>
+                
+                <div class="rating">
+                    <div class="stars" id="productStars">★★★★★</div>
+                    <span class="rating-count" id="ratingCount">(0 تقييم)</span>
+                </div>
+                
+                <div class="price-container">
+                    <span class="original-price">1,200 د.ج</span>
+                    <span class="discount-price" id="productPrice">720 د.ج</span>
+                    <span class="discount-badge">-40%</span>
+                </div>
+                
+                <div class="description collapsed" id="description">
+                    <p>ساعة ذكية عصرية مزودة بأحدث التقنيات لمتابعة صحتك ولياقتك البدنية. تصميم أنيق وعصري يناسب جميع المناسبات. شاشة AMOLED عالية الوضوح، مقاومة للماء حتى 50 متر، بطارية تدوم لمدة 7 أيام، متوافقة مع أنظمة iOS و Android. تتبع دقيق لمعدل ضربات القلب، مستوى الأكسجين في الدم، جودة النوم، والخطوات اليومية. تشمل أكثر من 100 وضع رياضي مختلف مع إشعارات ذكية لجميع تطبيقاتك المفضلة.</p>
+                </div>
+                <button class="read-more-btn" onclick="toggleDescription()">عرض المزيد</button>
+                
+                <div class="quantity-container">
+                    <span class="quantity-label">الكمية:</span>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="decreaseQuantity()">-</button>
+                        <input type="number" class="quantity-input" id="quantity" value="1" min="1" max="99" readonly>
+                        <button class="quantity-btn" onclick="increaseQuantity()">+</button>
                     </div>
                 </div>
                 
-                <div class="settings-group">
-                    <h3 class="settings-title">المحتوى</h3>
-                    <div id="infoArksContainer">
-                        <!-- سيتم إضافة محتوى الأركات هنا بشكل ديناميكي -->
+                <button class="order-btn" onclick="openOrderModal()">
+                    اطلب الآن
+                </button>
+            </div>
+        </section>
+
+        <!-- قسم التعليقات والتقييمات -->
+        <section class="reviews-section fade-in">
+            <div class="reviews-header">
+                <h2 class="section-title" style="margin: 0;">تقييمات العملاء</h2>
+                <div class="reviews-stats">
+                    <div class="average-rating">
+                        <div class="rating-number" id="averageRating">0.0</div>
+                        <div class="stars" id="averageStars">☆☆☆☆☆</div>
+                        <div class="rating-count" id="totalReviews">لا توجد تقييمات بعد</div>
+                    </div>
+                    <button class="add-review-btn" onclick="toggleReviewForm()">أضف تقييمك</button>
+                </div>
+            </div>
+
+            <div class="review-form" id="reviewForm">
+                <h3 style="margin-bottom: 1rem;">شارك رأيك</h3>
+                <div class="form-group">
+                    <label class="form-label">الاسم *</label>
+                    <input type="text" class="form-input" id="reviewerName" placeholder="أدخل اسمك" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">التقييم *</label>
+                    <div class="rating-input" id="ratingInput">
+                        <span class="star-input" data-rating="5">★</span>
+                        <span class="star-input" data-rating="4">★</span>
+                        <span class="star-input" data-rating="3">★</span>
+                        <span class="star-input" data-rating="2">★</span>
+                        <span class="star-input" data-rating="1">★</span>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="form-label">تعليقك *</label>
+                    <textarea class="review-textarea" id="reviewText" placeholder="شاركنا رأيك في المنتج..." required></textarea>
+                </div>
+                <button class="submit-review-btn" onclick="submitReview()">إرسال التقييم</button>
             </div>
-        </div>
-    </div>
 
-    <!-- نافذة الإعدادات -->
-    <div class="modal" id="settingsModal">
-        <div class="modal-content">
+            <div class="reviews-list" id="reviewsList">
+                <!-- سيتم إضافة التعليقات بواسطة JavaScript -->
+            </div>
+        </section>
+
+        <!-- المنتجات المشابهة -->
+        <section class="similar-products fade-in">
+            <h2 class="section-title">منتجات مشابهة قد تعجبك</h2>
+            
+            <div class="products-slider">
+                <button class="slider-btn prev-slide" id="prevSlideBtn" onclick="slideProducts(-1)">‹</button>
+                <div class="products-track" id="productsTrack">
+                    <!-- سيتم إضافة المنتجات بواسطة JavaScript -->
+                </div>
+                <button class="slider-btn next-slide" id="nextSlideBtn" onclick="slideProducts(1)">›</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- نموذج الطلب -->
+    <div class="modal-overlay" id="orderModal">
+        <div class="modal">
             <div class="modal-header">
-                <h2 class="modal-title">إعدادات الرواية</h2>
-                <button class="close-modal" data-modal="settingsModal">&times;</button>
+                <h2 class="modal-title">إتمام الطلب</h2>
+                <button class="close-modal" onclick="closeOrderModal()">×</button>
             </div>
-            
-            <div class="settings-group">
-                <h3 class="settings-title">معلومات الرواية</h3>
-                <div class="setting-row">
-                    <label class="setting-label" for="editNovelTitle">عنوان الرواية:</label>
-                    <input type="text" id="editNovelTitle" placeholder="أدخل عنوان الرواية">
+            <div class="modal-body">
+                <div class="order-summary">
+                    <div class="summary-item">
+                        <span>المنتج:</span>
+                        <span>ساعة ذكية فاخرة</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>الكمية:</span>
+                        <span id="summaryQuantity">1</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>السعر للوحدة:</span>
+                        <span>720 د.ج</span>
+                    </div>
+                    <div class="summary-item total">
+                        <span>المجموع:</span>
+                        <span id="summaryTotal">720 د.ج</span>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="settings-group">
-                <h3 class="settings-title">تنظيم المحتوى</h3>
-                <div class="setting-row">
-                    <span class="setting-label">إدارة الأركات والفصول:</span>
-                    <button class="btn" id="manageContentBtn">إدارة</button>
-                </div>
-                <div class="setting-row">
-                    <button class="btn" id="addArkBtn" style="width: 100%;">إضافة أرك جديد</button>
-                </div>
-            </div>
-            
-            <div class="settings-group">
-                <h3 class="settings-title">الأمان</h3>
-                <div class="setting-row">
-                    <label class="setting-label">تفعيل حماية كلمة المرور</label>
-                    <label class="switch">
-                        <input type="checkbox" id="passwordProtectionToggle">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="setting-row" id="passwordSettingRow" style="display: none;">
-                    <label class="setting-label" for="novelPassword">كلمة المرور:</label>
-                    <input type="password" id="novelPassword" placeholder="أدخل كلمة المرور">
-                </div>
-            </div>
-            
-            <div class="settings-group">
-                <h3 class="settings-title">مشاركة وتحميل</h3>
-                <div class="setting-row">
-                    <label class="setting-label">السماح بالمشاركة</label>
-                    <label class="switch">
-                        <input type="checkbox" id="allowSharingToggle" checked>
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="setting-row">
-                    <label class="setting-label">السماح بالتحميل</label>
-                    <label class="switch">
-                        <input type="checkbox" id="allowDownloadToggle" checked>
-                        <span class="slider"></span>
-                    </label>
-                </div>
-            </div>
-            
-            <div class="settings-group">
-                <button class="btn" id="saveSettingsBtn" style="width: 100%;">حفظ الإعدادات</button>
+
+                <form id="orderForm" onsubmit="submitOrder(event)">
+                    <div class="form-group">
+                        <label class="form-label">الاسم الكامل *</label>
+                        <input type="text" class="form-input" id="fullName" placeholder="أدخل اسمك الكامل" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">رقم الهاتف *</label>
+                        <input type="tel" class="form-input" id="phone" placeholder="مثال: 0512345678" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">الولاية *</label>
+                        <select class="form-select" id="state" required>
+                            <option value="">اختر الولاية</option>
+                            <option value="أدرار">أدرار</option>
+                            <option value="الشلف">الشلف</option>
+                            <option value="الأغواط">الأغواط</option>
+                            <option value="أم البواقي">أم البواقي</option>
+                            <option value="باتنة">باتنة</option>
+                            <option value="بجاية">بجاية</option>
+                            <option value="بسكرة">بسكرة</option>
+                            <option value="بشار">بشار</option>
+                            <option value="البليدة">البليدة</option>
+                            <option value="البويرة">البويرة</option>
+                            <option value="تمنراست">تمنراست</option>
+                            <option value="تبسة">تبسة</option>
+                            <option value="تلمسان">تلمسان</option>
+                            <option value="تيارت">تيارت</option>
+                            <option value="تيزي وزو">تيزي وزو</option>
+                            <option value="الجزائر">الجزائر</option>
+                            <option value="الجلفة">الجلفة</option>
+                            <option value="جيجل">جيجل</option>
+                            <option value="سطيف">سطيف</option>
+                            <option value="سعيدة">سعيدة</option>
+                            <option value="سكيكدة">سكيكدة</option>
+                            <option value="سيدي بلعباس">سيدي بلعباس</option>
+                            <option value="عنابة">عنابة</option>
+                            <option value="قالمة">قالمة</option>
+                            <option value="قسنطينة">قسنطينة</option>
+                            <option value="المدية">المدية</option>
+                            <option value="مستغانم">مستغانم</option>
+                            <option value="المسيلة">المسيلة</option>
+                            <option value="معسكر">معسكر</option>
+                            <option value="ورقلة">ورقلة</option>
+                            <option value="وهران">وهران</option>
+                            <option value="البيض">البيض</option>
+                            <option value="إليزي">إليزي</option>
+                            <option value="برج بوعريريج">برج بوعريريج</option>
+                            <option value="بومرداس">بومرداس</option>
+                            <option value="الطارف">الطارف</option>
+                            <option value="تندوف">تندوف</option>
+                            <option value="تيسمسيلت">تيسمسيلت</option>
+                            <option value="الوادي">الوادي</option>
+                            <option value="خنشلة">خنشلة</option>
+                            <option value="سوق أهراس">سوق أهراس</option>
+                            <option value="تيبازة">تيبازة</option>
+                            <option value="ميلة">ميلة</option>
+                            <option value="عين الدفلى">عين الدفلى</option>
+                            <option value="النعامة">النعامة</option>
+                            <option value="عين تموشنت">عين تموشنت</option>
+                            <option value="غرداية">غرداية</option>
+                            <option value="غليزان">غليزان</option>
+                            <option value="المغير">المغير</option>
+                            <option value="بني عباس">بني عباس</option>
+                            <option value="تيميمون">تيميمون</option>
+                            <option value="برج باجي مختار">برج باجي مختار</option>
+                            <option value="أولاد جلال">أولاد جلال</option>
+                            <option value="عين صالح">عين صالح</option>
+                            <option value="عين قزام">عين قزام</option>
+                            <option value="تقرت">تقرت</option>
+                            <option value="جانت">جانت</option>
+                            <option value="المنيعة">المنيعة</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">البلدية *</label>
+                        <input type="text" class="form-input" id="city" placeholder="أدخل البلدية" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">العنوان الكامل *</label>
+                        <input type="text" class="form-input" id="address" placeholder="الشارع، الحي، رقم المنزل..." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">ملاحظات إضافية (اختياري)</label>
+                        <input type="text" class="form-input" id="notes" placeholder="أي معلومات إضافية تود إضافتها">
+                    </div>
+
+                    <button type="submit" class="submit-order-btn" id="submitBtn">
+                        تأكيد الطلب
+                    </button>
+                </form>
             </div>
         </div>
     </div>
 
-    <!-- نافذة إضافة أرك جديد -->
-    <div class="modal" id="addArkModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">إضافة أرك جديد</h2>
-                <button class="close-modal" data-modal="addArkModal">&times;</button>
-            </div>
-            
-            <form class="add-ark-form" id="addArkForm">
-                <div class="setting-row">
-                    <label class="setting-label" for="newArkTitle">عنوان الأرك:</label>
-                    <input type="text" id="newArkTitle" placeholder="أدخل عنوان الأرك" required>
-                </div>
-                <button type="submit" class="btn" style="width: 100%;">إضافة</button>
-            </form>
+    <!-- نافذة تكبير الصورة -->
+    <div class="image-lightbox" id="imageLightbox" onclick="closeLightbox()">
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <button class="close-lightbox" onclick="closeLightbox()">×</button>
+            <img src="" alt="صورة مكبرة" class="lightbox-image" id="lightboxImage">
         </div>
     </div>
 
-    <!-- نافذة إدارة المحتوى -->
-    <div class="modal" id="manageContentModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">إدارة المحتوى</h2>
-                <button class="close-modal" data-modal="manageContentModal">&times;</button>
-            </div>
-            
-            <div class="settings-group">
-                <h3 class="settings-title">الأركات والفصول</h3>
-                <div id="contentManagerContainer">
-                    <!-- سيتم إضافة عناصر التحكم بالمحتوى هنا بشكل ديناميكي -->
+    <!-- التذييل -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>عن المتجر</h3>
+                <p>متجرك الإلكتروني الموثوق للحصول على أفضل المنتجات بأسعار منافسة وجودة عالية.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">f</a>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- نافذة إضافة فصل جديد -->
-    <div class="modal" id="addChapterModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">إضافة فصل جديد</h2>
-                <button class="close-modal" data-modal="addChapterModal">&times;</button>
+            
+            <div class="footer-section">
+                <h3>روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="#">الصفحة الرئيسية</a></li>
+                    <li><a href="#">المنتجات</a></li>
+                    <li><a href="#">العروض الخاصة</a></li>
+                    <li><a href="#">من نحن</a></li>
+                    <li><a href="#">اتصل بنا</a></li>
+                </ul>
             </div>
             
-            <form class="add-ark-form" id="addChapterForm">
-                <div class="setting-row">
-                    <label class="setting-label" for="newChapterTitle">عنوان الفصل:</label>
-                    <input type="text" id="newChapterTitle" placeholder="أدخل عنوان الفصل" required>
-                </div>
-                <input type="hidden" id="parentArkId">
-                <button type="submit" class="btn" style="width: 100%;">إضافة</button>
-            </form>
+            <div class="footer-section">
+                <h3>معلومات التواصل</h3>
+                <ul class="footer-links">
+                    <li><strong>أوقات العمل:</strong></li>
+                    <li>يتم التوصيل يوم السبت فقط</li>
+                    <li style="margin-top: 1rem;"><strong>للطلب والاستفسار:</strong></li>
+                    <li>الهاتف: 0774843237</li>
+                </ul>
+            </div>
         </div>
-    </div>
+        
+        <div class="footer-bottom">
+            <p>© 2025 تسوق مع زكريا. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
 
-    <!-- عنصر الإشعارات -->
-    <div class="notification" id="notification">
-        <svg class="btn-icon" viewBox="0 0 24 24">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-        </svg>
-        <span id="notificationText">تم بنجاح</span>
-    </div>
+    <!-- إشعار Toast -->
+    <div class="toast" id="toast">تم إرسال طلبك بنجاح! سنتصل بك قريباً</div>
 
     <script>
-        // التهيئة الأساسية للتطبيق
-        document.addEventListener('DOMContentLoaded', function() {
-            // تهيئة متغيرات التطبيق
-            let currentNovel = {
-                title: "عنوان الرواية",
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString(),
-                arks: [],
-                settings: {
-                    passwordProtected: false,
-                    password: "",
-                    allowSharing: true,
-                    allowDownload: true,
-                    language: "ar",
-                    darkMode: true,
-                    viewMode: "slide"
-                },
-                currentArkIndex: 0,
-                currentChapterIndex: 0,
-                currentImageIndex: 0
+        // تهيئة EmailJS
+        (function() {
+            emailjs.init("Vtq6fXRv6-rOfkYlj");
+        })();
+
+        // بيانات الصور
+        const images = [
+            'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=800&fit=crop',
+            'https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=800&h=800&fit=crop',
+            'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=800&h=800&fit=crop',
+            'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=800&h=800&fit=crop'
+        ];
+
+        let currentImageIndex = 0;
+        let selectedRating = 0;
+        let reviews = [];
+        let currentSlidePosition = 0;
+
+        // تحميل الصور المصغرة
+        function loadThumbnails() {
+            const thumbnailsContainer = document.getElementById('thumbnails');
+            images.forEach((img, index) => {
+                const thumb = document.createElement('div');
+                thumb.className = `thumbnail ${index === 0 ? 'active' : ''}`;
+                thumb.innerHTML = `<img src="${img}" alt="صورة ${index + 1}">`;
+                thumb.onclick = () => selectImage(index);
+                thumbnailsContainer.appendChild(thumb);
+            });
+        }
+
+        // تحديد صورة
+        function selectImage(index) {
+            currentImageIndex = index;
+            document.getElementById('mainImage').src = images[index];
+            
+            document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === index);
+            });
+        }
+
+        // تغيير الصورة
+        function changeImage(direction) {
+            currentImageIndex += direction;
+            if (currentImageIndex < 0) currentImageIndex = images.length - 1;
+            if (currentImageIndex >= images.length) currentImageIndex = 0;
+            selectImage(currentImageIndex);
+        }
+
+        // فتح نافذة تكبير الصورة
+        function openLightbox() {
+            const currentImage = document.getElementById('mainImage').src;
+            document.getElementById('lightboxImage').src = currentImage;
+            document.getElementById('imageLightbox').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // إغلاق نافذة تكبير الصورة
+        function closeLightbox() {
+            document.getElementById('imageLightbox').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        // إدارة الكمية
+        function increaseQuantity() {
+            const input = document.getElementById('quantity');
+            const currentValue = parseInt(input.value);
+            if (currentValue < 99) {
+                input.value = currentValue + 1;
+            }
+        }
+
+        function decreaseQuantity() {
+            const input = document.getElementById('quantity');
+            const currentValue = parseInt(input.value);
+            if (currentValue > 1) {
+                input.value = currentValue - 1;
+            }
+        }
+
+        // توسيع الوصف
+        function toggleDescription() {
+            const description = document.getElementById('description');
+            const btn = event.target;
+            
+            if (description.classList.contains('collapsed')) {
+                description.classList.remove('collapsed');
+                btn.textContent = 'عرض أقل';
+            } else {
+                description.classList.add('collapsed');
+                btn.textContent = 'عرض المزيد';
+            }
+        }
+
+        // فتح نموذج الطلب
+        function openOrderModal() {
+            const quantity = document.getElementById('quantity').value;
+            const price = 720;
+            const total = quantity * price;
+            
+            document.getElementById('summaryQuantity').textContent = quantity;
+            document.getElementById('summaryTotal').textContent = `${total.toLocaleString()} د.ج`;
+            document.getElementById('orderModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // إغلاق نموذج الطلب
+        function closeOrderModal() {
+            document.getElementById('orderModal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        // إرسال الطلب عبر EmailJS
+        function submitOrder(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'جاري الإرسال...';
+            
+            // جمع بيانات النموذج
+            const quantity = document.getElementById('quantity').value;
+            const price = 720;
+            const total = quantity * price;
+            
+            const templateParams = {
+                product_name: 'ساعة ذكية فاخرة - الجيل الجديد',
+                customer_name: document.getElementById('fullName').value,
+                customer_phone: document.getElementById('phone').value,
+                customer_state: document.getElementById('state').value,
+                customer_city: document.getElementById('city').value,
+                customer_address: document.getElementById('address').value,
+                customer_notes: document.getElementById('notes').value || 'لا توجد ملاحظات',
+                order_quantity: quantity,
+                unit_price: price + ' د.ج',
+                total_price: total + ' د.ج',
+                order_date: new Date().toLocaleDateString('ar-DZ')
             };
             
-            // تهيئة Swiper
-            let swiper;
+            // إرسال البريد الإلكتروني
+            emailjs.send("service_zepp6wx", "template_qdmxqub", templateParams)
+                .then(function(response) {
+                    console.log('تم الإرسال بنجاح!', response.status, response.text);
+                    closeOrderModal();
+                    showToast('تم إرسال طلبك بنجاح! سنتصل بك قريباً');
+                    
+                    // إعادة تعيين النموذج
+                    document.getElementById('orderForm').reset();
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'تأكيد الطلب';
+                }, function(error) {
+                    console.error('فشل الإرسال:', error);
+                    showToast('حدث خطأ في إرسال الطلب. يرجى المحاولة مرة أخرى.', true);
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'تأكيد الطلب';
+                });
+        }
+
+        // عرض إشعار
+        function showToast(message = 'تم إرسال طلبك بنجاح! سنتصل بك قريباً', isError = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
             
-            // تحميل البيانات المخزنة مسبقًا إن وجدت
-            loadNovelData();
-            
-            // تهيئة السوايبر للصور
-            initializeSwiper();
-            
-            // تهيئة استمعات الأحداث
-            initializeEventListeners();
-            
-            // تحديث واجهة المستخدم بالبيانات الحالية
-            updateUI();
-            
-            // إذا كانت الرواية محمية بكلمة مرور، عرض نافذة القفل
-            if (currentNovel.settings.passwordProtected) {
-                showPasswordOverlay();
+            if (isError) {
+                toast.classList.add('error');
+            } else {
+                toast.classList.remove('error');
             }
             
-            // إنشاء أرك أول إذا لم يكن موجودًا
-            if (currentNovel.arks.length === 0) {
-                addNewArk("أرك 1");
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
+        // تبديل الوضع الداكن
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            
+            if (currentTheme === 'dark') {
+                body.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // تحميل المنتجات المشابهة
+        function loadSimilarProducts() {
+            const products = [
+                { name: 'سماعات لاسلكية', price: '450', image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=250&fit=crop' },
+                { name: 'حقيبة ظهر عصرية', price: '320', image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=250&fit=crop' },
+                { name: 'نظارة شمسية', price: '280', image: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=300&h=250&fit=crop' },
+                { name: 'محفظة جلدية', price: '180', image: 'https://images.unsplash.com/photo-1627123424574-724758594e93?w=300&h=250&fit=crop' },
+                { name: 'ساعة كلاسيكية', price: '890', image: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=300&h=250&fit=crop' },
+                { name: 'حذاء رياضي', price: '550', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=250&fit=crop' },
+                { name: 'قميص كاجوال', price: '380', image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=300&h=250&fit=crop' }
+            ];
+
+            const track = document.getElementById('productsTrack');
+            
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-price">${product.price} د.ج</p>
+                        <button class="product-btn">عرض المنتج</button>
+                    </div>
+                `;
+                track.appendChild(card);
+            });
+            
+            updateSliderButtons();
+        }
+
+        // تمرير المنتجات - تم إصلاحه بالكامل
+        function slideProducts(direction) {
+            const track = document.getElementById('productsTrack');
+            const cardWidth = 320; // عرض البطاقة
+            const gap = 32; // الفراغ بين البطاقات (2rem = 32px)
+            const slideDistance = cardWidth + gap;
+            
+            const totalProducts = track.children.length;
+            const containerWidth = track.parentElement.offsetWidth;
+            const visibleCards = Math.floor(containerWidth / slideDistance);
+            const maxSlide = totalProducts - visibleCards;
+            
+            currentSlidePosition += direction;
+            
+            // تحديد الحدود
+            if (currentSlidePosition < 0) {
+                currentSlidePosition = 0;
+            }
+            if (currentSlidePosition > maxSlide) {
+                currentSlidePosition = maxSlide;
             }
             
-            // وظائف التطبيق الأساسية
+            // تطبيق التحويل
+            const translateValue = currentSlidePosition * slideDistance;
+            track.style.transform = `translateX(${translateValue}px)`;
             
-            // تهيئة Swiper
-            function initializeSwiper() {
-                swiper = new Swiper('#imageSwiper', {
-                    slidesPerView: 1,
-                    spaceBetween: 30,
-                    navigation: {
-                        nextEl: '.swiper-button-next',
-                        prevEl: '.swiper-button-prev',
-                    },
-                    pagination: {
-                        el: '.swiper-pagination',
-                        clickable: true,
-                    },
-                    on: {
-                        slideChange: function() {
-                            updateCurrentImage(this.activeIndex);
-                        }
-                    }
+            updateSliderButtons();
+        }
+
+        // تحديث حالة أزرار التمرير
+        function updateSliderButtons() {
+            const track = document.getElementById('productsTrack');
+            const prevBtn = document.getElementById('prevSlideBtn');
+            const nextBtn = document.getElementById('nextSlideBtn');
+            
+            const cardWidth = 320;
+            const gap = 32;
+            const slideDistance = cardWidth + gap;
+            
+            const totalProducts = track.children.length;
+            const containerWidth = track.parentElement.offsetWidth;
+            const visibleCards = Math.floor(containerWidth / slideDistance);
+            const maxSlide = totalProducts - visibleCards;
+            
+            // تعطيل/تفعيل الأزرار حسب الموقع
+            prevBtn.disabled = currentSlidePosition <= 0;
+            nextBtn.disabled = currentSlidePosition >= maxSlide;
+        }
+
+        // عرض السلة
+        function viewCart() {
+            alert('ميزة السلة قيد التطوير');
+        }
+
+        // إدارة نموذج التقييم
+        function toggleReviewForm() {
+            const form = document.getElementById('reviewForm');
+            form.classList.toggle('show');
+        }
+
+        // اختيار التقييم
+        document.addEventListener('DOMContentLoaded', () => {
+            const stars = document.querySelectorAll('.star-input');
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    selectedRating = parseInt(this.dataset.rating);
+                    updateStarSelection();
                 });
+                
+                star.addEventListener('mouseover', function() {
+                    const rating = parseInt(this.dataset.rating);
+                    highlightStars(rating);
+                });
+            });
+            
+            document.getElementById('ratingInput').addEventListener('mouseleave', () => {
+                updateStarSelection();
+            });
+            
+            // إعادة حساب موقع التمرير عند تغيير حجم النافذة
+            window.addEventListener('resize', () => {
+                currentSlidePosition = 0;
+                const track = document.getElementById('productsTrack');
+                track.style.transform = 'translateX(0)';
+                updateSliderButtons();
+            });
+        });
+
+        function highlightStars(rating) {
+            const stars = document.querySelectorAll('.star-input');
+            stars.forEach(star => {
+                const starRating = parseInt(star.dataset.rating);
+                star.classList.toggle('active', starRating <= rating);
+            });
+        }
+
+        function updateStarSelection() {
+            highlightStars(selectedRating);
+        }
+
+        // إرسال التقييم
+        function submitReview() {
+            const name = document.getElementById('reviewerName').value.trim();
+            const text = document.getElementById('reviewText').value.trim();
+            
+            if (!name || !text || selectedRating === 0) {
+                alert('يرجى ملء جميع الحقول المطلوبة واختيار التقييم');
+                return;
             }
             
-            // تحديث واجهة المستخدم
-            function updateUI() {
-                // تحديث عنوان الرواية
-                document.getElementById('novelTitle').textContent = currentNovel.title;
-                document.getElementById('infoNovelTitle').textContent = currentNovel.title;
-                document.getElementById('editNovelTitle').value = currentNovel.title;
-                
-                // تحديث معلومات الإنشاء والتحديث
-                document.getElementById('infoCreationDate').textContent = new Date(currentNovel.createdAt).toLocaleDateString();
-                document.getElementById('infoLastUpdate').textContent = new Date(currentNovel.updatedAt).toLocaleDateString();
-                
-                // تحديث عنوان الفصل الحالي
-                updateChapterTitle();
-                
-                // تحديث إعدادات الواجهة
-                document.getElementById('darkModeToggle').checked = currentNovel.settings.darkMode;
-                document.getElementById('allowSharingToggle').checked = currentNovel.settings.allowSharing;
-                document.getElementById('allowDownloadToggle').checked = currentNovel.settings.allowDownload;
-                document.getElementById('passwordProtectionToggle').checked = currentNovel.settings.passwordProtected;
-                document.getElementById('viewMode').value = currentNovel.settings.viewMode;
-                document.getElementById('languageSelect').value = currentNovel.settings.language;
-                
-                // تحديث حالة حماية كلمة المرور
-                if (currentNovel.settings.passwordProtected) {
-                    document.getElementById('passwordSettingRow').style.display = 'flex';
-                    document.getElementById('novelPassword').value = currentNovel.settings.password;
-                } else {
-                    document.getElementById('passwordSettingRow').style.display = 'none';
-                }
-                
-                // تحديث طريقة العرض
-                if (currentNovel.settings.viewMode === 'grid') {
-                    document.getElementById('imageViewer').classList.add('grid-view');
-                } else {
-                    document.getElementById('imageViewer').classList.remove('grid-view');
-                }
-                
-                // تحديث معلومات الأركات في نافذة المعلومات
-                updateArksInfo();
-                
-                // تحميل الصور للفصل الحالي
-                loadCurrentChapterImages();
+            const review = {
+                name: name,
+                rating: selectedRating,
+                text: text,
+                date: new Date().toLocaleDateString('ar-DZ')
+            };
+            
+            reviews.unshift(review);
+            saveReviews();
+            displayReviews();
+            updateAverageRating();
+            
+            // إعادة تعيين النموذج
+            document.getElementById('reviewerName').value = '';
+            document.getElementById('reviewText').value = '';
+            selectedRating = 0;
+            updateStarSelection();
+            toggleReviewForm();
+            
+            showToast('شكراً لك! تم إضافة تقييمك بنجاح');
+        }
+
+        // حفظ التقييمات
+        function saveReviews() {
+            localStorage.setItem('productReviews', JSON.stringify(reviews));
+        }
+
+        // تحميل التقييمات
+        function loadReviews() {
+            const saved = localStorage.getItem('productReviews');
+            if (saved) {
+                reviews = JSON.parse(saved);
+                displayReviews();
+                updateAverageRating();
+            }
+        }
+
+        // عرض التقييمات
+        function displayReviews() {
+            const container = document.getElementById('reviewsList');
+            
+            if (reviews.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--gray-600);">لا توجد تقييمات بعد. كن أول من يقيم هذا المنتج!</p>';
+                return;
             }
             
-            // تحديث معلومات الفصل الحالي في العنوان
-            function updateChapterTitle() {
-                if (currentNovel.arks.length === 0) return;
-                
-                const currentArk = currentNovel.arks[currentNovel.currentArkIndex];
-                if (!currentArk || !currentArk.chapters || currentArk.chapters.length === 0) return;
-                
-                const currentChapter = currentArk.chapters[currentNovel.currentChapterIndex];
-                if (!currentChapter) return;
-                
-                const arkTitle = currentArk.title || `أرك ${currentNovel.currentArkIndex + 1}`;
-                const chapterTitle = currentChapter.title || `فصل ${currentNovel.currentChapterIndex + 1}`;
-                
-                document.getElementById('currentChapterTitle').textContent = `${arkTitle} - ${chapterTitle}`;
-                
-                // تحديث عداد الصور
-                updateImageCounter();
+            container.innerHTML = reviews.map(review => `
+                <div class="review-item">
+                    <div class="review-header">
+                        <div class="reviewer-name">${review.name}</div>
+                        <div class="review-date">${review.date}</div>
+                    </div>
+                    <div class="review-rating">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</div>
+                    <div class="review-text">${review.text}</div>
+                </div>
+            `).join('');
+        }
+
+        // تحديث متوسط التقييم
+        function updateAverageRating() {
+            if (reviews.length === 0) {
+                document.getElementById('averageRating').textContent = '0.0';
+                document.getElementById('averageStars').textContent = '☆☆☆☆☆';
+                document.getElementById('totalReviews').textContent = 'لا توجد تقييمات بعد';
+                document.getElementById('productStars').textContent = '☆☆☆☆☆';
+                document.getElementById('ratingCount').textContent = '(0 تقييم)';
+                return;
             }
             
-            // تحديث عداد الصور
-            function updateImageCounter() {
-                const currentArk = currentNovel.arks[currentNovel.currentArkIndex];
-                if (!currentArk || !currentArk.chapters || currentArk.chapters.length === 0) return;
-                
-                const currentChapter = currentArk.chapters[currentNovel.currentChapterIndex];
-                if (!currentChapter) return;
-                
-                const totalImages = currentChapter.images ? currentChapter.images.length : 0;
-                const currentImage = currentNovel.currentImageIndex + 1;
-                
-                document.getElementById('imageCounter').textContent = `${currentImage} / ${totalImages || 16}`;
+            const sum = reviews.reduce((acc, review) => acc + review.rating, 0);
+            const average = (sum / reviews.length).toFixed(1);
+            const roundedAvg = Math.round(average);
+            
+            document.getElementById('averageRating').textContent = average;
+            document.getElementById('averageStars').innerHTML = '★'.repeat(roundedAvg) + '☆'.repeat(5 - roundedAvg);
+            document.getElementById('totalReviews').textContent = `${reviews.length} تقييم`;
+            document.getElementById('productStars').innerHTML = '★'.repeat(roundedAvg) + '☆'.repeat(5 - roundedAvg);
+            document.getElementById('ratingCount').textContent = `(${reviews.length} تقييم)`;
+        }
+
+        // إغلاق النموذج عند النقر خارجه
+        document.getElementById('orderModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeOrderModal();
+            }
+        });
+
+        // تحميل الوضع المحفوظ
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
             }
             
-            // تحميل الصور للفصل الحالي
-            function loadCurrentChapterImages() {
-                if (currentNovel.arks.length === 0) return;
-                
-                const currentArk = currentNovel.arks[currentNovel.currentArkIndex];
-                if (!currentArk || !currentArk.chapters || currentArk.chapters.length === 0) return;
-                
-                const currentChapter = currentArk.chapters[currentNovel.currentChapterIndex];
-                if (!currentChapter) return;
-                
-                // تفريغ حاويات الصور
-                const imageWrapper = document.getElementById('imageWrapper');
-                const imageGrid = document.getElementById('imageGrid');
-                imageWrapper.innerHTML = '';
-                imageGrid.innerHTML = '';
-                
-                // إنشاء صور افتراضية إذا لم تكن موجودة
-                if (!currentChapter.images || currentChapter.images.length === 0) {
-                    currentChapter.images = Array(16).fill().map((_, index) => {
-                        return {
-                            id: `img_${Date.now()}_${index}`,
-                            src: generatePlaceholderImage(`صورة ${index + 1}`),
-                            title: `صورة ${index + 1}`,
-                            order: index
-                        };
-                    });
-                }
-                
-                // إضافة الصور إلى Swiper
-                currentChapter.images.forEach((image, index) => {
-                    // إضافة الصورة إلى Swiper
-                    const slide = document.createElement('div');
-                    slide.className = 'swiper-slide';
-                    slide.innerHTML = `<img src="${image.src}" alt="${image.title || `صورة ${index + 1}`}" data-index="${index}">`;
-                    imageWrapper.appendChild(slide);
-                    
-                    // إضافة الصورة إلى العرض الشبكي
-                    const gridItem = document.createElement('div');
-                    gridItem.className = 'grid-item';
-                    gridItem.innerHTML = `
-                        <img src="${image.src}" alt="${image.title || `صورة ${index + 1}`}" data-index="${index}">
-                        <div class="grid-number">${index + 1}</div>
-                    `;
-                    gridItem.addEventListener('click', function() {
-                        document.getElementById('imageViewer').classList.remove('grid-view');
-                        document.getElementById('viewMode').value = 'slide';
-                        currentNovel.settings.viewMode = 'slide';
-                        saveNovelData();
-                        updateCurrentImage(index);
-                        swiper.slideTo(index);
-                    });
-                    imageGrid.appendChild(gridItem);
-                });
-                
-                // تحديث Swiper
-                swiper.update();
-                swiper.slideTo(currentNovel.currentImageIndex, 0);
-                
-                // تحديث عداد الصور
-                updateImageCounter();
+            loadThumbnails();
+            loadSimilarProducts();
+            loadReviews();
+        });
+
+        // إضافة دعم لوحة المفاتيح لإغلاق النوافذ
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeOrderModal();
+                closeLightbox();
             }
-            
-            // تحديث معلومات الأركات في نافذة المعلومات
-            function updateArksInfo() {
-                const arksContainer = document.getElementById('infoArksContainer');
-                arksContainer.innerHTML = '';
-                
-                if (currentNovel.arks.length === 0) {
-                    arksContainer.innerHTML = '<p>لا توجد أركات حتى الآن</p>';
-                    return;
-                }
-                
-                currentNovel.arks.forEach((ark, arkIndex) => {
-                    const arkElement = document.createElement('div');
-                    arkElement.className = 'setting-row';
-                    arkElement.style.flexDirection = 'column';
-                    arkElement.style.alignItems = 'flex-start';
-                    
-                    const arkTitle = document.createElement('div');
-                    arkTitle.className = 'setting-label';
-                    arkTitle.style.fontWeight = 'bold';
-                    arkTitle.style.marginBottom = '5px';
-                    arkTitle.textContent = ark.title || `أرك ${arkIndex + 1}`;
-                    
-                    const chaptersContainer = document.createElement('div');
-                    chaptersContainer.style.width = '100%';
-                    chaptersContainer.style.paddingRight = '15px';
-                    
-                    if (ark.chapters && ark.chapters.length > 0) {
-                        ark.chapters.forEach((chapter, chapterIndex) => {
-                            const chapterElement = document.createElement('div');
-                            chapterElement.className = 'setting-row';
-                            chapterElement.style.backgroundColor = 'var(--bg-darker)';
-                            chapterElement.style.padding = '5px 10px';
-                            chapterElement.style.marginBottom = '5px';
-                            chapterElement.style.cursor = 'pointer';
-                            
-                            const chapterTitle = document.createElement('span');
-                            chapterTitle.textContent = chapter.title || `فصل ${chapterIndex + 1}`;
-                            
-                            const imagesCount = document.createElement('span');
-                            imagesCount.style.fontSize = '0.8rem';
-                            imagesCount.style.color = 'var(--text-secondary)';
-                            imagesCount.textContent = `${chapter.images ? chapter.images.length : 0} صورة`;
-                            
-                            chapterElement.appendChild(chapterTitle);
-                            chapterElement.appendChild(imagesCount);
-                            
-                            // عند النقر على الفصل، الانتقال إليه
-                            chapterElement.addEventListener('click', function() {
-                                currentNovel.currentArkIndex = arkIndex;
-                                currentNovel.currentChapterIndex = chapterIndex;
-                                currentNovel.currentImageIndex = 0;
-                                saveNovelData();
-                                updateUI();
-                                closeModal('infoModal');
-                            });
-                            
-                            chaptersContainer.appendChild(chapterElement);
-                        });
-                    } else {
-                        const noChaptersMsg = document.createElement('p');
-                        noChaptersMsg.textContent = 'لا توجد فصول في هذا الأرك';
-                        noChaptersMsg.style.color = 'var(--text-secondary)';
-                        noChaptersMsg.style.fontSize = '0.9rem';
-                        noChaptersMsg.style.padding = '5px 0';
-                        chaptersContainer.appendChild(noChaptersMsg);
-                    }
-                    
-                    arkElement.appendChild(arkTitle);
-                    arkElement.appendChild(chaptersContainer);
-                    arksContainer.appendChild(arkElement);
-                });
-            }
-            
-            // تحديث محتوى إدارة المحتوى
-            function updateContentManager() {
-                const contentContainer = document.getElementById('contentManagerContainer');
-                contentContainer.innerHTML = '';
-                
-                if (currentNovel.arks.length === 0) {
-                    contentContainer.innerHTML = '<p>لا توجد أركات حتى الآن</p>';
-                    return;
-                }
-                
-                currentNovel.arks.forEach((ark, arkIndex) => {
-                    const arkElement = document.createElement('div');
-                    arkElement.className = 'setting-row';
-                    arkElement.style.flexDirection = 'column';
-                    arkElement.style.alignItems = 'flex-start';
-                    arkElement.style.marginBottom = '20px';
-                    
-                    const arkHeader = document.createElement('div');
-                    arkHeader.style.display = 'flex';
-                    arkHeader.style.justifyContent = 'space-between';
-                    arkHeader.style.width = '100%';
-                    arkHeader.style.marginBottom = '10px';
-                    
-                    const arkTitle = document.createElement('div');
-                    arkTitle.className = 'setting-label';
-                    arkTitle.style.fontWeight = 'bold';
-                    arkTitle.textContent = ark.title || `أرك ${arkIndex + 1}`;
-                    
-                    const arkActions = document.createElement('div');
-                    arkActions.style.display = 'flex';
-                    arkActions.style.gap = '5px';
-                    
-                    const editArkBtn = document.createElement('button');
-                    editArkBtn.className = 'btn';
-                    editArkBtn.innerHTML = '<svg class="btn-icon" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>';
-                    editArkBtn.style.padding = '4px';
-                    
-                    const deleteArkBtn = document.createElement('button');
-                    deleteArkBtn.className = 'btn';
-                    deleteArkBtn.innerHTML = '<svg class="btn-icon" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>';
-                    deleteArkBtn.style.padding = '4px';
-                    
-                    const addChapterBtn = document.createElement('button');
-                    addChapterBtn.className = 'btn';
-                    addChapterBtn.innerHTML = '<svg class="btn-icon" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg> إضافة فصل';
-                    
-                    // أحداث أزرار الأرك
-                    editArkBtn.addEventListener('click', function() {
-                        const newTitle = prompt('أدخل عنوان الأرك الجديد:', ark.title);
-                        if (newTitle !== null && newTitle.trim() !== '') {
-                            ark.title = newTitle.trim();
-                            currentNovel.updatedAt = new Date().toISOString();
-                            saveNovelData();
-                            updateUI();
-                            updateContentManager();
-                            showNotification('تم تعديل عنوان الأرك بنجاح');
-                        }
-                    });
-                    
-                    deleteArkBtn.addEventListener('click', function() {
-                        if (confirm(`هل أنت متأكد من حذف "${ark.title}"؟ لا يمكن التراجع عن هذا الإجراء.`)) {
-                            currentNovel.arks.splice(arkIndex, 1);
-                            
-                            // تعديل المؤشرات الحالية إذا لزم الأمر
-                            if (currentNovel.currentArkIndex >= currentNovel.arks.length) {
-                                currentNovel.currentArkIndex = Math.max(0, currentNovel.arks.length - 1);
-                                currentNovel.currentChapterIndex = 0;
-                                currentNovel.currentImageIndex = 0;
-                            }
-                            
-                            currentNovel.updatedAt = new Date().toISOString();
-                            saveNovelData();
-                            updateUI();
-                            updateContentManager();
-                            showNotification('تم حذف الأرك بنجاح');
-                        }
-                    });
-                    
-                    addChapterBtn.addEventListener('click', function() {
-                        document.getElementById('parentArkId').value = arkIndex;
-                        openModal('addChapterModal');
-                    });
-                    
-                    arkActions.appendChild(editArkBtn);
-                    arkActions.appendChild(deleteArkBtn);
-                    
-                    arkHeader.appendChild(arkTitle);
-                    arkHeader.appendChild(arkActions);
-                    
-                    arkElement.appendChild(arkHeader);
-                    arkElement.appendChild(addChapterBtn);
-                    
-                    // إضافة الفصول
-                    const chaptersContainer = document.createElement('div');
-                    chaptersContainer.style.width = '100%';
-                    chaptersContainer.style.paddingRight = '15px';
-                    chaptersContainer.style.marginTop = '10px';
-                    
-                    if (ark.chapters && ark.chapters.length > 0) {
-                        ark.chapters.forEach((chapter, chapterIndex) => {
-                            const chapterElement = document.createElement('div');
-                            chapterElement.className = 'setting-row';
-                            chapterElement.style.backgroundColor = 'var(--bg-darker)';
-                            chapterElement.style.marginBottom = '5px';
-                            
-                            const chapterTitle = document.createElement('span');
-                            chapterTitle.textContent = chapter.title || `فصل ${chapterIndex + 1}`;
-                            
-                            const chapterActions = document.createElement('div');
-                            chapterActions.style.display = 'flex';
-                            chapterActions.style.gap = '5px';
-                            
-                            const editChapterBtn = document.createElement('button');
-                            editChapterBtn.className = 'btn';
-                            editChapterBtn.innerHTML = '<svg class="btn-icon" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>';
-                            editChapterBtn.style.padding = '4px';
-                            
-                            const deleteChapterBtn = document.createElement('button');
-                            deleteChapterBtn.className = 'btn';
-                            deleteChapterBtn.innerHTML = '<svg class="btn-icon" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>';
-                            deleteChapterBtn.style.padding = '4px';
-                            
-                            const uploadImagesBtn = document.createElement('button');
-                            uploadImagesBtn.className = 'btn';
-                            uploadImagesBtn.innerHTML = '<svg class="btn-icon" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>';
-                            uploadImagesBtn.style.padding = '4px';
-                            
-                            // أحداث أزرار الفصل
-                            editChapterBtn.addEventListener('click', function() {
-                                const newTitle = prompt('أدخل عنوان الفصل الجديد:', chapter.title);
-                                if (newTitle !== null && newTitle.trim() !== '') {
-                                    chapter.title = newTitle.trim();
-                                    currentNovel.updatedAt = new Date().toISOString();
-                                    saveNovelData();
-                                    updateUI();
-                                    updateContentManager();
-                                    showNotification('تم تعديل عنوان الفصل بنجاح');
-                                }
-                            });
-                            
-                            deleteChapterBtn.addEventListener('click', function() {
-                                if (confirm(`هل أنت متأكد من حذف "${chapter.title}"؟ لا يمكن التراجع عن هذا الإجراء.`)) {
-                                    ark.chapters.splice(chapterIndex, 1);
-                                    
-                                    // تعديل المؤشرات الحالية إذا لزم الأمر
-                                    if (currentNovel.currentArkIndex === arkIndex && currentNovel.currentChapterIndex >= ark.chapters.length) {
-                                        currentNovel.currentChapterIndex = Math.max(0, ark.chapters.length - 1);
-                                        currentNovel.currentImageIndex = 0;
-                                    }
-                                    
-                                    currentNovel.updatedAt = new Date().toISOString();
-                                    saveNovelData();
-                                    updateUI();
-                                    updateContentManager();
-                                    showNotification('تم حذف الفصل بنجاح');
-                                }
-                            });
-                            
-                            uploadImagesBtn.addEventListener('click', function() {
-                                // حدث تحميل الصور للفصل
-                                const fileInput = document.createElement('input');
-                                fileInput.type = 'file';
-                                fileInput.multiple = true;
-                                fileInput.accept = 'image/*';
-                                
-                                fileInput.onchange = function(e) {
-                                    const files = e.target.files;
-                                    if (!files || files.length === 0) return;
-                                    
-                                    // عرض مؤشر التحميل
-                                    const loadingIndicator = document.getElementById('loadingIndicator');
-                                    
-                                    // إنشاء مصفوفة جديدة للصور إذا لم تكن موجودة
-                                    if (!chapter.images) {
-                                        chapter.images = [];
-                                    }
-                                    
-                                    // تحميل كل صورة وإضافتها للفصل
-                                    const totalFiles = files.length;
-                                    let loadedFiles = 0;
-                                    
-                                    Array.from(files).forEach((file, index) => {
-                                        const reader = new FileReader();
-                                        
-                                        reader.onload = function(event) {
-                                            const imageData = event.target.result;
-                                            
-                                            // إضافة الصورة إلى الفصل
-                                            chapter.images.push({
-                                                id: `img_${Date.now()}_${index}`,
-                                                src: imageData,
-                                                title: file.name,
-                                                order: chapter.images.length
-                                            });
-                                            
-                                            // تحديث شريط التقدم
-                                            loadedFiles++;
-                                            loadingIndicator.style.width = `${(loadedFiles / totalFiles) * 100}%`;
-                                            
-                                            // إذا تم تحميل جميع الصور
-                                            if (loadedFiles === totalFiles) {
-                                                // إخفاء شريط التقدم بعد فترة قصيرة
-                                                setTimeout(() => {
-                                                    loadingIndicator.style.width = '0%';
-                                                }, 500);
-                                                
-                                                // حفظ البيانات وتحديث الواجهة
-                                                currentNovel.updatedAt = new Date().toISOString();
-                                                saveNovelData();
-                                                
-                                                // إذا كان هذا هو الفصل الحالي، قم بتحديث العرض
-                                                if (currentNovel.currentArkIndex === arkIndex && currentNovel.currentChapterIndex === chapterIndex) {
-                                                    loadCurrentChapterImages();
-                                                }
-                                                
-                                                showNotification(`تم تحميل ${totalFiles} صورة بنجاح`);
-                                                closeModal('manageContentModal');
-                                            }
-                                        };
-                                        
-                                        reader.onerror = function() {
-                                            showNotification('حدث خطأ أثناء تحميل الصور', 'error');
-                                        };
-                                        
-                                        reader.readAsDataURL(file);
-                                    });
-                                };
-                                
-                                fileInput.click();
-                            });
-                            
-                            chapterActions.appendChild(editChapterBtn);
-                            chapterActions.appendChild(deleteChapterBtn);
-                            chapterActions.appendChild(uploadImagesBtn);
-                            
-                            chapterElement.appendChild(chapterTitle);
-                            chapterElement.appendChild(chapterActions);
-                            
-                            chaptersContainer.appendChild(chapterElement);
-                        });
-                    } else {
-                        const noChaptersMsg = document.createElement('p');
-                        noChaptersMsg.textContent = 'لا توجد فصول في هذا الأرك';
-                        noChaptersMsg.style.color = 'var(--text-secondary)';
-                        noChaptersMsg.style.fontSize = '0.9rem';
-                        noChaptersMsg.style.padding = '5px 0';
-                        chaptersContainer.appendChild(noChaptersMsg);
-                    }
-                    
-                    arkElement.appendChild(chaptersContainer);
-                    contentContainer.appendChild(arkElement);
-                });
-            }
-            
-            // تحديث الصورة الحالية
-            function updateCurrentImage(index) {
-                currentNovel.currentImageIndex = index;
-                saveNovelData();
-                updateImageCounter();
-            }
-            
-            // إضافة أرك جديد
-            function addNewArk(title) {
-                const newArk = {
-                    id: `ark_${Date.now()}`,
-                    title: title,
-                    chapters: [{
-                        id: `chapter_${Date.now()}`,
-                        title: 'فصل 1',
-                        images: []
-                    }]
-                };
-                
-                currentNovel.arks.push(newArk);
-                currentNovel.updatedAt = new Date().toISOString();
-                saveNovelData();
-                return newArk;
-            }
-            
-            // إضافة فصل جديد
-            function addNewChapter(arkIndex, title) {
-                if (arkIndex < 0 || arkIndex >= currentNovel.arks.length) return null;
-                
-                const newChapter = {
-                    id: `chapter_${Date.now()}`,
-                    title: title,
-                    images: []
-                };
-                
-                currentNovel.arks[arkIndex].chapters.push(newChapter);
-                currentNovel.updatedAt = new Date().toISOString();
-                saveNovelData();
-                return newChapter;
-            }
-            
-            // عرض نافذة دخول كلمة المرور
-            function showPasswordOverlay() {
-                const overlay = document.getElementById('passwordOverlay');
-                overlay.style.display = 'flex';
-                
-                // تهيئة رسم متحرك للقفل
-                const lockAnimation = lottie.loadAnimation({
-                    container: document.getElementById('lockAnimation'),
-                    renderer: 'svg',
-                    loop: true,
-                    autoplay: true,
-                    path: 'https://assets3.lottiefiles.com/packages/lf20_yzoqyyqf.json'
-                });
-                
-                // حدث فتح الرواية
-                document.getElementById('unlockBtn').addEventListener('click', function() {
-                    const password = document.getElementById('passwordInput').value;
-                    
-                    if (password === currentNovel.settings.password) {
-                        overlay.style.display = 'none';
-                        showNotification('تم فتح الرواية بنجاح');
-                    } else {
-                        showNotification('كلمة المرور غير صحيحة', 'error');
-                        // هز حقل كلمة المرور
-                        const input = document.getElementById('passwordInput');
-                        input.classList.add('shake');
-                        setTimeout(() => input.classList.remove('shake'), 500);
-                    }
-                });
-                
-                // السماح بالضغط على Enter لفتح الرواية
-                document.getElementById('passwordInput').addEventListener('keyup', function(event) {
-                    if (event.key === 'Enter') {
-                        document.getElementById('unlockBtn').click();
-                    }
-                });
-            }
-            
-            // حفظ بيانات الرواية
-            function saveNovelData() {
-                try {
-                    localStorage.setItem('novelData', JSON.stringify(currentNovel));
-                } catch (error) {
-                    console.error('فشل في حفظ بيانات الرواية:', error);
-                    showNotification('فشل في حفظ البيانات بسبب امتلاء التخزين المحلي', 'error');
-                }
-            }
-            
-            // تحميل بيانات الرواية
-            function loadNovelData() {
-                try {
-                    const savedData = localStorage.getItem('novelData');
-                    if (savedData) {
-                        currentNovel = JSON.parse(savedData);
-                    }
-                } catch (error) {
-                    console.error('فشل في تحميل بيانات الرواية:', error);
-                }
-            }
-            
-            // عرض إشعار
-            function showNotification(message, type = 'success') {
-                const notification = document.getElementById('notification');
-                const notificationText = document.getElementById('notificationText');
-                
-                notificationText.textContent = message;
-                
-                if (type === 'error') {
-                    notification.style.backgroundColor = '#ff4d4d';
-                } else {
-                    notification.style.backgroundColor = 'var(--primary-color)';
-                }
-                
-                notification.classList.add('show');
-                
-                // إخفاء الإشعار بعد 3 ثوانٍ
-                setTimeout(function() {
-                    notification.classList.remove('show');
-                }, 3000);
-            }
-            
-            // فتح النوافذ المنبثقة
-            function openModal(modalId) {
-                document.getElementById(modalId).style.display = 'flex';
-                
-                // إذا كانت نافذة إدارة المحتوى، قم بتحديث محتواها
-                if (modalId === 'manageContentModal') {
-                    updateContentManager();
-                }
-            }
-            
-            // إغلاق النوافذ المنبثقة
-            function closeModal(modalId) {
-                document.getElementById(modalId).style.display = 'none';
-            }
-            
-            // إنشاء صورة افتراضية مع نص
-            function generatePlaceholderImage(text) {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                
-                canvas.width = 800;
-                canvas.height = 1200;
-                
-                // تعيين خلفية داكنة
-                ctx.fillStyle = '#23252b';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
-                // إضافة حدود
-                ctx.strokeStyle = '#f47521';
-                ctx.lineWidth = 10;
-                ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
-                
-                // إضافة نص
-                ctx.fillStyle = '#ffffff';
-                ctx.font = 'bold 48px Tajawal, Arial';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText('اضغط هنا', canvas.width / 2, canvas.height / 2 - 50);
-                ctx.fillText('لإضافة صورة', canvas.width / 2, canvas.height / 2 + 50);
-                
-                // إضافة رقم/عنوان الصورة
-                ctx.fillStyle = '#9fadbd';
-                ctx.font = '36px Tajawal, Arial';
-                ctx.fillText(text, canvas.width / 2, canvas.height / 2 + 150);
-                
-                return canvas.toDataURL('image/png');
-            }
-            
-            // تهيئة استمعات الأحداث
-            function initializeEventListeners() {
-                // أزرار شريط الأدوات
-                document.getElementById('nextChapterBtn').addEventListener('click', function() {
-                    navigateToNextChapter();
-                });
-                
-                document.getElementById('prevChapterBtn').addEventListener('click', function() {
-                    navigateToPrevChapter();
-                });
-                
-                document.getElementById('downloadBtn').addEventListener('click', function() {
-                    if (!currentNovel.settings.allowDownload) {
-                        showNotification('التحميل غير مسموح به من قبل المؤلف', 'error');
-                        return;
-                    }
-                    
-                    downloadCurrentChapter();
-                });
-                
-                document.getElementById('lockBtn').addEventListener('click', function() {
-                    // إذا كانت الرواية محمية بالفعل، اطلب كلمة المرور أولاً
-                    if (currentNovel.settings.passwordProtected) {
-                        const unlock = confirm('هل تريد إلغاء حماية الرواية بكلمة المرور؟');
-                        if (unlock) {
-                            currentNovel.settings.passwordProtected = false;
-                            saveNovelData();
-                            showNotification('تم إلغاء حماية الرواية بنجاح');
-                        }
-                    } else {
-                        // إذا لم تكن محمية، اطلب كلمة مرور جديدة
-                        const password = prompt('أدخل كلمة مرور لحماية الرواية:');
-                        if (password !== null && password.trim() !== '') {
-                            currentNovel.settings.passwordProtected = true;
-                            currentNovel.settings.password = password;
-                            saveNovelData();
-                            showNotification('تم تفعيل حماية الرواية بنجاح');
-                        }
-                    }
-                });
-                
-                // أزرار الرأس
-                document.getElementById('infoBtn').addEventListener('click', function() {
-                    openModal('infoModal');
-                });
-                
-                document.getElementById('shareBtn').addEventListener('click', function() {
-                    if (!currentNovel.settings.allowSharing) {
-                        showNotification('المشاركة غير مسموح بها من قبل المؤلف', 'error');
-                        return;
-                    }
-                    
-                    shareCurrentChapter();
-                });
-                
-                document.getElementById('settingsBtn').addEventListener('click', function() {
-                    openModal('settingsModal');
-                });
-                
-                // أزرار الإعدادات العائمة
-                document.getElementById('settingsToggle').addEventListener('click', function() {
-                    document.getElementById('floatingSettings').classList.toggle('open');
-                });
-                
-                document.getElementById('viewMode').addEventListener('change', function() {
-                    currentNovel.settings.viewMode = this.value;
-                    
-                    if (this.value === 'grid') {
-                        document.getElementById('imageViewer').classList.add('grid-view');
-                    } else {
-                        document.getElementById('imageViewer').classList.remove('grid-view');
-                    }
-                    
-                    saveNovelData();
-                });
-                
-                document.getElementById('darkModeToggle').addEventListener('change', function() {
-                    currentNovel.settings.darkMode = this.checked;
-                    saveNovelData();
-                });
-                
-                document.getElementById('distractionFreeToggle').addEventListener('change', function() {
-                    if (this.checked) {
-                        document.body.classList.add('distraction-free');
-                    } else {
-                        document.body.classList.remove('distraction-free');
-                    }
-                });
-                
-                document.getElementById('languageSelect').addEventListener('change', function() {
-                    currentNovel.settings.language = this.value;
-                    saveNovelData();
-                    
-                    // تحديث اتجاه الصفحة واللغة
-                    if (this.value === 'ar') {
-                        document.documentElement.setAttribute('dir', 'rtl');
-                        document.documentElement.setAttribute('lang', 'ar');
-                    } else {
-                        document.documentElement.setAttribute('dir', 'ltr');
-                        document.documentElement.setAttribute('lang', 'en');
-                    }
-                });
-                
-                document.getElementById('resetSettingsBtn').addEventListener('click', function() {
-                    if (confirm('هل أنت متأكد من استعادة الإعدادات الافتراضية؟')) {
-                        currentNovel.settings = {
-                            passwordProtected: false,
-                            password: "",
-                            allowSharing: true,
-                            allowDownload: true,
-                            language: "ar",
-                            darkMode: true,
-                            viewMode: "slide"
-                        };
-                        
-                        saveNovelData();
-                        updateUI();
-                        showNotification('تم استعادة الإعدادات الافتراضية بنجاح');
-                    }
-                });
-                
-                // نماذج الإعدادات
-                document.getElementById('passwordProtectionToggle').addEventListener('change', function() {
-                    const passwordRow = document.getElementById('passwordSettingRow');
-                    
-                    if (this.checked) {
-                        passwordRow.style.display = 'flex';
-                    } else {
-                        passwordRow.style.display = 'none';
-                    }
-                });
-                
-                document.getElementById('saveSettingsBtn').addEventListener('click', function() {
-                    // حفظ عنوان الرواية
-                    const novelTitle = document.getElementById('editNovelTitle').value.trim();
-                    if (novelTitle !== '') {
-                        currentNovel.title = novelTitle;
-                    }
-                    
-                    // حفظ إعدادات الأمان
-                    currentNovel.settings.passwordProtected = document.getElementById('passwordProtectionToggle').checked;
-                    if (currentNovel.settings.passwordProtected) {
-                        const password = document.getElementById('novelPassword').value.trim();
-                        if (password !== '') {
-                            currentNovel.settings.password = password;
-                        }
-                    }
-                    
-                    // حفظ إعدادات المشاركة والتحميل
-                    currentNovel.settings.allowSharing = document.getElementById('allowSharingToggle').checked;
-                    currentNovel.settings.allowDownload = document.getElementById('allowDownloadToggle').checked;
-                    
-                    // حفظ التغييرات وتحديث الواجهة
-                    currentNovel.updatedAt = new Date().toISOString();
-                    saveNovelData();
-                    updateUI();
-                    
-                    // إغلاق النافذة وعرض إشعار
-                    closeModal('settingsModal');
-                    showNotification('تم حفظ الإعدادات بنجاح');
-                });
-                
-                // إدارة المحتوى
-                document.getElementById('manageContentBtn').addEventListener('click', function() {
-                    openModal('manageContentModal');
-                });
-                
-                // نافذة إضافة أرك
-                document.getElementById('addArkBtn').addEventListener('click', function() {
-                    openModal('addArkModal');
-                });
-                
-                document.getElementById('addArkForm').addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    const arkTitle = document.getElementById('newArkTitle').value.trim();
-                    if (arkTitle !== '') {
-                        addNewArk(arkTitle);
-                        document.getElementById('newArkTitle').value = '';
-                        closeModal('addArkModal');
-                        
-                        // تحديث الواجهة بعد إضافة الأرك
-                        updateUI();
-                        showNotification('تم إضافة الأرك الجديد بنجاح');
-                    }
-                });
-                
-                // نافذة إضافة فصل
-                document.getElementById('addChapterForm').addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    const chapterTitle = document.getElementById('newChapterTitle').value.trim();
-                    const arkIndex = parseInt(document.getElementById('parentArkId').value);
-                    
-                    if (chapterTitle !== '' && !isNaN(arkIndex) && arkIndex >= 0 && arkIndex < currentNovel.arks.length) {
-                        addNewChapter(arkIndex, chapterTitle);
-                        document.getElementById('newChapterTitle').value = '';
-                        closeModal('addChapterModal');
-                        
-                        // تحديث الواجهة بعد إضافة الفصل
-                        updateUI();
-                        updateContentManager();
-                        showNotification('تم إضافة الفصل الجديد بنجاح');
-                    }
-                });
-                
-                // إغلاق النوافذ المنبثقة
-                document.querySelectorAll('.close-modal').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const modalId = this.getAttribute('data-modal');
-                        closeModal(modalId);
-                    });
-                });
-                
-                // إغلاق النوافذ المنبثقة عند النقر خارجها
-                document.querySelectorAll('.modal').forEach(modal => {
-                    modal.addEventListener('click', function(e) {
-                        if (e.target === this) {
-                            this.style.display = 'none';
-                        }
-                    });
-                });
-                
-                // النقر المزدوج لمشاركة الفصل
-                document.getElementById('imageViewer').addEventListener('dblclick', function() {
-                    if (currentNovel.settings.allowSharing) {
-                        shareCurrentChapter();
-                    }
-                });
-                
-                // النقر المطول لعرض معلومات الرواية
-                let longPressTimer;
-                document.getElementById('imageViewer').addEventListener('mousedown', function() {
-                    longPressTimer = setTimeout(function() {
-                        openModal('infoModal');
-                    }, 800);
-                });
-                
-                document.getElementById('imageViewer').addEventListener('mouseup', function() {
-                    clearTimeout(longPressTimer);
-                });
-                
-                document.getElementById('imageViewer').addEventListener('mouseleave', function() {
-                    clearTimeout(longPressTimer);
-                });
-                
-                // اختصارات لوحة المفاتيح
-                document.addEventListener('keydown', function(e) {
-                    // التالي: السهم الأيمن
-                    if (e.key === 'ArrowRight') {
-                        if (swiper.activeIndex < swiper.slides.length - 1) {
-                            swiper.slideNext();
-                        } else {
-                            navigateToNextChapter();
-                        }
-                    }
-                    
-                    // السابق: السهم الأيسر
-                    if (e.key === 'ArrowLeft') {
-                        if (swiper.activeIndex > 0) {
-                            swiper.slidePrev();
-                        } else {
-                            navigateToPrevChapter();
-                        }
-                    }
-                    
-                    // الوضع الليلي: D
-                    if (e.key === 'd' && !e.ctrlKey && !e.altKey) {
-                        const darkModeToggle = document.getElementById('darkModeToggle');
-                        darkModeToggle.checked = !darkModeToggle.checked;
-                        darkModeToggle.dispatchEvent(new Event('change'));
-                    }
-                    
-                    // وضع القراءة: F
-                    if (e.key === 'f' && !e.ctrlKey && !e.altKey) {
-                        const distractionFreeToggle = document.getElementById('distractionFreeToggle');
-                        distractionFreeToggle.checked = !distractionFreeToggle.checked;
-                        distractionFreeToggle.dispatchEvent(new Event('change'));
-                    }
-                    
-                    // المشاركة: S
-                    if (e.key === 's' && !e.ctrlKey && !e.altKey) {
-                        if (currentNovel.settings.allowSharing) {
-                            shareCurrentChapter();
-                        }
-                    }
-                    
-                    // التحميل: X
-                    if (e.key === 'x' && !e.ctrlKey && !e.altKey) {
-                        if (currentNovel.settings.allowDownload) {
-                            downloadCurrentChapter();
-                        }
-                    }
-                    
-                    // الإعدادات: ESC
-                    if (e.key === 'Escape') {
-                        document.getElementById('floatingSettings').classList.toggle('open');
-                    }
-                });
-                
-                // استمعات التمرير اللمسي للأجهزة المحمولة
-                let touchStartX = 0;
-                let touchEndX = 0;
-                
-                document.getElementById('imageViewer').addEventListener('touchstart', function(e) {
-                    touchStartX = e.changedTouches[0].screenX;
-                    
-                    // ابدأ مؤقت الضغط المطول
-                    longPressTimer = setTimeout(function() {
-                        openModal('infoModal');
-                    }, 800);
-                });
-                
-                document.getElementById('imageViewer').addEventListener('touchend', function(e) {
-                    clearTimeout(longPressTimer);
-                    touchEndX = e.changedTouches[0].screenX;
-                    handleSwipe();
-                });
-                
-                function handleSwipe() {
-                    // احسب المسافة
-                    const swipeDistance = touchEndX - touchStartX;
-                    
-                    // تجاهل التمريرات الصغيرة
-                    if (Math.abs(swipeDistance) < 50) return;
-                    
-                    if (swipeDistance > 0) {
-                        // تمرير من اليسار إلى اليمين (السابق)
-                        if (swiper.activeIndex > 0) {
-                            swiper.slidePrev();
-                        } else {
-                            navigateToPrevChapter();
-                        }
-                    } else {
-                        // تمرير من اليمين إلى اليسار (التالي)
-                        if (swiper.activeIndex < swiper.slides.length - 1) {
-                            swiper.slideNext();
-                        } else {
-                            navigateToNextChapter();
-                        }
-                    }
-                }
-            }
-            
-            // التنقل للفصل التالي
-            function navigateToNextChapter() {
-                if (currentNovel.arks.length === 0) return;
-                
-                const currentArk = currentNovel.arks[currentNovel.currentArkIndex];
-                if (!currentArk || !currentArk.chapters || currentArk.chapters.length === 0) return;
-                
-                // هل هناك فصل تالي في الأرك الحالي؟
-                if (currentNovel.currentChapterIndex < currentArk.chapters.length - 1) {
-                    currentNovel.currentChapterIndex++;
-                    currentNovel.currentImageIndex = 0;
-                } else {
-                    // هل هناك أرك تالي؟
-                    if (currentNovel.currentArkIndex < currentNovel.arks.length - 1) {
-                        currentNovel.currentArkIndex++;
-                        currentNovel.currentChapterIndex = 0;
-                        currentNovel.currentImageIndex = 0;
-                    } else {
-                        // نحن في آخر فصل من آخر أرك
-                        showNotification('أنت في نهاية الرواية');
-                        return;
-                    }
-                }
-                
-                saveNovelData();
-                updateUI();
-            }
-            
-            // التنقل للفصل السابق
-            function navigateToPrevChapter() {
-                if (currentNovel.arks.length === 0) return;
-                
-                // هل هناك فصل سابق في الأرك الحالي؟
-                if (currentNovel.currentChapterIndex > 0) {
-                    currentNovel.currentChapterIndex--;
-                    currentNovel.currentImageIndex = 0;
-                } else {
-                    // هل هناك أرك سابق؟
-                    if (currentNovel.currentArkIndex > 0) {
-                        currentNovel.currentArkIndex--;
-                        const prevArk = currentNovel.arks[currentNovel.currentArkIndex];
-                        currentNovel.currentChapterIndex = prevArk.chapters.length - 1;
-                        currentNovel.currentImageIndex = 0;
-                    } else {
-                        // نحن في أول فصل من أول أرك
-                        showNotification('أنت في بداية الرواية');
-                        return;
-                    }
-                }
-                
-                saveNovelData();
-                updateUI();
-            }
-            
-            // مشاركة الفصل الحالي
-            function shareCurrentChapter() {
-                // إنشاء معلمات الرابط للفصل الحالي
-                const params = new URLSearchParams(window.location.search);
-                params.set('arkIndex', currentNovel.currentArkIndex);
-                params.set('chapterIndex', currentNovel.currentChapterIndex);
-                params.set('imageIndex', currentNovel.currentImageIndex);
-                
-                // إنشاء الرابط
-                const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
-                
-                // نسخ الرابط إلى الحافظة
-                navigator.clipboard.writeText(shareUrl)
-                    .then(() => {
-                        showNotification('تم نسخ رابط المشاركة إلى الحافظة');
-                    })
-                    .catch(() => {
-                        // إذا فشل النسخ المباشر، اعرض الرابط للمستخدم
-                        prompt('انسخ رابط المشاركة:', shareUrl);
-                    });
-            }
-            
-            // تحميل الفصل الحالي
-            function downloadCurrentChapter() {
-                if (!window.JSZip || !window.saveAs) {
-                    showNotification('لم يتم تحميل مكتبات الضغط والتنزيل', 'error');
-                    return;
-                }
-                
-                if (currentNovel.arks.length === 0) return;
-                
-                const currentArk = currentNovel.arks[currentNovel.currentArkIndex];
-                if (!currentArk || !currentArk.chapters || currentArk.chapters.length === 0) return;
-                
-                const currentChapter = currentArk.chapters[currentNovel.currentChapterIndex];
-                if (!currentChapter || !currentChapter.images || currentChapter.images.length === 0) {
-                    showNotification('لا توجد صور للتحميل في هذا الفصل', 'error');
-                    return;
-                }
-                
-                // إنشاء ملف مضغوط جديد
-                const zip = new JSZip();
-                
-                // إنشاء مجلد للفصل
-                const folder = zip.folder(`${currentArk.title} - ${currentChapter.title}`);
-                
-                // إضافة الصور إلى الملف المضغوط
-                let processedImages = 0;
-                const totalImages = currentChapter.images.length;
-                
-                // عرض مؤشر التقدم
-                const loadingIndicator = document.getElementById('loadingIndicator');
-                loadingIndicator.style.width = '0%';
-                
-                // معالجة كل صورة
-                currentChapter.images.forEach((image, index) => {
-                    // استخراج نوع الملف وبيانات الـbase64 من Data URL
-                    const matches = image.src.match(/^data:(.+);base64,(.+)$/);
-                    
-                    if (matches && matches.length === 3) {
-                        const imageType = matches[1].split('/')[1];
-                        const imageData = matches[2];
-                        
-                        // إضافة الصورة إلى الملف المضغوط
-                        folder.file(`image_${index + 1}.${imageType}`, imageData, { base64: true });
-                        
-                        // تحديث شريط التقدم
-                        processedImages++;
-                        loadingIndicator.style.width = `${(processedImages / totalImages) * 100}%`;
-                        
-                        // عند الانتهاء من جميع الصور
-                        if (processedImages === totalImages) {
-                            // إنشاء الملف المضغوط وتنزيله
-                            zip.generateAsync({ type: 'blob' })
-                                .then(function(content) {
-                                    // تنزيل الملف المضغوط
-                                    saveAs(content, `${currentArk.title} - ${currentChapter.title}.zip`);
-                                    
-                                    // إخفاء شريط التقدم بعد فترة قصيرة
-                                    setTimeout(() => {
-                                        loadingIndicator.style.width = '0%';
-                                    }, 500);
-                                    
-                                    showNotification('تم تحميل الفصل بنجاح');
-                                })
-                                .catch(function(error) {
-                                    console.error('فشل في إنشاء الملف المضغوط:', error);
-                                    showNotification('فشل في تحميل الفصل', 'error');
-                                    
-                                    // إخفاء شريط التقدم
-                                    loadingIndicator.style.width = '0%';
-                                });
-                        }
-                    } else {
-                        console.error('تنسيق صورة غير صالح:', image.src);
-                        processedImages++;
-                    }
-                });
-            }
-            
-            // التحقق من معلمات URL عند تحميل الصفحة
-            function checkUrlParams() {
-                const params = new URLSearchParams(window.location.search);
-                
-                if (params.has('arkIndex') && params.has('chapterIndex')) {
-                    const arkIndex = parseInt(params.get('arkIndex'));
-                    const chapterIndex = parseInt(params.get('chapterIndex'));
-                    const imageIndex = params.has('imageIndex') ? parseInt(params.get('imageIndex')) : 0;
-                    
-                    // التحقق من صحة المعلمات
-                    if (!isNaN(arkIndex) && !isNaN(chapterIndex) && !isNaN(imageIndex) &&
-                        arkIndex >= 0 && arkIndex < currentNovel.arks.length &&
-                        chapterIndex >= 0 && chapterIndex < currentNovel.arks[arkIndex].chapters.length &&
-                        imageIndex >= 0) {
-                        
-                        // تعيين المؤشرات الحالية
-                        currentNovel.currentArkIndex = arkIndex;
-                        currentNovel.currentChapterIndex = chapterIndex;
-                        currentNovel.currentImageIndex = imageIndex;
-                        
-                        // حفظ التغييرات وتحديث الواجهة
-                        saveNovelData();
-                        updateUI();
-                        
-                        // التمرير إلى الصورة المحددة
-                        swiper.slideTo(imageIndex, 0);
-                    }
-                }
-            }
-            
-            // استدعاء دالة فحص المعلمات بعد التهيئة
-            checkUrlParams();
         });
     </script>
 </body>
