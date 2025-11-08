@@ -20,8 +20,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     
-    <!-- EmailJS SDK -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     
     <style>
         /* ===== متغيرات CSS للألوان والإعدادات ===== */
@@ -1612,10 +1613,19 @@
     <div class="toast" id="toast">تم إرسال طلبك بنجاح! سنتصل بك قريباً</div>
 
     <script>
-        // تهيئة EmailJS
-        (function() {
-            emailjs.init("Vtq6fXRv6-rOfkYlj");
-        })();
+        // ===== تهيئة Firebase =====
+        const firebaseConfig = {
+            apiKey: "AIzaSyCxRrYtWOExKd1df-_jleu839Z6Ph5bvfs",
+            authDomain: "sample-firebase-ai-app-b5d1a.firebaseapp.com",
+            projectId: "sample-firebase-ai-app-b5d1a",
+            storageBucket: "sample-firebase-ai-app-b5d1a.firebasestorage.app",
+            messagingSenderId: "711076003021",
+            appId: "1:711076003021:web:16b0b9db9507637d26fd84"
+        };
+
+        // تهيئة Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
         // بيانات الصور
         const images = [
@@ -1723,8 +1733,8 @@
             document.body.style.overflow = 'auto';
         }
 
-        // إرسال الطلب عبر EmailJS
-        function submitOrder(event) {
+        // إرسال الطلب عبر Firebase
+        async function submitOrder(event) {
             event.preventDefault();
             
             const submitBtn = document.getElementById('submitBtn');
@@ -1736,37 +1746,39 @@
             const price = 720;
             const total = quantity * price;
             
-            const templateParams = {
-                product_name: 'ساعة ذكية فاخرة - الجيل الجديد',
-                customer_name: document.getElementById('fullName').value,
-                customer_phone: document.getElementById('phone').value,
-                customer_state: document.getElementById('state').value,
-                customer_city: document.getElementById('city').value,
-                customer_address: document.getElementById('address').value,
-                customer_notes: document.getElementById('notes').value || 'لا توجد ملاحظات',
-                order_quantity: quantity,
-                unit_price: price + ' د.ج',
-                total_price: total + ' د.ج',
-                order_date: new Date().toLocaleDateString('ar-DZ')
+            const orderData = {
+                productName: 'ساعة ذكية فاخرة - الجيل الجديد',
+                customerName: document.getElementById('fullName').value,
+                customerPhone: document.getElementById('phone').value,
+                customerState: document.getElementById('state').value,
+                customerCity: document.getElementById('city').value,
+                customerAddress: document.getElementById('address').value,
+                customerNotes: document.getElementById('notes').value || 'لا توجد ملاحظات',
+                orderQuantity: parseInt(quantity),
+                unitPrice: price,
+                totalPrice: total,
+                orderDate: new Date().toISOString(),
+                status: 'pending'
             };
             
-            // إرسال البريد الإلكتروني
-            emailjs.send("service_zepp6wx", "template_qdmxqub", templateParams)
-                .then(function(response) {
-                    console.log('تم الإرسال بنجاح!', response.status, response.text);
-                    closeOrderModal();
-                    showToast('تم إرسال طلبك بنجاح! سنتصل بك قريباً');
-                    
-                    // إعادة تعيين النموذج
-                    document.getElementById('orderForm').reset();
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'تأكيد الطلب';
-                }, function(error) {
-                    console.error('فشل الإرسال:', error);
-                    showToast('حدث خطأ في إرسال الطلب. يرجى المحاولة مرة أخرى.', true);
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'تأكيد الطلب';
-                });
+            try {
+                // حفظ الطلب في Firebase
+                await db.collection('orders').add(orderData);
+                
+                console.log('تم حفظ الطلب بنجاح!');
+                closeOrderModal();
+                showToast('تم إرسال طلبك بنجاح! سنتصل بك قريباً');
+                
+                // إعادة تعيين النموذج
+                document.getElementById('orderForm').reset();
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'تأكيد الطلب';
+            } catch (error) {
+                console.error('خطأ في حفظ الطلب:', error);
+                showToast('حدث خطأ في إرسال الطلب. يرجى المحاولة مرة أخرى.', true);
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'تأكيد الطلب';
+            }
         }
 
         // عرض إشعار
@@ -1832,11 +1844,11 @@
             updateSliderButtons();
         }
 
-        // تمرير المنتجات - تم إصلاحه بالكامل
+        // تمرير المنتجات
         function slideProducts(direction) {
             const track = document.getElementById('productsTrack');
-            const cardWidth = 320; // عرض البطاقة
-            const gap = 32; // الفراغ بين البطاقات (2rem = 32px)
+            const cardWidth = 320;
+            const gap = 32;
             const slideDistance = cardWidth + gap;
             
             const totalProducts = track.children.length;
@@ -1846,7 +1858,6 @@
             
             currentSlidePosition += direction;
             
-            // تحديد الحدود
             if (currentSlidePosition < 0) {
                 currentSlidePosition = 0;
             }
@@ -1854,7 +1865,6 @@
                 currentSlidePosition = maxSlide;
             }
             
-            // تطبيق التحويل
             const translateValue = currentSlidePosition * slideDistance;
             track.style.transform = `translateX(${translateValue}px)`;
             
@@ -1876,7 +1886,6 @@
             const visibleCards = Math.floor(containerWidth / slideDistance);
             const maxSlide = totalProducts - visibleCards;
             
-            // تعطيل/تفعيل الأزرار حسب الموقع
             prevBtn.disabled = currentSlidePosition <= 0;
             nextBtn.disabled = currentSlidePosition >= maxSlide;
         }
@@ -1911,7 +1920,6 @@
                 updateStarSelection();
             });
             
-            // إعادة حساب موقع التمرير عند تغيير حجم النافذة
             window.addEventListener('resize', () => {
                 currentSlidePosition = 0;
                 const track = document.getElementById('productsTrack');
@@ -1932,8 +1940,8 @@
             highlightStars(selectedRating);
         }
 
-        // إرسال التقييم
-        function submitReview() {
+        // إرسال التقييم عبر Firebase
+        async function submitReview() {
             const name = document.getElementById('reviewerName').value.trim();
             const text = document.getElementById('reviewText').value.trim();
             
@@ -1946,36 +1954,63 @@
                 name: name,
                 rating: selectedRating,
                 text: text,
-                date: new Date().toLocaleDateString('ar-DZ')
+                date: new Date().toISOString(),
+                productId: 'smart-watch-01'
             };
             
-            reviews.unshift(review);
-            saveReviews();
-            displayReviews();
-            updateAverageRating();
-            
-            // إعادة تعيين النموذج
-            document.getElementById('reviewerName').value = '';
-            document.getElementById('reviewText').value = '';
-            selectedRating = 0;
-            updateStarSelection();
-            toggleReviewForm();
-            
-            showToast('شكراً لك! تم إضافة تقييمك بنجاح');
+            try {
+                // حفظ التقييم في Firebase
+                await db.collection('reviews').add(review);
+                
+                console.log('تم حفظ التقييم بنجاح!');
+                
+                // إعادة تحميل التقييمات
+                await loadReviews();
+                
+                // إعادة تعيين النموذج
+                document.getElementById('reviewerName').value = '';
+                document.getElementById('reviewText').value = '';
+                selectedRating = 0;
+                updateStarSelection();
+                toggleReviewForm();
+                
+                showToast('شكراً لك! تم إضافة تقييمك بنجاح');
+            } catch (error) {
+                console.error('خطأ في حفظ التقييم:', error);
+                showToast('حدث خطأ في إضافة التقييم. يرجى المحاولة مرة أخرى.', true);
+            }
         }
 
-        // حفظ التقييمات
-        function saveReviews() {
-            localStorage.setItem('productReviews', JSON.stringify(reviews));
-        }
-
-        // تحميل التقييمات
-        function loadReviews() {
-            const saved = localStorage.getItem('productReviews');
-            if (saved) {
-                reviews = JSON.parse(saved);
+        // تحميل التقييمات من Firebase
+        async function loadReviews() {
+            try {
+                const snapshot = await db.collection('reviews')
+                    .where('productId', '==', 'smart-watch-01')
+                    .orderBy('date', 'desc')
+                    .get();
+                
+                reviews = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    reviews.push({
+                        name: data.name,
+                        rating: data.rating,
+                        text: data.text,
+                        date: new Date(data.date).toLocaleDateString('ar-DZ')
+                    });
+                });
+                
                 displayReviews();
                 updateAverageRating();
+            } catch (error) {
+                console.error('خطأ في تحميل التقييمات:', error);
+                // في حالة الخطأ، استخدم localStorage كبديل
+                const saved = localStorage.getItem('productReviews');
+                if (saved) {
+                    reviews = JSON.parse(saved);
+                    displayReviews();
+                    updateAverageRating();
+                }
             }
         }
 
