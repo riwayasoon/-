@@ -1,1 +1,1050 @@
-c
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسوق مع زكريا - جاكيتات عصرية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text-primary: #000000;
+            --text-secondary: #333333;
+            --accent: #2c3e50;
+            --accent-hover: #34495e;
+            --border: #e0e0e0;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --card-bg: #ffffff;
+        }
+
+        body.dark-mode {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #e0e0e0;
+            --accent: #4a90e2;
+            --accent-hover: #5fa3f5;
+            --border: #444444;
+            --shadow: rgba(255, 255, 255, 0.1);
+            --card-bg: #2d2d2d;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background: var(--accent);
+            padding: 1.5rem 0;
+            box-shadow: 0 2px 10px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .theme-toggle, .cart-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 0.8rem 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .theme-toggle:hover, .cart-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        /* Back Button */
+        .back-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px var(--shadow);
+            transition: all 0.3s ease;
+            z-index: 999;
+            display: none;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.1);
+            background: var(--accent-hover);
+        }
+
+        .back-btn.show {
+            display: block;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 3rem 0;
+            background: var(--bg-secondary);
+            border-radius: 15px;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px var(--shadow);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            cursor: zoom-in;
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            color: var(--accent);
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .add-to-cart-btn {
+            flex: 1;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-cart-btn:hover {
+            background: var(--accent-hover);
+            transform: scale(1.02);
+        }
+
+        /* Image Modal */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .modal-image {
+            max-width: 100%;
+            max-height: 90vh;
+            transition: transform 0.3s ease;
+        }
+
+        .zoom-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            background: rgba(0,0,0,0.7);
+            padding: 10px;
+            border-radius: 50px;
+        }
+
+        .zoom-btn {
+            background: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .zoom-btn:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: #e74c3c;
+            color: white;
+        }
+
+        /* Cart Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -500px;
+            width: 500px;
+            height: 100%;
+            background: var(--card-bg);
+            box-shadow: -5px 0 20px var(--shadow);
+            transition: all 0.3s ease;
+            z-index: 1500;
+            overflow-y: auto;
+        }
+
+        .cart-sidebar.active {
+            right: 0;
+        }
+
+        .cart-header {
+            padding: 2rem;
+            background: var(--accent);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-items {
+            padding: 1.5rem;
+        }
+
+        .cart-item {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        .cart-total {
+            padding: 1.5rem;
+            border-top: 2px solid var(--border);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* Order Form */
+        .order-form {
+            display: none;
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .order-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .submit-order-btn {
+            width: 100%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-order-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        /* Reviews Section */
+        .reviews-section {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 20px var(--shadow);
+        }
+
+        .review-form {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+        }
+
+        .rating-stars {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .star {
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .star.active {
+            color: #f39c12;
+        }
+
+        .review-item {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--accent);
+            color: white;
+            padding: 3rem 2rem;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-5px);
+        }
+
+        @media (max-width: 768px) {
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">🛍️ تسوق مع زكريا</div>
+            <div class="header-actions">
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="cart-btn" onclick="toggleCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Back Button -->
+    <button class="back-btn" onclick="goBack()">
+        <i class="fas fa-arrow-right"></i>
+    </button>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1>مرحباً بك في متجر الجاكيتات العصرية</h1>
+            <p>اكتشف أحدث صيحات الموضة بأفضل الأسعار</p>
+        </div>
+
+        <!-- Order Form -->
+        <div class="order-form" id="orderForm">
+            <h2 style="margin-bottom: 1.5rem;">أكمل بيانات الطلب</h2>
+            <form id="customerForm">
+                <div class="form-group">
+                    <label>الاسم الكامل</label>
+                    <input type="text" id="fullName" required placeholder="أدخل اسمك الكامل">
+                </div>
+                <div class="form-group">
+                    <label>اللقب</label>
+                    <input type="text" id="lastName" required placeholder="أدخل لقبك">
+                </div>
+                <div class="form-group">
+                    <label>مكان الإقامة</label>
+                    <input type="text" id="residence" required placeholder="أدخل مكان إقامتك">
+                </div>
+                <div class="form-group">
+                    <label>الولاية</label>
+                    <select id="wilaya" required>
+                        <option value="">اختر الولاية</option>
+                        <option value="أدرار">01 - أدرار</option>
+                        <option value="الشلف">02 - الشلف</option>
+                        <option value="الأغواط">03 - الأغواط</option>
+                        <option value="أم البواقي">04 - أم البواقي</option>
+                        <option value="باتنة">05 - باتنة</option>
+                        <option value="بجاية">06 - بجاية</option>
+                        <option value="بسكرة">07 - بسكرة</option>
+                        <option value="بشار">08 - بشار</option>
+                        <option value="البليدة">09 - البليدة</option>
+                        <option value="البويرة">10 - البويرة</option>
+                        <option value="تمنراست">11 - تمنراست</option>
+                        <option value="تبسة">12 - تبسة</option>
+                        <option value="تلمسان">13 - تلمسان</option>
+                        <option value="تيارت">14 - تيارت</option>
+                        <option value="تيزي وزو">15 - تيزي وزو</option>
+                        <option value="الجزائر">16 - الجزائر</option>
+                        <option value="الجلفة">17 - الجلفة</option>
+                        <option value="جيجل">18 - جيجل</option>
+                        <option value="سطيف">19 - سطيف</option>
+                        <option value="سعيدة">20 - سعيدة</option>
+                        <option value="سكيكدة">21 - سكيكدة</option>
+                        <option value="سيدي بلعباس">22 - سيدي بلعباس</option>
+                        <option value="عنابة">23 - عنابة</option>
+                        <option value="قالمة">24 - قالمة</option>
+                        <option value="قسنطينة">25 - قسنطينة</option>
+                        <option value="المدية">26 - المدية</option>
+                        <option value="مستغانم">27 - مستغانم</option>
+                        <option value="المسيلة">28 - المسيلة</option>
+                        <option value="معسكر">29 - معسكر</option>
+                        <option value="ورقلة">30 - ورقلة</option>
+                        <option value="وهران">31 - وهران</option>
+                        <option value="البيض">32 - البيض</option>
+                        <option value="إليزي">33 - إليزي</option>
+                        <option value="برج بوعريريج">34 - برج بوعريريج</option>
+                        <option value="بومرداس">35 - بومرداس</option>
+                        <option value="الطارف">36 - الطارف</option>
+                        <option value="تندوف">37 - تندوف</option>
+                        <option value="تيسمسيلت">38 - تيسمسيلت</option>
+                        <option value="الوادي">39 - الوادي</option>
+                        <option value="خنشلة">40 - خنشلة</option>
+                        <option value="سوق أهراس">41 - سوق أهراس</option>
+                        <option value="تيبازة">42 - تيبازة</option>
+                        <option value="ميلة">43 - ميلة</option>
+                        <option value="عين الدفلى">44 - عين الدفلى</option>
+                        <option value="النعامة">45 - النعامة</option>
+                        <option value="عين تموشنت">46 - عين تموشنت</option>
+                        <option value="غرداية">47 - غرداية</option>
+                        <option value="غليزان">48 - غليزان</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>رقم الهاتف</label>
+                    <input type="tel" id="phone" required placeholder="05XXXXXXXX">
+                </div>
+                <button type="submit" class="submit-order-btn">
+                    <i class="fas fa-check"></i> تأكيد البيانات
+                </button>
+            </form>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid" id="productsGrid"></div>
+
+        <!-- Reviews Section -->
+        <div class="reviews-section">
+            <h2>آراء العملاء</h2>
+            <div class="review-form">
+                <h3>اترك تقييمك</h3>
+                <div class="rating-stars" id="ratingStars">
+                    <span class="star" data-rating="1">★</span>
+                    <span class="star" data-rating="2">★</span>
+                    <span class="star" data-rating="3">★</span>
+                    <span class="star" data-rating="4">★</span>
+                    <span class="star" data-rating="5">★</span>
+                </div>
+                <textarea id="reviewText" rows="4" style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 2px solid var(--border); background: var(--bg-primary); color: var(--text-primary);" placeholder="شاركنا رأيك..."></textarea>
+                <button onclick="submitReview()" class="submit-order-btn" style="margin-top: 1rem;">إرسال التقييم</button>
+            </div>
+            <div id="reviewsList"></div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h2>سلة المشتريات</h2>
+            <button class="close-modal" onclick="toggleCart()">×</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-total" id="cartTotal">المجموع: 0.00 د.ج</div>
+        <button class="submit-order-btn" onclick="showOrderForm()" style="margin: 1rem;">
+            <i class="fas fa-shopping-bag"></i> طلب طلبية
+        </button>
+    </div>
+
+    <!-- Image Modal -->
+    <div class="image-modal" id="imageModal">
+        <button class="close-modal" onclick="closeImageModal()">×</button>
+        <div class="modal-content">
+            <img id="modalImage" class="modal-image" src="" alt="">
+            <div class="zoom-controls">
+                <button class="zoom-btn" onclick="zoomImage(-1)"><i class="fas fa-minus"></i></button>
+                <button class="zoom-btn" onclick="zoomImage(1)"><i class="fas fa-plus"></i></button>
+                <button class="zoom-btn" onclick="resetZoom()"><i class="fas fa-undo"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>تسوق مع زكريا</h3>
+                <p>أفضل جودة بأفضل الأسعار</p>
+            </div>
+            <div class="footer-section">
+                <h3>للتواصل</h3>
+                <p><i class="fas fa-phone"></i> 0774843237</p>
+                <p><i class="fas fa-envelope"></i> zakariahugo100@gmail.com</p>
+            </div>
+            <div class="footer-section">
+                <h3>تابعنا</h3>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/zaki.abbas.75457" target="_blank" class="social-btn">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Products Data
+        const products = [
+            { id: 1, name: 'جاكيت نورث فيس - أسود/رمادي', price: 4500, image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="350"%3E%3Crect fill="%23333" width="300" height="175"/%3E%3Crect fill="%23ccc" y="175" width="300" height="175"/%3E%3Ctext x="50%25" y="50%25" fill="white" font-size="20" text-anchor="middle"%3ENorth Face%3C/text%3E%3C/svg%3E', brand: 'The North Face' },
+            { id: 2, name: 'جاكيت نورث فيس - أسود/بيج', price: 4500, image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="350"%3E%3Crect fill="%23000" width="300" height="175"/%3E%3Crect fill="%23d4b896" y="175" width="300" height="175"/%3E%3Ctext x="50%25" y="50%25" fill="white" font-size="20" text-anchor="middle"%3ENorth Face%3C/text%3E%3C/svg%3E', brand: 'The North Face' },
+            { id: 3, name: 'جاكيت نورث فيس - بنفسجي', price: 4500, image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="350"%3E%3Crect fill="%234a235a" width="300" height="175"/%3E%3Crect fill="%238e44ad" y="175" width="300" height="175"/%3E%3Ctext x="50%25" y="50%25" fill="white" font-size="20" text-anchor="middle"%3ENorth Face%3C/text%3E%3C/svg%3E', brand: 'The North Face' },
+            { id: 4, name: 'جاكيت كولومبيا - أسود', price: 4200, image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="350"%3E%3Crect fill="%23000" width="300" height="350"/%3E%3Ctext x="50%25" y="50%25" fill="white" font-size="20" text-anchor="middle"%3EColumbia%3C/text%3E%3C/svg%3E', brand: 'Columbia' },
+            { id: 5, name: 'جاكيت متعدد الجيوب - أزرق داكن', price: 3800, image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="350"%3E%3Crect fill="%231a2332" width="300" height="350"/%3E%3Crect fill="%23334455" x="20" y="200" width="80" height="60" rx="5"/%3E%3Crect fill="%23334455" x="110" y="200" width="80" height="60" rx="5"/%3E%3Crect fill="%23334455" x="200" y="200" width="80" height="60" rx="5"/%3E%3C/svg%3E', brand: 'Multi-Pocket' },
+            { id: 6, name: 'جاكيت DURUIPOFS - رمادي', price: 3500, image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="350"%3E%3Crect fill="%23666" width="300" height="350"/%3E%3Ctext x="50%25" y="50%25" fill="white" font-size="18" text-anchor="middle"%3EDURUIPOFS%3C/text%3E%3C/svg%3E', brand: 'DURUIPOFS' },
+            { id: 7, name: 'جاكيت THENORTHFACE - بني', price: 4800, image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="350"%3E%3Crect fill="%23654321" width="300" height="350"/%3E%3Ctext x="50%25" y="50%25" fill="white" font-size="16" text-anchor="middle"%3ETHENORTHFACE%3C/text%3E%3C/svg%3E', brand: 'The North Face' },
+            { id: 8, name: 'جاكيت TRUST INTUITION - رمادي/أزرق', price: 4000, image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="350"%3E%3Crect fill="%23555" width="300" height="175"/%3E%3Crect fill="%23336699" y="175" width="300" height="175"/%3E%3Ctext x="50%25" y="50%25" fill="white" font-size="14" text-anchor="middle"%3ETRUST INTUITION%3C/text%3E%3C/svg%3E', brand: 'Trust Intuition' },
+            { id: 9, name: 'جاكيت RESPECT - أزرق داكن', price: 3900, image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="350"%3E%3Crect fill="%23001f3f" width="300" height="350"/%3E%3Ctext x="50%25" y="50%25" fill="white" font-size="20" text-anchor="middle"%3ERESPECT%3C/text%3E%3C/svg%3E', brand: 'Respect' },
+            { id: 10, name: 'جاكيت PAGUCI - أسود', price: 4100, image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="350"%3E%3Crect fill="%23000" width="300" height="350"/%3E%3Ctext x="50%25" y="50%25" fill="white" font-size="20" text-anchor="middle"%3EPAGUCI%3C/text%3E%3C/svg%3E', brand: 'PAGUCI' }
+        ];
+
+        // State
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let customerData = JSON.parse(localStorage.getItem('customerData')) || null;
+        let reviews = JSON.parse(localStorage.getItem('reviews')) || [];
+        let currentRating = 0;
+        let zoomLevel = 1;
+        const zoomSteps = [1, 1.5, 2, 2.5, 3];
+        let currentZoomIndex = 0;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            updateCartUI();
+            loadReviews();
+            setupRatingStars();
+        });
+
+        // Render Products
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <img src="${product.image}" alt="${product.name}" class="product-image" onclick="openImageModal('${product.image}')">
+                    <div class="product-info">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-price">${product.price.toLocaleString()} د.ج</div>
+                        <div class="product-actions">
+                            <button class="add-to-cart-btn" onclick="addToCart(${product.id})">
+                                <i class="fas fa-cart-plus"></i> أضف للسلة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Cart Functions
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            
+            saveCart();
+            updateCartUI();
+            showNotification('تمت الإضافة للسلة بنجاح!');
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            saveCart();
+            updateCartUI();
+        }
+
+        function updateQuantity(productId, change) {
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    saveCart();
+                    updateCartUI();
+                }
+            }
+        }
+
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function updateCartUI() {
+            const cartItems = document.getElementById('cartItems');
+            const cartCount = document.querySelector('.cart-count');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            cartCount.textContent = totalItems;
+            cartTotal.innerHTML = `المجموع: ${totalPrice.toLocaleString()} د.ج`;
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p style="text-align: center; padding: 2rem; color: var(--text-secondary);">السلة فارغة</p>';
+            } else {
+                cartItems.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <strong>${item.name}</strong>
+                            <button onclick="removeFromCart(${item.id})" style="background: #e74c3c; color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 5px; cursor: pointer;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <button onclick="updateQuantity(${item.id}, -1)" style="background: var(--accent); color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 5px; cursor: pointer;">-</button>
+                                <span style="margin: 0 1rem; font-weight: bold;">${item.quantity}</span>
+                                <button onclick="updateQuantity(${item.id}, 1)" style="background: var(--accent); color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 5px; cursor: pointer;">+</button>
+                            </div>
+                            <strong>${(item.price * item.quantity).toLocaleString()} د.ج</strong>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function toggleCart() {
+            document.getElementById('cartSidebar').classList.toggle('active');
+            showBackButton();
+        }
+
+        // Order Form
+        function showOrderForm() {
+            if (cart.length === 0) {
+                alert('السلة فارغة! الرجاء إضافة منتجات أولاً');
+                return;
+            }
+            document.getElementById('orderForm').classList.add('active');
+            document.getElementById('cartSidebar').classList.remove('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            showBackButton();
+        }
+
+        document.getElementById('customerForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            customerData = {
+                fullName: document.getElementById('fullName').value,
+                lastName: document.getElementById('lastName').value,
+                residence: document.getElementById('residence').value,
+                wilaya: document.getElementById('wilaya').value,
+                phone: document.getElementById('phone').value
+            };
+            
+            localStorage.setItem('customerData', JSON.stringify(customerData));
+            
+            const orderSummary = `
+طلبية جديدة من ${customerData.fullName} ${customerData.lastName}
+
+العنوان: ${customerData.residence}, ${customerData.wilaya}
+الهاتف: ${customerData.phone}
+
+المنتجات:
+${cart.map(item => `- ${item.name} x${item.quantity} = ${(item.price * item.quantity).toLocaleString()} د.ج`).join('\n')}
+
+المجموع الكلي: ${cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toLocaleString()} د.ج
+            `;
+            
+            console.log(orderSummary);
+            alert('تم إرسال طلبك بنجاح! سنتواصل معك قريباً.');
+            
+            cart = [];
+            saveCart();
+            updateCartUI();
+            document.getElementById('orderForm').classList.remove('active');
+            document.getElementById('customerForm').reset();
+        });
+
+        // Image Modal
+        function openImageModal(imageSrc) {
+            document.getElementById('modalImage').src = imageSrc;
+            document.getElementById('imageModal').classList.add('active');
+            currentZoomIndex = 0;
+            resetZoom();
+            showBackButton();
+        }
+
+        function closeImageModal() {
+            document.getElementById('imageModal').classList.remove('active');
+            resetZoom();
+        }
+
+        function zoomImage(direction) {
+            currentZoomIndex = Math.max(0, Math.min(zoomSteps.length - 1, currentZoomIndex + direction));
+            const img = document.getElementById('modalImage');
+            img.style.transform = `scale(${zoomSteps[currentZoomIndex]})`;
+        }
+
+        function resetZoom() {
+            currentZoomIndex = 0;
+            const img = document.getElementById('modalImage');
+            img.style.transform = 'scale(1)';
+        }
+
+        // Reviews
+        function setupRatingStars() {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach(star => {
+                star.addEventListener('click', () => {
+                    currentRating = parseInt(star.dataset.rating);
+                    updateStars();
+                });
+            });
+        }
+
+        function updateStars() {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach(star => {
+                if (parseInt(star.dataset.rating) <= currentRating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        function submitReview() {
+            const reviewText = document.getElementById('reviewText').value.trim();
+            
+            if (!reviewText || currentRating === 0) {
+                alert('الرجاء إضافة تقييم ونص للمراجعة');
+                return;
+            }
+            
+            const existingReviewIndex = reviews.findIndex(r => r.userPhone === customerData?.phone);
+            
+            const review = {
+                id: Date.now(),
+                userName: customerData?.fullName || 'مستخدم',
+                userPhone: customerData?.phone,
+                rating: currentRating,
+                text: reviewText,
+                date: new Date().toLocaleDateString('ar-DZ')
+            };
+            
+            if (existingReviewIndex !== -1) {
+                reviews[existingReviewIndex] = review;
+            } else {
+                reviews.push(review);
+            }
+            
+            localStorage.setItem('reviews', JSON.stringify(reviews));
+            loadReviews();
+            
+            document.getElementById('reviewText').value = '';
+            currentRating = 0;
+            updateStars();
+            
+            showNotification('تم إضافة تقييمك بنجاح!');
+        }
+
+        function loadReviews() {
+            const reviewsList = document.getElementById('reviewsList');
+            if (reviews.length === 0) {
+                reviewsList.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">لا توجد تقييمات بعد</p>';
+                return;
+            }
+            
+            reviewsList.innerHTML = reviews.map(review => `
+                <div class="review-item">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <strong>${review.userName}</strong>
+                        <span style="color: #f39c12;">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</span>
+                    </div>
+                    <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">${review.text}</p>
+                    <small style="color: var(--text-secondary);">${review.date}</small>
+                </div>
+            `).join('');
+        }
+
+        // Theme Toggle
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('.theme-toggle i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.className = 'fas fa-sun';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                icon.className = 'fas fa-moon';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Load saved theme
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+            document.querySelector('.theme-toggle i').className = 'fas fa-sun';
+        }
+
+        // Back Button
+        function showBackButton() {
+            document.querySelector('.back-btn').classList.add('show');
+        }
+
+        function goBack() {
+            const modal = document.getElementById('imageModal');
+            const cart = document.getElementById('cartSidebar');
+            const form = document.getElementById('orderForm');
+            
+            if (modal.classList.contains('active')) {
+                closeImageModal();
+            } else if (cart.classList.contains('active')) {
+                toggleCart();
+            } else if (form.classList.contains('active')) {
+                form.classList.remove('active');
+            } else {
+                document.querySelector('.back-btn').classList.remove('show');
+            }
+        }
+
+        // Notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: var(--accent);
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px var(--shadow);
+                z-index: 3000;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Close modal on outside click
+        document.getElementById('imageModal').addEventListener('click', (e) => {
+            if (e.target.id === 'imageModal') {
+                closeImageModal();
+            }
+        });
+    </script>
+</body>
+</html>
