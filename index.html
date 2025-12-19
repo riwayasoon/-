@@ -1,516 +1,532 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسوق مع زكريا - جاكيتات عصرية</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Zaki Shopping</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
-        :root {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8f9fa;
-            --text-primary: #000000;
-            --text-secondary: #333333;
-            --accent: #2c3e50;
-            --accent-hover: #34495e;
-            --border: #e0e0e0;
-            --shadow: rgba(0, 0, 0, 0.1);
-            --card-bg: #ffffff;
-        }
-
-        body.dark-mode {
-            --bg-primary: #1a1a1a;
-            --bg-secondary: #2d2d2d;
-            --text-primary: #ffffff;
-            --text-secondary: #e0e0e0;
-            --accent: #4a90e2;
-            --accent-hover: #5fa3f5;
-            --border: #444444;
-            --shadow: rgba(255, 255, 255, 0.1);
-            --card-bg: #2d2d2d;
-        }
-
+        
         body {
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            transition: all 0.3s ease;
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background-color: #ffffff;
+            color: #000000;
             line-height: 1.6;
         }
-
+        
         /* Header */
         header {
-            background: var(--accent);
-            padding: 1.5rem 0;
-            box-shadow: 0 2px 10px var(--shadow);
+            background-color: #ffffff;
+            border-bottom: 1px solid #d0d0d0;
+            padding: 12px 0;
             position: sticky;
             top: 0;
             z-index: 1000;
         }
-
-        .header-content {
-            max-width: 1400px;
+        
+        .header-container {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 0 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
+        
         .logo {
-            font-size: 2rem;
-            font-weight: bold;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            color: #000000;
         }
-
-        .header-actions {
+        
+        /* Navigation */
+        nav {
             display: flex;
-            gap: 1rem;
-            align-items: center;
+            gap: 30px;
         }
-
-        .theme-toggle, .cart-btn {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            color: white;
-            padding: 0.8rem 1.2rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            position: relative;
+        
+        nav a {
+            text-decoration: none;
+            color: #000000;
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            transition: color 0.3s;
+            border-bottom: 1px solid transparent;
+            padding-bottom: 3px;
         }
-
-        .theme-toggle:hover, .cart-btn:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-2px);
+        
+        nav a:hover {
+            color: #808080;
+            border-bottom: 1px solid #808080;
         }
-
-        .cart-count {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #e74c3c;
-            color: white;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            font-weight: bold;
-        }
-
-        /* Back Button */
-        .back-btn {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            background: var(--accent);
-            color: white;
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.5rem;
-            box-shadow: 0 4px 15px var(--shadow);
-            transition: all 0.3s ease;
-            z-index: 999;
-            display: none;
-        }
-
-        .back-btn:hover {
-            transform: scale(1.1);
-            background: var(--accent-hover);
-        }
-
-        .back-btn.show {
-            display: block;
-        }
-
-        /* Main Content */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
+        
+        /* Hero Section */
         .hero {
+            background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+            padding: 60px 20px;
             text-align: center;
-            padding: 3rem 0;
-            background: var(--bg-secondary);
-            border-radius: 15px;
-            margin-bottom: 3rem;
+            border-bottom: 1px solid #e0e0e0;
         }
-
+        
         .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
+            font-size: 36px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            color: #000000;
         }
-
+        
         .hero p {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
+            font-size: 11px;
+            color: #666666;
+            letter-spacing: 0.8px;
+            margin-bottom: 25px;
         }
-
-        /* Products Grid */
+        
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        /* Products Section */
+        .section-title {
+            font-size: 16px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+            color: #000000;
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #d0d0d0;
+        }
+        
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
         }
-
+        
         .product-card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px var(--shadow);
-            transition: all 0.3s ease;
-            border: 1px solid var(--border);
-        }
-
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 30px var(--shadow);
-        }
-
-        .product-image {
-            width: 100%;
-            height: 350px;
-            object-fit: cover;
-            cursor: zoom-in;
-            transition: all 0.3s ease;
-        }
-
-        .product-card:hover .product-image {
-            transform: scale(1.05);
-        }
-
-        .product-info {
-            padding: 1.5rem;
-        }
-
-        .product-name {
-            font-size: 1.3rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-        }
-
-        .product-price {
-            font-size: 1.5rem;
-            color: var(--accent);
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-
-        .product-actions {
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
             display: flex;
-            gap: 0.5rem;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
         }
-
-        .add-to-cart-btn {
-            flex: 1;
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 0.8rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-            transition: all 0.3s ease;
+        
+        .product-card:hover {
+            border-color: #808080;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
-
-        .add-to-cart-btn:hover {
-            background: var(--accent-hover);
-            transform: scale(1.02);
+        
+        .product-card.selected {
+            border-color: #000000;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
         }
-
-        /* Image Modal */
-        .image-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 2000;
+        
+        .product-image {
+            width: 140px;
+            height: 140px;
+            background-color: #f0f0f0;
+            border: 1px solid #d0d0d0;
+            margin-bottom: 15px;
+            display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 10px;
+            color: #999999;
         }
-
-        .image-modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            position: relative;
-            max-width: 90%;
-            max-height: 90%;
-        }
-
-        .modal-image {
-            max-width: 100%;
-            max-height: 90vh;
-            transition: transform 0.3s ease;
-        }
-
-        .zoom-controls {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
-            background: rgba(0,0,0,0.7);
-            padding: 10px;
-            border-radius: 50px;
-        }
-
-        .zoom-btn {
-            background: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-        }
-
-        .zoom-btn:hover {
-            background: var(--accent);
-            color: white;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: white;
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .close-modal:hover {
-            background: #e74c3c;
-            color: white;
-        }
-
-        /* Cart Sidebar */
-        .cart-sidebar {
-            position: fixed;
-            top: 0;
-            right: -500px;
-            width: 500px;
+        
+        .product-image img {
+            width: 100%;
             height: 100%;
-            background: var(--card-bg);
-            box-shadow: -5px 0 20px var(--shadow);
-            transition: all 0.3s ease;
-            z-index: 1500;
-            overflow-y: auto;
+            object-fit: cover;
         }
-
-        .cart-sidebar.active {
-            right: 0;
+        
+        .product-name {
+            font-size: 11px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #000000;
+            letter-spacing: 0.3px;
         }
-
-        .cart-header {
-            padding: 2rem;
-            background: var(--accent);
-            color: white;
+        
+        .product-price {
+            font-size: 12px;
+            color: #666666;
+            margin-bottom: 12px;
+            letter-spacing: 0.2px;
+        }
+        
+        .product-btn {
+            background-color: #000000;
+            color: #ffffff;
+            border: none;
+            padding: 8px 20px;
+            font-size: 9px;
+            letter-spacing: 0.8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 300;
+        }
+        
+        .product-btn:hover {
+            background-color: #333333;
+        }
+        
+        .product-btn.selected {
+            background-color: #333333;
+        }
+        
+        /* Contact Section */
+        .contact-section {
+            background-color: #f8f8f8;
+            padding: 40px;
+            margin-bottom: 50px;
+            border: 1px solid #e0e0e0;
+            text-align: center;
+        }
+        
+        .contact-section h2 {
+            font-size: 14px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            color: #000000;
+        }
+        
+        .contact-info {
+            font-size: 12px;
+            color: #333333;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+        
+        .phone-link {
+            color: #000000;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px solid #000000;
+            transition: all 0.3s;
+        }
+        
+        .phone-link:hover {
+            color: #808080;
+            border-bottom-color: #808080;
+        }
+        
+        /* Order Form Section */
+        .order-section {
+            background-color: #ffffff;
+            padding: 40px;
+            border: 1px solid #e0e0e0;
+            opacity: 0.5;
+            pointer-events: none;
+            transition: all 0.5s;
+        }
+        
+        .order-section.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .form-title {
+            font-size: 14px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+            color: #000000;
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #d0d0d0;
+        }
+        
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .form-row-full {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+        
+        label {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.8px;
+            margin-bottom: 6px;
+            color: #000000;
+            text-transform: uppercase;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        select,
+        textarea {
+            padding: 10px 12px;
+            border: 1px solid #c0c0c0;
+            background-color: #ffffff;
+            font-size: 10px;
+            font-family: inherit;
+            letter-spacing: 0.3px;
+            transition: all 0.3s;
+            color: #000000;
+        }
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #000000;
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+        
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="black" stroke-width="1.5"><path d="M7 8l6 6 6-6"/></svg>');
+            background-repeat: no-repeat;
+            background-position: left 8px center;
+            padding-right: 25px;
+            padding-left: 12px;
+        }
+        
+        .order-summary {
+            background-color: #f8f8f8;
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            margin-bottom: 25px;
+            display: none;
+        }
+        
+        .order-summary.visible {
+            display: block;
+        }
+        
+        .order-summary h3 {
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.8px;
+            margin-bottom: 15px;
+            color: #000000;
+            text-align: center;
+            text-transform: uppercase;
+        }
+        
+        .summary-item {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 10px;
+            letter-spacing: 0.3px;
         }
-
-        .cart-items {
-            padding: 1.5rem;
+        
+        .summary-item:last-child {
+            border-bottom: none;
+            font-weight: 500;
+            margin-top: 5px;
         }
-
-        .cart-item {
-            background: var(--bg-secondary);
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-            border: 1px solid var(--border);
+        
+        .summary-label {
+            color: #666666;
         }
-
-        .cart-total {
-            padding: 1.5rem;
-            border-top: 2px solid var(--border);
-            font-size: 1.5rem;
-            font-weight: bold;
+        
+        .summary-value {
+            color: #000000;
+            font-weight: 500;
         }
-
-        /* Order Form */
-        .order-form {
-            display: none;
-            background: var(--card-bg);
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px var(--shadow);
-            margin-bottom: 2rem;
-        }
-
-        .order-form.active {
-            display: block;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-            color: var(--text-primary);
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 0.8rem;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-        }
-
-        .submit-order-btn {
-            width: 100%;
-            background: var(--accent);
-            color: white;
+        
+        .submit-btn {
+            background-color: #000000;
+            color: #ffffff;
             border: none;
-            padding: 1rem;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: bold;
+            padding: 12px 30px;
+            font-size: 10px;
+            font-weight: 400;
+            letter-spacing: 1px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
+            margin-top: 15px;
+            width: 100%;
+            text-transform: uppercase;
         }
-
-        .submit-order-btn:hover {
-            background: var(--accent-hover);
+        
+        .submit-btn:hover {
+            background-color: #333333;
         }
-
-        /* Reviews Section */
-        .reviews-section {
-            background: var(--card-bg);
-            padding: 2rem;
-            border-radius: 15px;
-            margin-bottom: 2rem;
-            box-shadow: 0 5px 20px var(--shadow);
+        
+        .submit-btn:active {
+            background-color: #000000;
         }
-
-        .review-form {
-            margin-bottom: 2rem;
-            padding: 1.5rem;
-            background: var(--bg-secondary);
-            border-radius: 10px;
+        
+        .submit-btn:disabled {
+            background-color: #000000;
+            cursor: not-allowed;
+            opacity: 0.6;
         }
-
-        .rating-stars {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .star {
-            font-size: 2rem;
+        
+        .confirm-btn {
+            background-color: #000000;
+            color: #ffffff;
+            border: none;
+            padding: 12px 30px;
+            font-size: 10px;
+            font-weight: 400;
+            letter-spacing: 1px;
             cursor: pointer;
-            color: var(--border);
-            transition: all 0.3s ease;
+            transition: all 0.3s;
+            margin-top: 15px;
+            width: 100%;
+            text-transform: uppercase;
+            display: none;
         }
-
-        .star.active {
-            color: #f39c12;
+        
+        .confirm-btn.visible {
+            display: block;
         }
-
-        .review-item {
-            background: var(--bg-secondary);
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-            border: 1px solid var(--border);
+        
+        .confirm-btn:hover {
+            background-color: #333333;
         }
-
+        
         /* Footer */
         footer {
-            background: var(--accent);
-            color: white;
-            padding: 3rem 2rem;
-            margin-top: 3rem;
+            background-color: #f8f8f8;
+            border-top: 1px solid #d0d0d0;
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: 50px;
         }
-
+        
         .footer-content {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
+            font-size: 9px;
+            color: #666666;
+            letter-spacing: 0.5px;
         }
-
-        .footer-section h3 {
-            margin-bottom: 1rem;
+        
+        .footer-content p {
+            margin-bottom: 8px;
         }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
+        
+        .divider {
+            width: 30px;
+            height: 1px;
+            background-color: #c0c0c0;
+            margin: 15px auto;
         }
-
-        .social-btn {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            font-size: 1.5rem;
-            transition: all 0.3s ease;
+        
+        .order-message {
+            font-size: 10px;
+            color: #333333;
+            letter-spacing: 0.3px;
+            margin-bottom: 15px;
+            text-align: center;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border: 1px solid #e0e0e0;
         }
-
-        .social-btn:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-5px);
+        
+        .error-message {
+            font-size: 10px;
+            color: #000000;
+            letter-spacing: 0.3px;
+            margin-bottom: 15px;
+            text-align: center;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border: 1px solid #c0c0c0;
         }
-
+        
+        .success-message {
+            font-size: 10px;
+            color: #000000;
+            letter-spacing: 0.3px;
+            margin-bottom: 15px;
+            text-align: center;
+            padding: 12px;
+            background-color: #f8f8f8;
+            border: 1px solid #000000;
+        }
+        
+        .input-error {
+            border-color: #808080 !important;
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #000000;
+            color: #ffffff;
+            font-size: 8px;
+            padding: 4px 8px;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+        
+        /* Responsive */
         @media (max-width: 768px) {
-            .cart-sidebar {
-                width: 100%;
-                right: -100%;
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
             }
-
-            .products-grid {
+            
+            nav {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .form-row {
                 grid-template-columns: 1fr;
             }
-
+            
             .hero h1 {
-                font-size: 1.8rem;
+                font-size: 28px;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 15px;
             }
         }
     </style>
@@ -518,533 +534,1525 @@
 <body>
     <!-- Header -->
     <header>
-        <div class="header-content">
-            <div class="logo">🛍️ تسوق مع زكريا</div>
-            <div class="header-actions">
-                <button class="theme-toggle" onclick="toggleTheme()">
-                    <i class="fas fa-moon"></i>
-                </button>
-                <button class="cart-btn" onclick="toggleCart()">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-count">0</span>
-                </button>
-            </div>
+        <div class="header-container">
+            <div class="logo">ZAKI SHOPPING</div>
+            <nav>
+                <a href="#home">الرئيسية</a>
+                <a href="#products">المنتجات</a>
+                <a href="#contact">اتصل بنا</a>
+                <a href="#order">طلب</a>
+            </nav>
         </div>
     </header>
 
-    <!-- Back Button -->
-    <button class="back-btn" onclick="goBack()">
-        <i class="fas fa-arrow-right"></i>
-    </button>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <h1>ZAKI SHOPPING</h1>
+        <p>تجربة تسوق فاخرة وعصرية • الدفع عند الاستلام متوفر • لا حاجة للتسجيل</p>
+    </section>
 
     <!-- Main Container -->
     <div class="container">
-        <!-- Hero Section -->
-        <div class="hero">
-            <h1>مرحباً بك في متجر الجاكيتات العصرية</h1>
-            <p>اكتشف أحدث صيحات الموضة بأفضل الأسعار</p>
-        </div>
+        <!-- Products Section -->
+        <section id="products">
+            <h2 class="section-title">منتجاتنا</h2>
+            <div class="products-grid">
+                <div class="product-card" data-product="منتج متميز 1" data-price="5,000 د.ج" data-clicks="0">
+                    <div class="product-image">صورة منتج</div>
+                    <div class="product-name">منتج متميز 1</div>
+                    <div class="product-price">السعر: 5,000 د.ج</div>
+                    <button class="product-btn">أضف للسلة</button>
+                </div>
+                
+                <div class="product-card" data-product="منتج متميز 2" data-price="7,500 د.ج" data-clicks="0">
+                    <div class="product-image">صورة منتج</div>
+                    <div class="product-name">منتج متميز 2</div>
+                    <div class="product-price">السعر: 7,500 د.ج</div>
+                    <button class="product-btn">أضف للسلة</button>
+                </div>
+                
+                <div class="product-card" data-product="منتج متميز 3" data-price="6,000 د.ج" data-clicks="0">
+                    <div class="product-image">صورة منتج</div>
+                    <div class="product-name">منتج متميز 3</div>
+                    <div class="product-price">السعر: 6,000 د.ج</div>
+                    <button class="product-btn">أضف للسلة</button>
+                </div>
+                
+                <div class="product-card" data-product="منتج متميز 4" data-price="8,500 د.ج" data-clicks="0">
+                    <div class="product-image">صورة منتج</div>
+                    <div class="product-name">منتج متميز 4</div>
+                    <div class="product-price">السعر: 8,500 د.ج</div>
+                    <button class="product-btn">أضف للسلة</button>
+                </div>
+                
+                <div class="product-card" data-product="منتج متميز 5" data-price="5,500 د.ج" data-clicks="0">
+                    <div class="product-image">صورة منتج</div>
+                    <div class="product-name">منتج متميز 5</div>
+                    <div class="product-price">السعر: 5,500 د.ج</div>
+                    <button class="product-btn">أضف للسلة</button>
+                </div>
+                
+                <div class="product-card" data-product="منتج متميز 6" data-price="9,000 د.ج" data-clicks="0">
+                    <div class="product-image">صورة منتج</div>
+                    <div class="product-name">منتج متميز 6</div>
+                    <div class="product-price">السعر: 9,000 د.ج</div>
+                    <button class="product-btn">أضف للسلة</button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact Section -->
+        <section class="contact-section" id="contact">
+            <h2>تواصل معنا</h2>
+            <div class="contact-info">
+                <p>للاستفسارات والطلبات</p>
+            </div>
+            <div class="contact-info">
+                <p>رقم الهاتف: <a href="tel:0774843237" class="phone-link">0774843237</a></p>
+            </div>
+            <div class="contact-info">
+                <p style="font-size: 10px; margin-top: 15px; letter-spacing: 0.3px;">اختر منتجك ثم أكمل بياناتك أدناه • سنتواصل معك خلال 24 ساعة</p>
+            </div>
+        </section>
+    </div>
 
-        <!-- Order Form -->
-        <div class="order-form" id="orderForm">
-            <h2 style="margin-bottom: 1.5rem;">أكمل بيانات الطلب</h2>
-            <form id="customerForm">
+    <!-- Order Form Section -->
+    <section class="order-section" id="order">
+        <h2 class="form-title">نموذج الطلب</h2>
+        <form class="form-container" id="orderForm">
+            <div id="messageContainer"></div>
+            
+            <input type="hidden" id="selectedProduct" name="selectedProduct">
+            <input type="hidden" id="selectedPrice" name="selectedPrice">
+            
+            <div class="form-row">
                 <div class="form-group">
-                    <label>الاسم الكامل</label>
-                    <input type="text" id="fullName" required placeholder="أدخل اسمك الكامل">
+                    <label for="firstName">الاسم</label>
+                    <input type="text" id="firstName" name="firstName" placeholder="أدخل اسمك" required disabled>
                 </div>
                 <div class="form-group">
-                    <label>اللقب</label>
-                    <input type="text" id="lastName" required placeholder="أدخل لقبك">
+                    <label for="lastName">اللقب</label>
+                    <input type="text" id="lastName" name="lastName" placeholder="أدخل لقبك" disabled>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="phone">رقم الهاتف</label>
+                    <input type="tel" id="phone" name="phone" placeholder="مثال: 0774843237" required inputmode="numeric" pattern="[0-9]{10}" disabled>
                 </div>
                 <div class="form-group">
-                    <label>مكان الإقامة</label>
-                    <input type="text" id="residence" required placeholder="أدخل مكان إقامتك">
+                    <label for="email">البريد الإلكتروني</label>
+                    <input type="email" id="email" name="email" placeholder="مثال: example@email.com" disabled>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="city">المدينة</label>
+                    <input type="text" id="city" name="city" placeholder="أدخل مدينتك" disabled>
                 </div>
                 <div class="form-group">
-                    <label>الولاية</label>
-                    <select id="wilaya" required>
-                        <option value="">اختر الولاية</option>
-                        <option value="أدرار">01 - أدرار</option>
-                        <option value="الشلف">02 - الشلف</option>
-                        <option value="الأغواط">03 - الأغواط</option>
-                        <option value="أم البواقي">04 - أم البواقي</option>
-                        <option value="باتنة">05 - باتنة</option>
-                        <option value="بجاية">06 - بجاية</option>
-                        <option value="بسكرة">07 - بسكرة</option>
-                        <option value="بشار">08 - بشار</option>
-                        <option value="البليدة">09 - البليدة</option>
-                        <option value="البويرة">10 - البويرة</option>
-                        <option value="تمنراست">11 - تمنراست</option>
-                        <option value="تبسة">12 - تبسة</option>
-                        <option value="تلمسان">13 - تلمسان</option>
-                        <option value="تيارت">14 - تيارت</option>
-                        <option value="تيزي وزو">15 - تيزي وزو</option>
-                        <option value="الجزائر">16 - الجزائر</option>
-                        <option value="الجلفة">17 - الجلفة</option>
-                        <option value="جيجل">18 - جيجل</option>
-                        <option value="سطيف">19 - سطيف</option>
-                        <option value="سعيدة">20 - سعيدة</option>
-                        <option value="سكيكدة">21 - سكيكدة</option>
-                        <option value="سيدي بلعباس">22 - سيدي بلعباس</option>
-                        <option value="عنابة">23 - عنابة</option>
-                        <option value="قالمة">24 - قالمة</option>
-                        <option value="قسنطينة">25 - قسنطينة</option>
-                        <option value="المدية">26 - المدية</option>
-                        <option value="مستغانم">27 - مستغانم</option>
-                        <option value="المسيلة">28 - المسيلة</option>
-                        <option value="معسكر">29 - معسكر</option>
-                        <option value="ورقلة">30 - ورقلة</option>
-                        <option value="وهران">31 - وهران</option>
-                        <option value="البيض">32 - البيض</option>
-                        <option value="إليزي">33 - إليزي</option>
-                        <option value="برج بوعريريج">34 - برج بوعريريج</option>
-                        <option value="بومرداس">35 - بومرداس</option>
-                        <option value="الطارف">36 - الطارف</option>
-                        <option value="تندوف">37 - تندوف</option>
-                        <option value="تيسمسيلت">38 - تيسمسيلت</option>
-                        <option value="الوادي">39 - الوادي</option>
-                        <option value="خنشلة">40 - خنشلة</option>
-                        <option value="سوق أهراس">41 - سوق أهراس</option>
-                        <option value="تيبازة">42 - تيبازة</option>
-                        <option value="ميلة">43 - ميلة</option>
-                        <option value="عين الدفلى">44 - عين الدفلى</option>
-                        <option value="النعامة">45 - النعامة</option>
-                        <option value="عين تموشنت">46 - عين تموشنت</option>
-                        <option value="غرداية">47 - غرداية</option>
-                        <option value="غليزان">48 - غليزان</option>
+                    <label for="wilaya">الولاية</label>
+                    <select id="wilaya" name="wilaya" required disabled>
+                        <option value="">-- اختر الولاية --</option>
+                        <option value="1">1 - أدرار</option>
+                        <option value="2">2 - الشلف</option>
+                        <option value="3">3 - الأغواط</option>
+                        <option value="4">4 - أم البواقي</option>
+                        <option value="5">5 - باتنة</option>
+                        <option value="6">6 - بجاية</option>
+                        <option value="7">7 - بسكرة</option>
+                        <option value="8">8 - بشار</option>
+                        <option value="9">9 - البليدة</option>
+                        <option value="10">10 - البويرة</option>
+                        <option value="11">11 - تمنراست</option>
+                        <option value="12">12 - تبسة</option>
+                        <option value="13">13 - تلمسان</option>
+                        <option value="14">14 - تيارت</option>
+                        <option value="15">15 - تيزي وزو</option>
+                        <option value="16">16 - الجزائر</option>
+                        <option value="17">17 - الجلفة</option>
+                        <option value="18">18 - جيجل</option>
+                        <option value="19">19 - سطيف</option>
+                        <option value="20">20 - سعيدة</option>
+                        <option value="21">21 - سكيكدة</option>
+                        <option value="22">22 - سيدي بلعباس</option>
+                        <option value="23">23 - عنابة</option>
+                        <option value="24">24 - قالمة</option>
+                        <option value="25">25 - قسنطينة</option>
+                        <option value="26">26 - المدية</option>
+                        <option value="27">27 - مستغانم</option>
+                        <option value="28">28 - المسيلة</option>
+                        <option value="29">29 - معسكر</option>
+                        <option value="30">30 - ورقلة</option>
+                        <option value="31">31 - وهران</option>
+                        <option value="32">32 - البيض</option>
+                        <option value="33">33 - إليزي</option>
+                        <option value="34">34 - برج بوعريريج</option>
+                        <option value="35">35 - بومرداس</option>
+                        <option value="36">36 - الطارف</option>
+                        <option value="37">37 - تندوف</option>
+                        <option value="38">38 - تيسمسيلت</option>
+                        <option value="39">39 - الوادي</option>
+                        <option value="40">40 - خنشلة</option>
+                        <option value="41">41 - سوق أهراس</option>
+                        <option value="42">42 - تيبازة</option>
+                        <option value="43">43 - ميلة</option>
+                        <option value="44">44 - عين الدفلى</option>
+                        <option value="45">45 - النعامة</option>
+                        <option value="46">46 - عين تموشنت</option>
+                        <option value="47">47 - غرداية</option>
+                        <option value="48">48 - غليزان</option>
                     </select>
                 </div>
+            </div>
+            
+            <div class="form-row-full">
                 <div class="form-group">
-                    <label>رقم الهاتف</label>
-                    <input type="tel" id="phone" required placeholder="05XXXXXXXX">
+                    <label for="message">ملاحظات إضافية (اختياري)</label>
+                    <textarea id="message" name="message" placeholder="أي ملاحظات أو طلبات خاصة..." disabled></textarea>
                 </div>
-                <button type="submit" class="submit-order-btn">
-                    <i class="fas fa-check"></i> تأكيد البيانات
-                </button>
-            </form>
-        </div>
-
-        <!-- Products Grid -->
-        <div class="products-grid" id="productsGrid"></div>
-
-        <!-- Reviews Section -->
-        <div class="reviews-section">
-            <h2>آراء العملاء</h2>
-            <div class="review-form">
-                <h3>اترك تقييمك</h3>
-                <div class="rating-stars" id="ratingStars">
-                    <span class="star" data-rating="1">★</span>
-                    <span class="star" data-rating="2">★</span>
-                    <span class="star" data-rating="3">★</span>
-                    <span class="star" data-rating="4">★</span>
-                    <span class="star" data-rating="5">★</span>
+            </div>
+            
+            <div class="order-summary" id="orderSummary">
+                <h3>ملخص الطلب</h3>
+                <div class="summary-item">
+                    <span class="summary-label">المنتج:</span>
+                    <span class="summary-value" id="summaryProduct">-</span>
                 </div>
-                <textarea id="reviewText" rows="4" style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 2px solid var(--border); background: var(--bg-primary); color: var(--text-primary);" placeholder="شاركنا رأيك..."></textarea>
-                <button onclick="submitReview()" class="submit-order-btn" style="margin-top: 1rem;">إرسال التقييم</button>
+                <div class="summary-item">
+                    <span class="summary-label">السعر:</span>
+                    <span class="summary-value" id="summaryPrice">-</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">الاسم الكامل:</span>
+                    <span class="summary-value" id="summaryName">-</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">رقم الهاتف:</span>
+                    <span class="summary-value" id="summaryPhone">-</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">الولاية:</span>
+                    <span class="summary-value" id="summaryWilaya">-</span>
+                </div>
             </div>
-            <div id="reviewsList"></div>
-        </div>
-    </div>
-
-    <!-- Cart Sidebar -->
-    <div class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header">
-            <h2>سلة المشتريات</h2>
-            <button class="close-modal" onclick="toggleCart()">×</button>
-        </div>
-        <div class="cart-items" id="cartItems"></div>
-        <div class="cart-total" id="cartTotal">المجموع: 0.00 د.ج</div>
-        <button class="submit-order-btn" onclick="showOrderForm()" style="margin: 1rem;">
-            <i class="fas fa-shopping-bag"></i> طلب طلبية
-        </button>
-    </div>
-
-    <!-- Image Modal -->
-    <div class="image-modal" id="imageModal">
-        <button class="close-modal" onclick="closeImageModal()">×</button>
-        <div class="modal-content">
-            <img id="modalImage" class="modal-image" src="" alt="">
-            <div class="zoom-controls">
-                <button class="zoom-btn" onclick="zoomImage(-1)"><i class="fas fa-minus"></i></button>
-                <button class="zoom-btn" onclick="zoomImage(1)"><i class="fas fa-plus"></i></button>
-                <button class="zoom-btn" onclick="resetZoom()"><i class="fas fa-undo"></i></button>
-            </div>
-        </div>
-    </div>
+            
+            <button type="submit" class="submit-btn" id="submitBtn" disabled>معاينة الطلب</button>
+            <button type="button" class="confirm-btn" id="confirmBtn">تأكيد و إرسال الطلب</button>
+        </form>
+    </section>
 
     <!-- Footer -->
     <footer>
         <div class="footer-content">
-            <div class="footer-section">
-                <h3>تسوق مع زكريا</h3>
-                <p>أفضل جودة بأفضل الأسعار</p>
-            </div>
-            <div class="footer-section">
-                <h3>للتواصل</h3>
-                <p><i class="fas fa-phone"></i> 0774843237</p>
-                <p><i class="fas fa-envelope"></i> zakariahugo100@gmail.com</p>
-            </div>
-            <div class="footer-section">
-                <h3>تابعنا</h3>
-                <div class="social-links">
-                    <a href="https://www.facebook.com/zaki.abbas.75457" target="_blank" class="social-btn">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                </div>
-            </div>
+            <p>© 2025 ZAKI SHOPPING جميع الحقوق محفوظة</p>
+            <div class="divider"></div>
+            <p>شكراً لتعاملك معنا</p>
+            <p style="margin-top: 12px;">رقم الهاتف: <a href="tel:0774843237" style="color: #000000; font-weight: 500; text-decoration: none;">0774843237</a></p>
         </div>
     </footer>
 
     <script>
-        // Products Data
-        const products = [
-            { id: 1, name: 'جاكيت نورث فيس - أسود/رمادي', price: 4500, image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="350"%3E%3Crect fill="%23333" width="300" height="175"/%3E%3Crect fill="%23ccc" y="175" width="300" height="175"/%3E%3Ctext x="50%25" y="50%25" fill="white" font-size="20" text-anchor="middle"%3ENorth Face%3C/text%3E%3C/svg%3E', brand: 'The North Face' },
-            { id: 2, name: 'جاكيت نورث فيس - أسود/بيج', price: 4500, image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="350"%3E%3Crect fill="%23000" width="300" height="175"/%3E%3Crect fill="%23d4b896" y="175" width="300" height="175"/%3E%3Ctext x="50%25" y="50%25" fill="white" font-size="20" text-anchor="middle"%3ENorth Face%3C/text%3E%3C/svg%3E', brand: 'The North Face' },
-            { id: 3, name: 'جاكيت نورث فيس - بنفسجي', price: 4500, image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="350"%3E%3Crect fill="%234a235a" width="300" height="175"/%3E%3Crect fill="%238e44ad" y="175" width="300" height="175"/%3E%3Ctext x="50%25" y="50%25" fill="white" font-size="20" text-anchor="middle"%3ENorth Face%3C/text%3E%3C/svg%3E', brand: 'The North Face' },
-            { id: 4, name: 'جاكيت كولومبيا - أسود', price: 4200, image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="350"%3E%3Crect fill="%23000" width="300" height="350"/%3E%3Ctext x="50%25" y="50%25" fill="white" font-size="20" text-anchor="middle"%3EColumbia%3C/text%3E%3C/svg%3E', brand: 'Columbia' },
-            { id: 5, name: 'جاكيت متعدد الجيوب - أزرق داكن', price: 3800, image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="350"%3E%3Crect fill="%231a2332" width="300" height="350"/%3E%3Crect fill="%23334455" x="20" y="200" width="80" height="60" rx="5"/%3E%3Crect fill="%23334455" x="110" y="200" width="80" height="60" rx="5"/%3E%3Crect fill="%23334455" x="200" y="200" width="80" height="60" rx="5"/%3E%3C/svg%3E', brand: 'Multi-Pocket' },
-            { id: 6, name: 'جاكيت DURUIPOFS - رمادي', price: 3500, image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="350"%3E%3Crect fill="%23666" width="300" height="350"/%3E%3Ctext x="50%25" y="50%25" fill="white" font-size="18" text-anchor="middle"%3EDURUIPOFS%3C/text%3E%3C/svg%3E', brand: 'DURUIPOFS' },
-            { id: 7, name: 'جاكيت THENORTHFACE - بني', price: 4800, image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="350"%3E%3Crect fill="%23654321" width="300" height="350"/%3E%3Ctext x="50%25" y="50%25" fill="white" font-size="16" text-anchor="middle"%3ETHENORTHFACE%3C/text%3E%3C/svg%3E', brand: 'The North Face' },
-            { id: 8, name: 'جاكيت TRUST INTUITION - رمادي/أزرق', price: 4000, image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="350"%3E%3Crect fill="%23555" width="300" height="175"/%3E%3Crect fill="%23336699" y="175" width="300" height="175"/%3E%3Ctext x="50%25" y="50%25" fill="white" font-size="14" text-anchor="middle"%3ETRUST INTUITION%3C/text%3E%3C/svg%3E', brand: 'Trust Intuition' },
-            { id: 9, name: 'جاكيت RESPECT - أزرق داكن', price: 3900, image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="350"%3E%3Crect fill="%23001f3f" width="300" height="350"/%3E%3Ctext x="50%25" y="50%25" fill="white" font-size="20" text-anchor="middle"%3ERESPECT%3C/text%3E%3C/svg%3E', brand: 'Respect' },
-            { id: 10, name: 'جاكيت PAGUCI - أسود', price: 4100, image: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="350"%3E%3Crect fill="%23000" width="300" height="350"/%3E%3Ctext x="50%25" y="50%25" fill="white" font-size="20" text-anchor="middle"%3EPAGUCI%3C/text%3E%3C/svg%3E', brand: 'PAGUCI' }
-        ];
-
-        // State
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        let customerData = JSON.parse(localStorage.getItem('customerData')) || null;
-        let reviews = JSON.parse(localStorage.getItem('reviews')) || [];
-        let currentRating = 0;
-        let zoomLevel = 1;
-        const zoomSteps = [1, 1.5, 2, 2.5, 3];
-        let currentZoomIndex = 0;
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            renderProducts();
-            updateCartUI();
-            loadReviews();
-            setupRatingStars();
-        });
-
-        // Render Products
-        function renderProducts() {
-            const grid = document.getElementById('productsGrid');
-            grid.innerHTML = products.map(product => `
-                <div class="product-card">
-                    <img src="${product.image}" alt="${product.name}" class="product-image" onclick="openImageModal('${product.image}')">
-                    <div class="product-info">
-                        <div class="product-name">${product.name}</div>
-                        <div class="product-price">${product.price.toLocaleString()} د.ج</div>
-                        <div class="product-actions">
-                            <button class="add-to-cart-btn" onclick="addToCart(${product.id})">
-                                <i class="fas fa-cart-plus"></i> أضف للسلة
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Cart Functions
-        function addToCart(productId) {
-            const product = products.find(p => p.id === productId);
-            const existingItem = cart.find(item => item.id === productId);
+        (function() {
+            // ========== نظام التحليل الذكي الداخلي ==========
             
-            if (existingItem) {
-                existingItem.quantity++;
-            } else {
-                cart.push({ ...product, quantity: 1 });
-            }
-            
-            saveCart();
-            updateCartUI();
-            showNotification('تمت الإضافة للسلة بنجاح!');
-        }
-
-        function removeFromCart(productId) {
-            cart = cart.filter(item => item.id !== productId);
-            saveCart();
-            updateCartUI();
-        }
-
-        function updateQuantity(productId, change) {
-            const item = cart.find(item => item.id === productId);
-            if (item) {
-                item.quantity += change;
-                if (item.quantity <= 0) {
-                    removeFromCart(productId);
-                } else {
-                    saveCart();
-                    updateCartUI();
+            const AnalyticsEngine = {
+                // تتبع حالة الطلب وثقة النظام
+                confidenceTracker: {
+                    inputStability: {},
+                    modificationCounts: {},
+                    lastValues: {},
+                    stabilityScore: 0,
+                    
+                    trackChange(fieldId, newValue) {
+                        if (!this.modificationCounts[fieldId]) {
+                            this.modificationCounts[fieldId] = 0;
+                            this.lastValues[fieldId] = '';
+                        }
+                        
+                        if (this.lastValues[fieldId] !== newValue) {
+                            this.modificationCounts[fieldId]++;
+                            this.lastValues[fieldId] = newValue;
+                            this.calculateStability(fieldId);
+                        }
+                    },
+                    
+                    calculateStability(fieldId) {
+                        const mods = this.modificationCounts[fieldId] || 0;
+                        this.inputStability[fieldId] = Math.max(0, 100 - (mods * 5));
+                        this.updateOverallStability();
+                    },
+                    
+                    updateOverallStability() {
+                        const scores = Object.values(this.inputStability);
+                        this.stabilityScore = scores.length > 0 
+                            ? scores.reduce((a, b) => a + b, 0) / scores.length 
+                            : 0;
+                    },
+                    
+                    getConfidenceLevel() {
+                        if (this.stabilityScore >= 80) return 'high';
+                        if (this.stabilityScore >= 50) return 'medium';
+                        return 'low';
+                    }
+                },
+                
+                // تحليل سلوك القراءة والتفاعل
+                behaviorAnalyzer: {
+                    sections: ['products', 'contact', 'order'],
+                    sectionTimes: {},
+                    scrollPattern: [],
+                    focusPattern: [],
+                    pageLoadTime: Date.now(),
+                    
+                    trackSectionView(sectionId, duration) {
+                        if (!this.sectionTimes[sectionId]) {
+                            this.sectionTimes[sectionId] = [];
+                        }
+                        this.sectionTimes[sectionId].push(duration);
+                    },
+                    
+                    trackScrollBehavior(scrollY, timestamp) {
+                        this.scrollPattern.push({
+                            y: scrollY,
+                            time: timestamp - this.pageLoadTime,
+                            speed: this.calculateScrollSpeed()
+                        });
+                        
+                        if (this.scrollPattern.length > 50) {
+                            this.scrollPattern.shift();
+                        }
+                    },
+                    
+                    calculateScrollSpeed() {
+                        if (this.scrollPattern.length < 2) return 0;
+                        const prev = this.scrollPattern[this.scrollPattern.length - 1];
+                        const curr = this.scrollPattern[this.scrollPattern.length - 2];
+                        const distance = Math.abs(prev.y - curr.y);
+                        const time = prev.time - curr.time;
+                        return time > 0 ? distance / time : 0;
+                    },
+                    
+                    analyzeReadingIntent() {
+                        const avgSpeed = this.scrollPattern.reduce((sum, p) => sum + p.speed, 0) / this.scrollPattern.length;
+                        const isReading = avgSpeed < 2;
+                        const isSkipping = avgSpeed > 5;
+                        
+                        return {
+                            isReading,
+                            isSkipping,
+                            engagement: isReading ? 'high' : isSkipping ? 'low' : 'medium'
+                        };
+                    }
+                },
+                
+                // نظام التوقيت الذكي
+                timingSystem: {
+                    events: [],
+                    productViewTime: 0,
+                    formStartTime: null,
+                    confirmationHesitation: 0,
+                    
+                    recordEvent(eventType, metadata = {}) {
+                        this.events.push({
+                            type: eventType,
+                            timestamp: Date.now(),
+                            metadata
+                        });
+                    },
+                    
+                    calculateOptimalSubmitTime() {
+                        const formDuration = this.formStartTime 
+                            ? Date.now() - this.formStartTime 
+                            : 0;
+                        
+                        const isRushed = formDuration < 30000;
+                        const isDelayed = formDuration > 300000;
+                        
+                        return {
+                            duration: formDuration,
+                            isOptimal: !isRushed && !isDelayed,
+                            classification: isRushed ? 'rushed' : isDelayed ? 'delayed' : 'normal'
+                        };
+                    },
+                    
+                    trackConfirmationHesitation(startTime) {
+                        this.confirmationHesitation = Date.now() - startTime;
+                        return this.confirmationHesitation > 3000;
+                    }
+                },
+                
+                // تحليل مسار التفاعل
+                interactionPath: {
+                    journey: [],
+                    transitions: {},
+                    
+                    recordStep(step, action) {
+                        this.journey.push({
+                            step,
+                            action,
+                            timestamp: Date.now()
+                        });
+                        
+                        this.analyzeTransitions();
+                    },
+                    
+                    analyzeTransitions() {
+                        if (this.journey.length < 2) return;
+                        
+                        for (let i = 1; i < this.journey.length; i++) {
+                            const from = this.journey[i - 1].step;
+                            const to = this.journey[i].step;
+                            const key = `${from}->${to}`;
+                            
+                            this.transitions[key] = (this.transitions[key] || 0) + 1;
+                        }
+                    },
+                    
+                    getMostCommonPath() {
+                        return Object.entries(this.transitions)
+                            .sort((a, b) => b[1] - a[1])[0];
+                    }
+                },
+                
+                // قياس توازن الجهد
+                effortBalance: {
+                    productSelectionEffort: 0,
+                    formFillingEffort: 0,
+                    
+                    measureProductEffort(clicks, viewTime) {
+                        this.productSelectionEffort = (clicks * 1000) + viewTime;
+                    },
+                    
+                    measureFormEffort(fieldCount, totalTime, modifications) {
+                        this.formFillingEffort = (fieldCount * 500) + totalTime + (modifications * 100);
+                    },
+                    
+                    isBalanced() {
+                        if (this.productSelectionEffort === 0 || this.formFillingEffort === 0) {
+                            return null;
+                        }
+                        
+                        const ratio = this.productSelectionEffort / this.formFillingEffort;
+                        return ratio >= 0.3 && ratio <= 3.0;
+                    }
+                },
+                
+                // نظام ترتيب التحقق الديناميكي
+                validationPriority: {
+                    fieldPriorities: {
+                        firstName: 10,
+                        phone: 10,
+                        wilaya: 8,
+                        lastName: 5,
+                        city: 5,
+                        email: 3,
+                        message: 1
+                    },
+                    
+                    adjustPriority(fieldId, interactionCount) {
+                        if (this.fieldPriorities[fieldId]) {
+                            this.fieldPriorities[fieldId] = Math.min(15, 
+                                this.fieldPriorities[fieldId] + (interactionCount * 0.5));
+                        }
+                    },
+                    
+                    getValidationOrder() {
+                        return Object.entries(this.fieldPriorities)
+                            .sort((a, b) => b[1] - a[1])
+                            .map(entry => entry[0]);
+                    }
+                },
+                
+                // تقييم جودة الاتصال (بناءً على الاستجابة)
+                connectionQuality: {
+                    responseTimes: [],
+                    
+                    recordResponseTime(eventType, duration) {
+                        this.responseTimes.push({
+                            event: eventType,
+                            duration,
+                            timestamp: Date.now()
+                        });
+                        
+                        if (this.responseTimes.length > 20) {
+                            this.responseTimes.shift();
+                        }
+                    },
+                    
+                    estimateQuality() {
+                        if (this.responseTimes.length === 0) return 'unknown';
+                        
+                        const avgResponse = this.responseTimes.reduce((sum, r) => 
+                            sum + r.duration, 0) / this.responseTimes.length;
+                        
+                        if (avgResponse < 50) return 'excellent';
+                        if (avgResponse < 150) return 'good';
+                        if (avgResponse < 300) return 'fair';
+                        return 'poor';
+                    }
+                },
+                
+                // كشف التردد والتوقفات
+                hesitationDetector: {
+                    pauses: [],
+                    
+                    recordPause(location, duration) {
+                        this.pauses.push({
+                            location,
+                            duration,
+                            timestamp: Date.now()
+                        });
+                    },
+                    
+                    analyzeHesitation() {
+                        const longPauses = this.pauses.filter(p => p.duration > 5000);
+                        const hasSignificantHesitation = longPauses.length > 2;
+                        
+                        return {
+                            totalPauses: this.pauses.length,
+                            longPauses: longPauses.length,
+                            isHesitant: hasSignificantHesitation,
+                            confidence: hasSignificantHesitation ? 'low' : 'high'
+                        };
+                    }
+                },
+                
+                // تصنيف الطلبات حسب الاستعجال
+                urgencyClassifier: {
+                    classify(interactionData) {
+                        const {
+                            totalTime,
+                            modificationCount,
+                            hesitationLevel
+                        } = interactionData;
+                        
+                        const isUrgent = totalTime < 60000 && modificationCount < 3;
+                        const isRelaxed = totalTime > 300000;
+                        const isNormal = !isUrgent && !isRelaxed;
+                        
+                        return {
+                            level: isUrgent ? 'urgent' : isRelaxed ? 'relaxed' : 'normal',
+                            score: isUrgent ? 3 : isNormal ? 2 : 1,
+                            recommendation: isUrgent ? 'prioritize' : 'standard'
+                        };
+                    }
+                },
+                
+                // فحص تناسق المدخلات
+                consistencyChecker: {
+                    patterns: {},
+                    
+                    checkPattern(fieldId, value) {
+                        if (!this.patterns[fieldId]) {
+                            this.patterns[fieldId] = [];
+                        }
+                        
+                        this.patterns[fieldId].push(value);
+                        
+                        const duplicates = this.patterns[fieldId].filter(v => v === value).length;
+                        const totalCount = this.patterns[fieldId].length;
+                        
+                        return {
+                            isDuplicate: duplicates > 1,
+                            consistency: duplicates / totalCount,
+                            suspicious: this.checkCrossDuplication(value)
+                        };
+                    },
+                    
+                    checkCrossDuplication(value) {
+                        let count = 0;
+                        for (const fieldValues of Object.values(this.patterns)) {
+                            if (fieldValues.includes(value)) count++;
+                        }
+                        return count > 2;
+                    }
+                },
+                
+                // نظام الوزن الديناميكي للحقول
+                fieldWeighting: {
+                    weights: {
+                        firstName: 1.0,
+                        lastName: 0.7,
+                        phone: 1.0,
+                        email: 0.5,
+                        city: 0.6,
+                        wilaya: 1.0,
+                        message: 0.3
+                    },
+                    
+                    adjustWeight(fieldId, completionQuality) {
+                        if (this.weights[fieldId]) {
+                            this.weights[fieldId] *= completionQuality;
+                        }
+                    },
+                    
+                    calculateReadiness(filledFields) {
+                        let totalWeight = 0;
+                        let achievedWeight = 0;
+                        
+                        for (const [field, weight] of Object.entries(this.weights)) {
+                            totalWeight += weight;
+                            if (filledFields.includes(field)) {
+                                achievedWeight += weight;
+                            }
+                        }
+                        
+                        return (achievedWeight / totalWeight) * 100;
+                    }
+                },
+                
+                // كشف نوع التفاعل (خطي/متقطع)
+                interactionPattern: {
+                    events: [],
+                    
+                    recordInteraction(type, fieldId) {
+                        this.events.push({
+                            type,
+                            field: fieldId,
+                            timestamp: Date.now()
+                        });
+                    },
+                    
+                    analyzePattern() {
+                        if (this.events.length < 5) return 'insufficient_data';
+                        
+                        let sequentialCount = 0;
+                        let jumpCount = 0;
+                        
+                        for (let i = 1; i < this.events.length; i++) {
+                            const timeDiff = this.events[i].timestamp - this.events[i - 1].timestamp;
+                            
+                            if (timeDiff < 2000) {
+                                sequentialCount++;
+                            } else if (timeDiff > 10000) {
+                                jumpCount++;
+                            }
+                        }
+                        
+                        const isLinear = sequentialCount > jumpCount;
+                        
+                        return {
+                            pattern: isLinear ? 'linear' : 'fragmented',
+                            continuity: sequentialCount / this.events.length,
+                            distraction: jumpCount / this.events.length
+                        };
+                    }
+                },
+                
+                // مراقبة الاستخدام غير المقصود
+                accidentalUseDetector: {
+                    rapidActions: [],
+                    
+                    recordAction(actionType, duration) {
+                        this.rapidActions.push({
+                            type: actionType,
+                            duration,
+                            timestamp: Date.now()
+                        });
+                        
+                        if (this.rapidActions.length > 10) {
+                            this.rapidActions.shift();
+                        }
+                    },
+                    
+                    detectAccidental() {
+                        const veryFastActions = this.rapidActions.filter(a => a.duration < 100);
+                        const isLikelyAccidental = veryFastActions.length > 3;
+                        
+                        return {
+                            suspicious: isLikelyAccidental,
+                            fastActionRatio: veryFastActions.length / this.rapidActions.length,
+                            recommendation: isLikelyAccidental ? 'confirm_intent' : 'proceed'
+                        };
+                    }
+                },
+                
+                // مقارنة السرعة مع المتوسط
+                speedComparator: {
+                    historicalSpeeds: [],
+                    
+                    recordSpeed(userId, inputSpeed) {
+                        const existing = this.historicalSpeeds.find(h => h.userId === userId);
+                        
+                        if (existing) {
+                            existing.speeds.push(inputSpeed);
+                            if (existing.speeds.length > 5) {
+                                existing.speeds.shift();
+                            }
+                        } else {
+                            this.historicalSpeeds.push({
+                                userId,
+                                speeds: [inputSpeed]
+                            });
+                        }
+                    },
+                    
+                    compareToAverage(userId, currentSpeed) {
+                        const user = this.historicalSpeeds.find(h => h.userId === userId);
+                        if (!user || user.speeds.length === 0) return null;
+                        
+                        const avgSpeed = user.speeds.reduce((a, b) => a + b, 0) / user.speeds.length;
+                        const deviation = Math.abs(currentSpeed - avgSpeed) / avgSpeed;
+                        
+                        return {
+                            average: avgSpeed,
+                            current: currentSpeed,
+                            deviation,
+                            isUnusual: deviation > 0.5
+                        };
+                    }
+                },
+                
+                // تمييز الدافع (فضول/نية حقيقية)
+                intentAnalyzer: {
+                    signals: [],
+                    
+                    recordSignal(signalType, value) {
+                        this.signals.push({
+                            type: signalType,
+                            value,
+                            timestamp: Date.now()
+                        });
+                    },
+                    
+                    determineIntent() {
+                        const positiveSignals = [
+                            'product_review_time',
+                            'form_completion',
+                            'careful_input',
+                            'confirmation_review'
+                        ];
+                        
+                        const negativeSignals = [
+                            'rapid_navigation',
+                            'incomplete_fields',
+                            'no_product_selection',
+                            'immediate_exit'
+                        ];
+                        
+                        const positiveCount = this.signals.filter(s => 
+                            positiveSignals.includes(s.type)).length;
+                        const negativeCount = this.signals.filter(s => 
+                            negativeSignals.includes(s.type)).length;
+                        
+                        const score = (positiveCount - negativeCount) / this.signals.length;
+                        
+                        return {
+                            intent: score > 0.3 ? 'genuine' : score < -0.3 ? 'curious' : 'uncertain',
+                            score,
+                            confidence: Math.abs(score)
+                        };
+                    }
+                },
+                
+                // فصل البيانات النهائية والتجريبية
+                dataStateManager: {
+                    experimentalData: {},
+                    finalData: {},
+                    
+                    markAsExperimental(fieldId, value) {
+                        this.experimentalData[fieldId] = value;
+                    },
+                    
+                    promoteToFinal(fieldId) {
+                        if (this.experimentalData[fieldId]) {
+                            this.finalData[fieldId] = this.experimentalData[fieldId];
+                            delete this.experimentalData[fieldId];
+                        }
+                    },
+                    
+                    getDataQuality() {
+                        const totalFields = Object.keys(this.experimentalData).length + 
+                                          Object.keys(this.finalData).length;
+                        const finalFields = Object.keys(this.finalData).length;
+                        
+                        return {
+                            completeness: totalFields > 0 ? (finalFields / totalFields) * 100 : 0,
+                            experimental: Object.keys(this.experimentalData).length,
+                            finalized: finalFields
+                        };
+                    }
+                },
+                
+                // مراقبة استقرار التركيز
+                focusStabilityMonitor: {
+                    focusEvents: [],
+                    blurEvents: [],
+                    
+                    recordFocus(timestamp) {
+                        this.focusEvents.push(timestamp);
+                    },
+                    
+                    recordBlur(timestamp) {
+                        this.blurEvents.push(timestamp);
+                    },
+                    
+                    calculateStability() {
+                        const totalEvents = this.focusEvents.length + this.blurEvents.length;
+                        if (totalEvents === 0) return 100;
+                        
+                        const focusRatio = this.focusEvents.length / totalEvents;
+                        const stability = focusRatio * 100;
+                        
+                        return {
+                            stability,
+                            switches: this.blurEvents.length,
+                            isStable: stability > 70
+                        };
+                    }
+                },
+                
+                // تحديد مستوى الإلمام التقني
+                technicalProficiencyDetector: {
+                    indicators: {
+                        keyboardShortcuts: 0,
+                        navigationSpeed: 0,
+                        errorRecovery: 0,
+                        formAutofill: 0
+                    },
+                    
+                    recordIndicator(type, value) {
+                        if (this.indicators.hasOwnProperty(type)) {
+                            this.indicators[type] += value;
+                        }
+                    },
+                    
+                    assessProficiency() {
+                        const total = Object.values(this.indicators).reduce((a, b) => a + b, 0);
+                        const maxPossible = Object.keys(this.indicators).length * 10;
+                        const score = (total / maxPossible) * 100;
+                        
+                        return {
+                            level: score > 70 ? 'advanced' : score > 40 ? 'intermediate' : 'beginner',
+                            score,
+                            details: this.indicators
+                        };
+                    }
+                },
+                
+                // تقدير العبء الذهني
+                cognitiveLoadEstimator: {
+                    complexityFactors: {
+                        fieldCount: 0,
+                        validationRules: 0,
+                        decisionPoints: 0,
+                        informationDensity: 0
+                    },
+                    
+                    setFactor(factor, value) {
+                        if (this.complexityFactors.hasOwnProperty(factor)) {
+                            this.complexityFactors[factor] = value;
+                        }
+                    },
+                    
+                    estimateLoad() {
+                        const weights = {
+                            fieldCount: 0.3,
+                            validationRules: 0.25,
+                            decisionPoints: 0.25,
+                            informationDensity: 0.2
+                        };
+                        
+                        let totalLoad = 0;
+                        for (const [factor, value] of Object.entries(this.complexityFactors)) {
+                            totalLoad += value * weights[factor];
+                        }
+                        
+                        return {
+                            load: totalLoad,
+                            level: totalLoad > 7 ? 'high' : totalLoad > 4 ? 'medium' : 'low',
+                            optimization: totalLoad > 7 ? 'simplify' : 'maintain'
+                        };
+                    }
+                },
+                
+                // كشف طريقة الإدخال
+                inputMethodDetector: {
+                    methods: {
+                        typing: 0,
+                        pasting: 0,
+                        autofill: 0
+                    },
+                    
+                    recordMethod(fieldId, method, confidence) {
+                        this.methods[method] = (this.methods[method] || 0) + confidence;
+                    },
+                    
+                    getPrimaryMethod() {
+                        const sorted = Object.entries(this.methods)
+                            .sort((a, b) => b[1] - a[1]);
+                        
+                        return {
+                            primary: sorted[0][0],
+                            distribution: this.methods,
+                            diversity: Object.values(this.methods).filter(v => v > 0).length
+                        };
+                    }
+                },
+                
+                // نظام التنبؤ بإكمال الطلب
+                completionPredictor: {
+                    factors: [],
+                    
+                    addFactor(name, value, weight) {
+                        this.factors.push({ name, value, weight });
+                    },
+                    
+                    predict() {
+                        if (this.factors.length === 0) return null;
+                        
+                        let totalScore = 0;
+                        let totalWeight = 0;
+                        
+                        for (const factor of this.factors) {
+                            totalScore += factor.value * factor.weight;
+                            totalWeight += factor.weight;
+                        }
+                        
+                        const probability = (totalScore / totalWeight) * 100;
+                        
+                        return {
+                            probability,
+                            willComplete: probability > 70,
+                            confidence: probability > 50 ? 'high' : 'low',
+                            factors: this.factors
+                        };
+                    }
+                },
+                
+                // إدارة أولويات العمليات
+                processPriorityManager: {
+                    processes: {},
+                    
+                    registerProcess(name, priority, phase) {
+                        this.processes[name] = {
+                            priority,
+                            phase,
+                            lastRun: null,
+                            runCount: 0
+                        };
+                    },
+                    
+                    getNextProcess(currentPhase) {
+                        const eligible = Object.entries(this.processes)
+                            .filter(([_, p]) => p.phase === currentPhase)
+                            .sort((a, b) => b[1].priority - a[1].priority);
+                        
+                        if (eligible.length > 0) {
+                            const [name, process] = eligible[0];
+                            process.lastRun = Date.now();
+                            process.runCount++;
+                            return name;
+                        }
+                        
+                        return null;
+                    }
+                },
+                
+                // نظام التقييم الشامل
+                comprehensiveScoring: {
+                    calculateOverallScore() {
+                        return {
+                            confidence: AnalyticsEngine.confidenceTracker.getConfidenceLevel(),
+                            engagement: AnalyticsEngine.behaviorAnalyzer.analyzeReadingIntent().engagement,
+                            timing: AnalyticsEngine.timingSystem.calculateOptimalSubmitTime().classification,
+                            intent: AnalyticsEngine.intentAnalyzer.determineIntent().intent,
+                            stability: AnalyticsEngine.confidenceTracker.stabilityScore,
+                            readiness: AnalyticsEngine.fieldWeighting.calculateReadiness(['firstName', 'phone', 'wilaya']),
+                            quality: AnalyticsEngine.connectionQuality.estimateQuality(),
+                            timestamp: Date.now()
+                        };
+                    },
+                    
+                    generateReport() {
+                        const score = this.calculateOverallScore();
+                        
+                        console.log('=== تقرير التحليل الشامل ===');
+                        console.log('مستوى الثقة:', score.confidence);
+                        console.log('مستوى التفاعل:', score.engagement);
+                        console.log('التصنيف الزمني:', score.timing);
+                        console.log('النية المتوقعة:', score.intent);
+                        console.log('درجة الاستقرار:', score.stability.toFixed(2));
+                        console.log('نسبة الجاهزية:', score.readiness.toFixed(2) + '%');
+                        console.log('جودة الاتصال:', score.quality);
+                        console.log('============================');
+                        
+                        return score;
+                    }
                 }
-            }
-        }
-
-        function saveCart() {
-            localStorage.setItem('cart', JSON.stringify(cart));
-        }
-
-        function updateCartUI() {
-            const cartItems = document.getElementById('cartItems');
-            const cartCount = document.querySelector('.cart-count');
-            const cartTotal = document.getElementById('cartTotal');
-            
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            
-            cartCount.textContent = totalItems;
-            cartTotal.innerHTML = `المجموع: ${totalPrice.toLocaleString()} د.ج`;
-            
-            if (cart.length === 0) {
-                cartItems.innerHTML = '<p style="text-align: center; padding: 2rem; color: var(--text-secondary);">السلة فارغة</p>';
-            } else {
-                cartItems.innerHTML = cart.map(item => `
-                    <div class="cart-item">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                            <strong>${item.name}</strong>
-                            <button onclick="removeFromCart(${item.id})" style="background: #e74c3c; color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 5px; cursor: pointer;">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <button onclick="updateQuantity(${item.id}, -1)" style="background: var(--accent); color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 5px; cursor: pointer;">-</button>
-                                <span style="margin: 0 1rem; font-weight: bold;">${item.quantity}</span>
-                                <button onclick="updateQuantity(${item.id}, 1)" style="background: var(--accent); color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 5px; cursor: pointer;">+</button>
-                            </div>
-                            <strong>${(item.price * item.quantity).toLocaleString()} د.ج</strong>
-                        </div>
-                    </div>
-                `).join('');
-            }
-        }
-
-        function toggleCart() {
-            document.getElementById('cartSidebar').classList.toggle('active');
-            showBackButton();
-        }
-
-        // Order Form
-        function showOrderForm() {
-            if (cart.length === 0) {
-                alert('السلة فارغة! الرجاء إضافة منتجات أولاً');
-                return;
-            }
-            document.getElementById('orderForm').classList.add('active');
-            document.getElementById('cartSidebar').classList.remove('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            showBackButton();
-        }
-
-        document.getElementById('customerForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            customerData = {
-                fullName: document.getElementById('fullName').value,
-                lastName: document.getElementById('lastName').value,
-                residence: document.getElementById('residence').value,
-                wilaya: document.getElementById('wilaya').value,
-                phone: document.getElementById('phone').value
             };
             
-            localStorage.setItem('customerData', JSON.stringify(customerData));
+            // ========== التكامل مع النظام الأساسي ==========
             
-            const orderSummary = `
-طلبية جديدة من ${customerData.fullName} ${customerData.lastName}
-
-العنوان: ${customerData.residence}, ${customerData.wilaya}
-الهاتف: ${customerData.phone}
-
-المنتجات:
-${cart.map(item => `- ${item.name} x${item.quantity} = ${(item.price * item.quantity).toLocaleString()} د.ج`).join('\n')}
-
-المجموع الكلي: ${cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toLocaleString()} د.ج
-            `;
+            const DEFAULT_PRODUCT = 'منتج متميز 1';
+            const DEFAULT_PRICE = '5,000 د.ج';
             
-            console.log(orderSummary);
-            alert('تم إرسال طلبك بنجاح! سنتواصل معك قريباً.');
+            const orderData = {
+                product: '',
+                price: '',
+                isConfirmed: false
+            };
             
-            cart = [];
-            saveCart();
-            updateCartUI();
-            document.getElementById('orderForm').classList.remove('active');
-            document.getElementById('customerForm').reset();
-        });
-
-        // Image Modal
-        function openImageModal(imageSrc) {
-            document.getElementById('modalImage').src = imageSrc;
-            document.getElementById('imageModal').classList.add('active');
-            currentZoomIndex = 0;
-            resetZoom();
-            showBackButton();
-        }
-
-        function closeImageModal() {
-            document.getElementById('imageModal').classList.remove('active');
-            resetZoom();
-        }
-
-        function zoomImage(direction) {
-            currentZoomIndex = Math.max(0, Math.min(zoomSteps.length - 1, currentZoomIndex + direction));
-            const img = document.getElementById('modalImage');
-            img.style.transform = `scale(${zoomSteps[currentZoomIndex]})`;
-        }
-
-        function resetZoom() {
-            currentZoomIndex = 0;
-            const img = document.getElementById('modalImage');
-            img.style.transform = 'scale(1)';
-        }
-
-        // Reviews
-        function setupRatingStars() {
-            const stars = document.querySelectorAll('.star');
-            stars.forEach(star => {
-                star.addEventListener('click', () => {
-                    currentRating = parseInt(star.dataset.rating);
-                    updateStars();
+            let isSubmitting = false;
+            const form = document.getElementById('orderForm');
+            const orderSection = document.querySelector('.order-section');
+            const messageContainer = document.getElementById('messageContainer');
+            const submitBtn = document.getElementById('submitBtn');
+            const confirmBtn = document.getElementById('confirmBtn');
+            const orderSummary = document.getElementById('orderSummary');
+            const phoneInput = document.getElementById('phone');
+            const emailInput = document.getElementById('email');
+            
+            const formInputs = [
+                document.getElementById('firstName'),
+                document.getElementById('lastName'),
+                phoneInput,
+                emailInput,
+                document.getElementById('city'),
+                document.getElementById('wilaya'),
+                document.getElementById('message')
+            ];
+            
+            // تهيئة نظام التحليل
+            AnalyticsEngine.timingSystem.recordEvent('page_load');
+            AnalyticsEngine.interactionPath.recordStep('initial', 'page_view');
+            
+            // مراقبة التمرير
+            let scrollTimeout;
+            window.addEventListener('scroll', function() {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    AnalyticsEngine.behaviorAnalyzer.trackScrollBehavior(
+                        window.scrollY, 
+                        Date.now()
+                    );
+                }, 100);
+            });
+            
+            // مراقبة التركيز
+            window.addEventListener('focus', () => {
+                AnalyticsEngine.focusStabilityMonitor.recordFocus(Date.now());
+            });
+            
+            window.addEventListener('blur', () => {
+                AnalyticsEngine.focusStabilityMonitor.recordBlur(Date.now());
+            });
+            
+            function showMessage(text, type) {
+                messageContainer.innerHTML = `<div class="${type}-message">${text}</div>`;
+                messageContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                
+                AnalyticsEngine.interactionPath.recordStep('message', type);
+            }
+            
+            function enableForm() {
+                orderSection.classList.add('active');
+                formInputs.forEach(input => {
+                    if (input) input.disabled = false;
+                });
+                submitBtn.disabled = false;
+                
+                if (!AnalyticsEngine.timingSystem.formStartTime) {
+                    AnalyticsEngine.timingSystem.formStartTime = Date.now();
+                }
+                
+                AnalyticsEngine.interactionPath.recordStep('form', 'enabled');
+            }
+            
+            function disableForm() {
+                orderSection.classList.remove('active');
+                formInputs.forEach(input => {
+                    if (input) input.disabled = true;
+                });
+                submitBtn.disabled = true;
+                
+                AnalyticsEngine.interactionPath.recordStep('form', 'disabled');
+            }
+            
+            function saveFormData() {
+                const formData = {
+                    firstName: document.getElementById('firstName').value,
+                    lastName: document.getElementById('lastName').value,
+                    phone: phoneInput.value,
+                    email: emailInput.value,
+                    city: document.getElementById('city').value,
+                    wilaya: document.getElementById('wilaya').value,
+                    message: document.getElementById('message').value
+                };
+                localStorage.setItem('formData', JSON.stringify(formData));
+            }
+            
+            function loadFormData() {
+                const saved = localStorage.getItem('formData');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    document.getElementById('firstName').value = data.firstName || '';
+                    document.getElementById('lastName').value = data.lastName || '';
+                    phoneInput.value = data.phone || '';
+                    emailInput.value = data.email || '';
+                    document.getElementById('city').value = data.city || '';
+                    document.getElementById('wilaya').value = data.wilaya || '';
+                    document.getElementById('message').value = data.message || '';
+                }
+            }
+            
+            function updateProductClicks(productName, increment = true) {
+                const clicks = JSON.parse(localStorage.getItem('productClicks') || '{}');
+                clicks[productName] = (clicks[productName] || 0) + (increment ? 1 : 0);
+                localStorage.setItem('productClicks', JSON.stringify(clicks));
+                
+                AnalyticsEngine.interactionPath.recordStep('product', 'click');
+                return clicks;
+            }
+            
+            function getMostPopularProduct() {
+                const clicks = JSON.parse(localStorage.getItem('productClicks') || '{}');
+                let maxClicks = 0;
+                let popularProduct = null;
+                
+                for (const [product, count] of Object.entries(clicks)) {
+                    if (count > maxClicks) {
+                        maxClicks = count;
+                        popularProduct = product;
+                    }
+                }
+                
+                return popularProduct;
+            }
+            
+            function updatePopularBadges() {
+                const mostPopular = getMostPopularProduct();
+                document.querySelectorAll('.popular-badge').forEach(badge => badge.remove());
+                
+                if (mostPopular) {
+                    const cards = document.querySelectorAll('.product-card');
+                    cards.forEach(card => {
+                        if (card.dataset.product === mostPopular) {
+                            const badge = document.createElement('div');
+                            badge.className = 'popular-badge';
+                            badge.textContent = 'الأكثر طلباً';
+                            card.appendChild(badge);
+                        }
+                    });
+                }
+            }
+            
+            function updateSummary() {
+                const firstName = document.getElementById('firstName').value.trim();
+                const lastName = document.getElementById('lastName').value.trim();
+                const phone = phoneInput.value.trim();
+                const wilayaSelect = document.getElementById('wilaya');
+                const wilayaText = wilayaSelect.options[wilayaSelect.selectedIndex]?.text || '-';
+                
+                document.getElementById('summaryProduct').textContent = orderData.product || '-';
+                document.getElementById('summaryPrice').textContent = orderData.price || '-';
+                document.getElementById('summaryName').textContent = 
+                    (firstName || lastName) ? `${firstName} ${lastName}`.trim() : '-';
+                document.getElementById('summaryPhone').textContent = phone || '-';
+                document.getElementById('summaryWilaya').textContent = wilayaText;
+            }
+            
+            function checkForLastOrder() {
+                const lastOrder = localStorage.getItem('lastSuccessfulOrder');
+                if (lastOrder) {
+                    const orderTime = parseInt(lastOrder);
+                    const now = Date.now();
+                    const hoursPassed = (now - orderTime) / (1000 * 60 * 60);
+                    
+                    if (hoursPassed < 24) {
+                        showMessage('لقد قمت بإرسال طلب مؤخراً • يرجى الانتظار 24 ساعة قبل إرسال طلب جديد', 'error');
+                        AnalyticsEngine.interactionPath.recordStep('validation', 'order_limit_reached');
+                        return true;
+                    } else {
+                        localStorage.removeItem('lastSuccessfulOrder');
+                    }
+                }
+                return false;
+            }
+            
+            loadFormData();
+            updatePopularBadges();
+            
+            if (!checkForLastOrder()) {
+                const savedProduct = localStorage.getItem('selectedProduct');
+                const savedPrice = localStorage.getItem('selectedPrice');
+                
+                if (savedProduct && savedPrice) {
+                    orderData.product = savedProduct;
+                    orderData.price = savedPrice;
+                    document.getElementById('selectedProduct').value = savedProduct;
+                    document.getElementById('selectedPrice').value = savedPrice;
+                    showMessage(`تم اختيار: ${savedProduct} - ${savedPrice} • يرجى إكمال بياناتك أدناه`, 'order');
+                    enableForm();
+                    
+                    const cards = document.querySelectorAll('.product-card');
+                    cards.forEach(card => {
+                        if (card.dataset.product === savedProduct) {
+                            card.classList.add('selected');
+                            card.querySelector('.product-btn').classList.add('selected');
+                        }
+                    });
+                }
+            }
+            
+            // معالج اختيار المنتج
+            const productViewStartTime = Date.now();
+            document.querySelector('.products-grid').addEventListener('click', function(e) {
+                if (e.target.classList.contains('product-btn')) {
+                    const actionStart = Date.now();
+                    
+                    if (checkForLastOrder()) {
+                        return;
+                    }
+                    
+                    const card = e.target.closest('.product-card');
+                    const productName = card.dataset.product;
+                    const productPrice = card.dataset.price;
+                    
+                    const viewDuration = Date.now() - productViewStartTime;
+                    AnalyticsEngine.effortBalance.measureProductEffort(1, viewDuration);
+                    AnalyticsEngine.timingSystem.recordEvent('product_selected', { 
+                        product: productName,
+                        viewDuration 
+                    });
+                    
+                    orderData.product = productName;
+                    orderData.price = productPrice;
+                    orderData.isConfirmed = false;
+                    
+                    document.getElementById('selectedProduct').value = productName;
+                    document.getElementById('selectedPrice').value = productPrice;
+                    
+                    localStorage.setItem('selectedProduct', productName);
+                    localStorage.setItem('selectedPrice', productPrice);
+                    
+                    updateProductClicks(productName, true);
+                    updatePopularBadges();
+                    
+                    const allCards = document.querySelectorAll('.product-card');
+                    allCards.forEach(c => {
+                        c.classList.remove('selected');
+                        c.querySelector('.product-btn').classList.remove('selected');
+                    });
+                    
+                    card.classList.add('selected');
+                    e.target.classList.add('selected');
+                    
+                    showMessage(`تم اختيار: ${productName} - ${productPrice} • يرجى إكمال بياناتك أدناه`, 'order');
+                    enableForm();
+                    
+                    orderSummary.classList.remove('visible');
+                    confirmBtn.classList.remove('visible');
+                    submitBtn.textContent = 'معاينة الطلب';
+                    submitBtn.style.display = 'block';
+                    
+                    AnalyticsEngine.intentAnalyzer.recordSignal('product_review_time', viewDuration);
+                    
+                    const actionDuration = Date.now() - actionStart;
+                    AnalyticsEngine.accidentalUseDetector.recordAction('product_select', actionDuration);
+                    AnalyticsEngine.connectionQuality.recordResponseTime('product_selection', actionDuration);
+                    
+                    setTimeout(() => {
+                        document.getElementById('order').scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                }
+            });
+            
+            // مراقبة إدخال الهاتف
+            let phoneLastInput = Date.now();
+            phoneInput.addEventListener('input', function(e) {
+                const inputSpeed = Date.now() - phoneLastInput;
+                phoneLastInput = Date.now();
+                
+                this.value = this.value.replace(/[^0-9]/g, '');
+                
+                AnalyticsEngine.confidenceTracker.trackChange('phone', this.value);
+                AnalyticsEngine.dataStateManager.markAsExperimental('phone', this.value);
+                AnalyticsEngine.interactionPattern.recordInteraction('input', 'phone');
+                
+                const method = inputSpeed < 100 ? 'pasting' : 'typing';
+                AnalyticsEngine.inputMethodDetector.recordMethod('phone', method, 1);
+                
+                if (this.value.length > 0 && this.value.length !== 10) {
+                    this.classList.add('input-error');
+                } else {
+                    this.classList.remove('input-error');
+                    if (this.value.length === 10) {
+                        AnalyticsEngine.dataStateManager.promoteToFinal('phone');
+                    }
+                }
+                updateSummary();
+            });
+            
+            // مراقبة البريد الإلكتروني
+            emailInput.addEventListener('blur', function() {
+                if (this.value && !this.validity.valid) {
+                    this.classList.add('input-error');
+                } else {
+                    this.classList.remove('input-error');
+                    if (this.value) {
+                        AnalyticsEngine.dataStateManager.promoteToFinal('email');
+                    }
+                }
+                
+                AnalyticsEngine.confidenceTracker.trackChange('email', this.value);
+            });
+            
+            // مراقبة جميع الحقول
+            formInputs.forEach((input, index) => {
+                if (!input) return;
+                
+                let lastFocusTime = null;
+                
+                input.addEventListener('focus', () => {
+                    lastFocusTime = Date.now();
+                    AnalyticsEngine.interactionPattern.recordInteraction('focus', input.id);
+                });
+                
+                input.addEventListener('blur', () => {
+                    if (lastFocusTime) {
+                        const duration = Date.now() - lastFocusTime;
+                        if (duration > 5000) {
+                            AnalyticsEngine.hesitationDetector.recordPause(input.id, duration);
+                        }
+                    }
+                });
+                
+                input.addEventListener('input', () => {
+                    AnalyticsEngine.validationPriority.adjustPriority(input.id, 1);
                 });
             });
-        }
-
-        function updateStars() {
-            const stars = document.querySelectorAll('.star');
-            stars.forEach(star => {
-                if (parseInt(star.dataset.rating) <= currentRating) {
-                    star.classList.add('active');
-                } else {
-                    star.classList.remove('active');
+            
+            // مراقبة التغييرات في النموذج
+            form.addEventListener('input', function(e) {
+                saveFormData();
+                updateSummary();
+                
+                AnalyticsEngine.interactionPattern.recordInteraction('input', e.target.id);
+                
+                const filledFields = Array.from(formInputs)
+                    .filter(input => input && input.value.trim() !== '')
+                    .map(input => input.id);
+                
+                AnalyticsEngine.intentAnalyzer.recordSignal('form_completion', filledFields.length);
+            });
+            
+            // معالج إرسال النموذج
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (isSubmitting || orderData.isConfirmed) return;
+                
+                const submitStartTime = Date.now();
+                
+                if (!orderData.product) {
+                    showMessage('يرجى اختيار منتج من القائمة أعلاه قبل إرسال الطلب', 'error');
+                    AnalyticsEngine.intentAnalyzer.recordSignal('no_product_selection', 1);
+                    setTimeout(() => {
+                        document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                    return;
+                }
+                
+                const firstName = document.getElementById('firstName').value.trim();
+                const phone = phoneInput.value.trim();
+                const wilaya = document.getElementById('wilaya').value;
+                
+                // التحقق بالترتيب الديناميكي
+                const validationOrder = AnalyticsEngine.validationPriority.getValidationOrder();
+                
+                for (const fieldId of validationOrder) {
+                    const field = document.getElementById(fieldId);
+                    if (!field) continue;
+                    
+                    if (fieldId === 'firstName' && !firstName) {
+                        showMessage('يرجى إدخال الاسم', 'error');
+                        field.focus();
+                        return;
+                    }
+                    
+                    if (fieldId === 'phone' && (!phone || phone.length !== 10)) {
+                        showMessage('يرجى إدخال رقم هاتف صحيح (10 أرقام)', 'error');
+                        phoneInput.focus();
+                        return;
+                    }
+                    
+                    if (fieldId === 'wilaya' && !wilaya) {
+                        showMessage('يرجى اختيار الولاية', 'error');
+                        field.focus();
+                        return;
+                    }
+                }
+                
+                // حساب الجهد المبذول في النموذج
+                const totalMods = Object.values(AnalyticsEngine.confidenceTracker.modificationCounts)
+                    .reduce((a, b) => a + b, 0);
+                const formDuration = Date.now() - AnalyticsEngine.timingSystem.formStartTime;
+                
+                AnalyticsEngine.effortBalance.measureFormEffort(
+                    formInputs.length,
+                    formDuration,
+                    totalMods
+                );
+                
+                // تقييم التوازن
+                const isBalanced = AnalyticsEngine.effortBalance.isBalanced();
+                console.log('توازن الجهد:', isBalanced ? 'متوازن' : 'غير متوازن');
+                
+                updateSummary();
+                orderSummary.classList.add('visible');
+                confirmBtn.classList.add('visible');
+                submitBtn.style.display = 'none';
+                
+                showMessage('يرجى مراجعة ملخص الطلب أدناه ثم الضغط على "تأكيد و إرسال الطلب"', 'order');
+                
+                AnalyticsEngine.timingSystem.recordEvent('preview_shown');
+                AnalyticsEngine.intentAnalyzer.recordSignal('confirmation_review', 1);
+                
+                const submitDuration = Date.now() - submitStartTime;
+                AnalyticsEngine.connectionQuality.recordResponseTime('form_submit', submitDuration);
+                
+                setTimeout(() => {
+                    orderSummary.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100);
+            });
+            
+            // معالج التأكيد
+            confirmBtn.addEventListener('click', function() {
+                if (isSubmitting || orderData.isConfirmed) return;
+                
+                const confirmStartTime = Date.now();
+                
+                if (checkForLastOrder()) {
+                    return;
+                }
+                
+                // كشف التردد قبل التأكيد
+                const hasHesitation = AnalyticsEngine.timingSystem.trackConfirmationHesitation(confirmStartTime);
+                if (hasHesitation) {
+                    console.log('تم اكتشاف تردد قبل التأكيد');
+                }
+                
+                isSubmitting = true;
+                orderData.isConfirmed = true;
+                confirmBtn.disabled = true;
+                showMessage('جاري إرسال طلبك...', 'order');
+                
+                const formData = {
+                    product: orderData.product,
+                    price: orderData.price,
+                    firstName: document.getElementById('firstName').value.trim(),
+                    lastName: document.getElementById('lastName').value.trim(),
+                    phone: phoneInput.value.trim(),
+                    email: emailInput.value.trim(),
+                    city: document.getElementById('city').value.trim(),
+                    wilaya: document.getElementById('wilaya').value,
+                    message: document.getElementById('message').value.trim(),
+                    timestamp: new Date().toISOString()
+                };
+                
+                // تصنيف الاستعجال
+                const urgency = AnalyticsEngine.urgencyClassifier.classify({
+                    totalTime: Date.now() - AnalyticsEngine.timingSystem.formStartTime,
+                    modificationCount: Object.values(AnalyticsEngine.confidenceTracker.modificationCounts)
+                        .reduce((a, b) => a + b, 0),
+                    hesitationLevel: hasHesitation ? 'high' : 'low'
+                });
+                
+                // إضافة عوامل التنبؤ
+                AnalyticsEngine.completionPredictor.addFactor('stability', 
+                    AnalyticsEngine.confidenceTracker.stabilityScore, 0.3);
+                AnalyticsEngine.completionPredictor.addFactor('timing', 
+                    urgency.score, 0.2);
+                AnalyticsEngine.completionPredictor.addFactor('intent', 
+                    AnalyticsEngine.intentAnalyzer.determineIntent().score, 0.5);
+                
+                const prediction = AnalyticsEngine.completionPredictor.predict();
+                
+                setTimeout(() => {
+                    console.log('Order submitted:', formData);
+                    console.log('Urgency classification:', urgency);
+                    console.log('Completion prediction:', prediction);
+                    
+                    // توليد التقرير الشامل
+                    const finalReport = AnalyticsEngine.comprehensiveScoring.generateReport();
+                    console.log('Final Analytics Report:', finalReport);
+                    
+                    localStorage.setItem('lastSuccessfulOrder', Date.now().toString());
+                    localStorage.removeItem('selectedProduct');
+                    localStorage.removeItem('selectedPrice');
+                    localStorage.removeItem('formData');
+                    
+                    showMessage(`تم استلام طلبك بنجاح! المنتج: ${orderData.product} - ${orderData.price} • سنتواصل معك على الرقم ${formData.phone} خلال 24 ساعة`, 'success');
+                    
+                    form.reset();
+                    orderData.product = '';
+                    orderData.price = '';
+                    orderData.isConfirmed = false;
+                    
+                    orderSummary.classList.remove('visible');
+                    confirmBtn.classList.remove('visible');
+                    submitBtn.style.display = 'block';
+                    submitBtn.textContent = 'معاينة الطلب';
+                    
+                    disableForm();
+                    
+                    const allCards = document.querySelectorAll('.product-card');
+                    allCards.forEach(c => {
+                        c.classList.remove('selected');
+                        c.querySelector('.product-btn').classList.remove('selected');
+                    });
+                    
+                    isSubmitting = false;
+                    confirmBtn.disabled = false;
+                    
+                    AnalyticsEngine.timingSystem.recordEvent('order_confirmed');
+                    AnalyticsEngine.interactionPath.recordStep('order', 'completed');
+                }, 1500);
+            });
+            
+            // تحميل الصور الكسولة
+            const images = document.querySelectorAll('.product-image img');
+            if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            if (img.dataset.src) {
+                                img.src = img.dataset.src;
+                                img.removeAttribute('data-src');
+                            }
+                            observer.unobserve(img);
+                        }
+                    });
+                });
+                
+                images.forEach(img => imageObserver.observe(img));
+            }
+            
+            // تحذير قبل الخروج
+            window.addEventListener('beforeunload', function(e) {
+                const hasData = document.getElementById('firstName').value || 
+                               phoneInput.value || 
+                               document.getElementById('wilaya').value;
+                
+                if (hasData && !isSubmitting && orderData.product && !checkForLastOrder()) {
+                    AnalyticsEngine.interactionPath.recordStep('exit', 'attempted_with_data');
+                    e.preventDefault();
+                    e.returnValue = '';
                 }
             });
-        }
-
-        function submitReview() {
-            const reviewText = document.getElementById('reviewText').value.trim();
             
-            if (!reviewText || currentRating === 0) {
-                alert('الرجاء إضافة تقييم ونص للمراجعة');
-                return;
-            }
+            // تسجيل دوري للتحليلات (اختياري للمراقبة)
+            setInterval(() => {
+                const report = AnalyticsEngine.comprehensiveScoring.calculateOverallScore();
+                // يمكن إرسال هذا التقرير إلى خادم للتحليل
+            }, 30000); // كل 30 ثانية
             
-            const existingReviewIndex = reviews.findIndex(r => r.userPhone === customerData?.phone);
-            
-            const review = {
-                id: Date.now(),
-                userName: customerData?.fullName || 'مستخدم',
-                userPhone: customerData?.phone,
-                rating: currentRating,
-                text: reviewText,
-                date: new Date().toLocaleDateString('ar-DZ')
-            };
-            
-            if (existingReviewIndex !== -1) {
-                reviews[existingReviewIndex] = review;
-            } else {
-                reviews.push(review);
-            }
-            
-            localStorage.setItem('reviews', JSON.stringify(reviews));
-            loadReviews();
-            
-            document.getElementById('reviewText').value = '';
-            currentRating = 0;
-            updateStars();
-            
-            showNotification('تم إضافة تقييمك بنجاح!');
-        }
-
-        function loadReviews() {
-            const reviewsList = document.getElementById('reviewsList');
-            if (reviews.length === 0) {
-                reviewsList.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">لا توجد تقييمات بعد</p>';
-                return;
-            }
-            
-            reviewsList.innerHTML = reviews.map(review => `
-                <div class="review-item">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                        <strong>${review.userName}</strong>
-                        <span style="color: #f39c12;">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</span>
-                    </div>
-                    <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">${review.text}</p>
-                    <small style="color: var(--text-secondary);">${review.date}</small>
-                </div>
-            `).join('');
-        }
-
-        // Theme Toggle
-        function toggleTheme() {
-            document.body.classList.toggle('dark-mode');
-            const icon = document.querySelector('.theme-toggle i');
-            if (document.body.classList.contains('dark-mode')) {
-                icon.className = 'fas fa-sun';
-                localStorage.setItem('theme', 'dark');
-            } else {
-                icon.className = 'fas fa-moon';
-                localStorage.setItem('theme', 'light');
-            }
-        }
-
-        // Load saved theme
-        if (localStorage.getItem('theme') === 'dark') {
-            document.body.classList.add('dark-mode');
-            document.querySelector('.theme-toggle i').className = 'fas fa-sun';
-        }
-
-        // Back Button
-        function showBackButton() {
-            document.querySelector('.back-btn').classList.add('show');
-        }
-
-        function goBack() {
-            const modal = document.getElementById('imageModal');
-            const cart = document.getElementById('cartSidebar');
-            const form = document.getElementById('orderForm');
-            
-            if (modal.classList.contains('active')) {
-                closeImageModal();
-            } else if (cart.classList.contains('active')) {
-                toggleCart();
-            } else if (form.classList.contains('active')) {
-                form.classList.remove('active');
-            } else {
-                document.querySelector('.back-btn').classList.remove('show');
-            }
-        }
-
-        // Notification
-        function showNotification(message) {
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 100px;
-                right: 20px;
-                background: var(--accent);
-                color: white;
-                padding: 1rem 1.5rem;
-                border-radius: 10px;
-                box-shadow: 0 5px 15px var(--shadow);
-                z-index: 3000;
-                animation: slideIn 0.3s ease;
-            `;
-            notification.textContent = message;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.style.animation = 'slideOut 0.3s ease';
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
-        }
-
-        // Close modal on outside click
-        document.getElementById('imageModal').addEventListener('click', (e) => {
-            if (e.target.id === 'imageModal') {
-                closeImageModal();
-            }
-        });
+        })();
     </script>
 </body>
 </html>
