@@ -733,365 +733,203 @@
         </div>
     </footer>
 
-    <script>
-        (function() {
-            'use strict';
-            
-            // Configuration - استبدل هذا برابط Cloudflare Worker الخاص بك
-            const WORKER_URL = 'https://your-worker.your-subdomain.workers.dev';
-            
-            // Draft storage key
-            const DRAFT_KEY = 'zaki_order_draft';
-            
-            // DOM Elements
-            const productCards = document.querySelectorAll('.product-card');
-            const orderSection = document.querySelector('.order-section');
-            const form = document.getElementById('orderForm');
-            const submitBtn = document.getElementById('submitBtn');
-            const confirmBtn = document.getElementById('confirmBtn');
-            const messageContainer = document.getElementById('messageContainer');
-            const orderSummary = document.getElementById('orderSummary');
-            
-            // Form inputs
-            const inputs = {
-                selectedProduct: document.getElementById('selectedProduct'),
-                selectedPrice: document.getElementById('selectedPrice'),
-                orderId: document.getElementById('orderId'),
-                firstName: document.getElementById('firstName'),
-                lastName: document.getElementById('lastName'),
-                phone: document.getElementById('phone'),
-                email: document.getElementById('email'),
-                city: document.getElementById('city'),
-                wilaya: document.getElementById('wilaya'),
-                message: document.getElementById('message'),
-                honeypot: document.querySelector('input[name="website"]')
-            };
-            
-            // Summary elements
-            const summary = {
-                product: document.getElementById('summaryProduct'),
-                price: document.getElementById('summaryPrice'),
-                name: document.getElementById('summaryName'),
-                phone: document.getElementById('summaryPhone'),
-                wilaya: document.getElementById('summaryWilaya')
-            };
-            
-            // State
-            let selectedProduct = null;
-            let isSubmitting = false;
-            let currentOrderId = null;
-            
-            // Helper functions
-            function generateOrderId() {
-                const timestamp = Date.now();
-                const random = Math.random().toString(36).substring(2, 8).toUpperCase();
-                return `ORD-${timestamp}-${random}`;
-            }
-            
-            function showMessage(text, type) {
-                messageContainer.innerHTML = `<div class="message ${type}">${text}</div>`;
-                messageContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
-            
-            function clearMessage() {
-                messageContainer.innerHTML = '';
-            }
-            
-            function saveDraft() {
-                try {
-                    const draft = {
-                        firstName: inputs.firstName.value.trim(),
-                        lastName: inputs.lastName.value.trim(),
-                        phone: inputs.phone.value.trim(),
-                        email: inputs.email.value.trim(),
-                        city: inputs.city.value.trim(),
-                        wilaya: inputs.wilaya.value,
-                        message: inputs.message.value.trim(),
-                        timestamp: Date.now()
-                    };
-                    localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
-                } catch (e) {
-                    // Silent fail - localStorage might be disabled
-                }
-            }
-            
-            function loadDraft() {
-                try {
-                    const draftStr = localStorage.getItem(DRAFT_KEY);
-                    if (!draftStr) return;
-                    
-                    const draft = JSON.parse(draftStr);
-                    const age = Date.now() - draft.timestamp;
-                    
-                    // Only restore draft if less than 24 hours old
-                    if (age > 24 * 60 * 60 * 1000) {
-                        localStorage.removeItem(DRAFT_KEY);
-                        return;
-                    }
-                    
-                    inputs.firstName.value = draft.firstName || '';
-                    inputs.lastName.value = draft.lastName || '';
-                    inputs.phone.value = draft.phone || '';
-                    inputs.email.value = draft.email || '';
-                    inputs.city.value = draft.city || '';
-                    inputs.wilaya.value = draft.wilaya || '';
-                    inputs.message.value = draft.message || '';
-                } catch (e) {
-                    // Silent fail
-                }
-            }
-            
-            function clearDraft() {
-                try {
-                    localStorage.removeItem(DRAFT_KEY);
-                } catch (e) {
-                    // Silent fail
-                }
-            }
-            
-            function enableFormInputs() {
-                inputs.firstName.disabled = false;
-                inputs.lastName.disabled = false;
-                inputs.phone.disabled = false;
-                inputs.email.disabled = false;
-                inputs.city.disabled = false;
-                inputs.wilaya.disabled = false;
-                inputs.message.disabled = false;
-                submitBtn.disabled = false;
-            }
-            
-            function disableFormInputs() {
-                inputs.firstName.disabled = true;
-                inputs.lastName.disabled = true;
-                inputs.phone.disabled = true;
-                inputs.email.disabled = true;
-                inputs.city.disabled = true;
-                inputs.wilaya.disabled = true;
-                inputs.message.disabled = true;
-                submitBtn.disabled = true;
-            }
-            
-            function validatePhone(phone) {
-                // Algerian phone number: 10 digits starting with 0
-                return /^0[5-7][0-9]{8}$/.test(phone);
-            }
-            
-            function validateEmail(email) {
-                if (!email) return true; // Email is optional
-                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-            }
-            
-            // Product selection
-            productCards.forEach(card => {
-                const btn = card.querySelector('.product-btn');
-                
-                btn.addEventListener('click', function() {
-                    // Remove previous selection
-                    productCards.forEach(c => {
-                        c.classList.remove('selected');
-                        c.querySelector('.product-btn').classList.remove('selected');
-                    });
-                    
-                    // Add new selection
-                    card.classList.add('selected');
-                    btn.classList.add('selected');
-                    
-                    // Store product info
-                    selectedProduct = {
-                        name: card.dataset.product,
-                        price: card.dataset.price
-                    };
-                    
-                    inputs.selectedProduct.value = selectedProduct.name;
-                    inputs.selectedPrice.value = selectedProduct.price;
-                    
-                    // Generate new order ID
-                    currentOrderId = generateOrderId();
-                    inputs.orderId.value = currentOrderId;
-                    
-                    // Enable form
-                    orderSection.classList.add('active');
-                    enableFormInputs();
-                    
-                    // Load draft if exists
-                    loadDraft();
-                    
-                    // Scroll to form
-                    orderSection.scrollIntoView({ behavior: 'smooth' });
-                    
-                    clearMessage();
-                });
-            });
-            
-            // Auto-save draft
-            const draftInputs = [
-                inputs.firstName,
-                inputs.lastName,
-                inputs.phone,
-                inputs.email,
-                inputs.city,
-                inputs.wilaya,
-                inputs.message
-            ];
-            
-            draftInputs.forEach(input => {
-                input.addEventListener('input', saveDraft);
-                input.addEventListener('change', saveDraft);
-            });
-            
-            // Form preview
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                if (!selectedProduct) {
-                    showMessage('يرجى اختيار منتج أولاً', 'error');
-                    return;
-                }
-                
-                // Get form data
-                const firstName = inputs.firstName.value.trim();
-                const lastName = inputs.lastName.value.trim();
-                const phone = inputs.phone.value.trim();
-                const email = inputs.email.value.trim();
-                const wilaya = inputs.wilaya.value;
-                
-                // Validate
-                let hasError = false;
-                
-                if (!firstName) {
-                    inputs.firstName.classList.add('input-error');
-                    hasError = true;
-                } else {
-                    inputs.firstName.classList.remove('input-error');
-                }
-                
-                if (!phone || !validatePhone(phone)) {
-                    inputs.phone.classList.add('input-error');
-                    hasError = true;
-                } else {
-                    inputs.phone.classList.remove('input-error');
-                }
-                
-                if (email && !validateEmail(email)) {
-                    inputs.email.classList.add('input-error');
-                    hasError = true;
-                } else {
-                    inputs.email.classList.remove('input-error');
-                }
-                
-                if (!wilaya) {
-                    inputs.wilaya.classList.add('input-error');
-                    hasError = true;
-                } else {
-                    inputs.wilaya.classList.remove('input-error');
-                }
-                
-                if (hasError) {
-                    showMessage('يرجى إكمال جميع الحقول المطلوبة بشكل صحيح', 'error');
-                    return;
-                }
-                
-                // Update summary
-                summary.product.textContent = selectedProduct.name;
-                summary.price.textContent = selectedProduct.price;
-                summary.name.textContent = `${firstName} ${lastName}`.trim();
-                summary.phone.textContent = phone;
-                summary.wilaya.textContent = inputs.wilaya.selectedOptions[0].text;
-                
-                // Show summary and confirm button
-                orderSummary.classList.add('visible');
-                confirmBtn.classList.add('visible');
-                submitBtn.style.display = 'none';
-                
-                clearMessage();
-                orderSummary.scrollIntoView({ behavior: 'smooth' });
-            });
-            
-            // Confirm and send order
-            confirmBtn.addEventListener('click', async function() {
-                if (isSubmitting) return;
-                
-                // Check honeypot
-                if (inputs.honeypot.value) {
-                    showMessage('حدث خطأ، يرجى المحاولة لاحقاً', 'error');
-                    return;
-                }
-                
-                isSubmitting = true;
-                confirmBtn.disabled = true;
-                showMessage('جاري إرسال الطلب...', 'info');
-                
-                // Prepare payload
-                const payload = {
-                    orderId: currentOrderId,
-                    product: selectedProduct.name,
-                    price: selectedProduct.price,
-                    firstName: inputs.firstName.value.trim(),
-                    lastName: inputs.lastName.value.trim(),
-                    phone: inputs.phone.value.trim(),
-                    email: inputs.email.value.trim(),
-                    city: inputs.city.value.trim(),
-                    wilayaName: inputs.wilaya.selectedOptions[0].text,
-                    message: inputs.message.value.trim(),
-                    timestamp: new Date().toISOString()
-                };
-                
-                try {
-                    const response = await fetch(WORKER_URL, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(payload)
-                    });
-                    
-                    const result = await response.json();
-                    
-                    if (response.ok && result.success) {
-                        // Success
-                        showMessage('تم استلام طلبك بنجاح! سنتواصل معك خلال 24 ساعة', 'success');
-                        
-                        // Reset form
-                        form.reset();
-                        orderSummary.classList.remove('visible');
-                        confirmBtn.classList.remove('visible');
-                        submitBtn.style.display = 'block';
-                        
-                        // Clear selection
-                        productCards.forEach(c => {
-                            c.classList.remove('selected');
-                            c.querySelector('.product-btn').classList.remove('selected');
-                        });
-                        
-                        selectedProduct = null;
-                        currentOrderId = null;
-                        
-                        // Disable form
-                        orderSection.classList.remove('active');
-                        disableFormInputs();
-                        
-                        // Clear draft
-                        clearDraft();
-                        
-                        // Scroll to success message
-                        messageContainer.scrollIntoView({ behavior: 'smooth' });
-                    } else {
-                        // Server returned error
-                        throw new Error(result.error || 'Unknown error');
-                    }
-                } catch (error) {
-                    // Network or server error
-                    showMessage('حدث خطأ أثناء إرسال الطلب، يرجى المحاولة لاحقاً', 'error');
-                    console.error('Order submission error:', error);
-                } finally {
-                    isSubmitting = false;
-                    confirmBtn.disabled = false;
-                }
-            });
-            
-            // Initialize
-            loadDraft();
-        })();
-    </script>
+    
+<script>
+(function () {
+'use strict';
+
+/* ========= CONFIG ========= */
+const WORKER_URL = 'https://white-resonance-9fae.dideanamis.workers.dev';
+const DRAFT_KEY = 'zaki_order_draft';
+
+/* ========= STATE ========= */
+let selectedProduct = null;
+let currentOrderId = null;
+let isSubmitting = false;
+
+/* ========= HELPERS ========= */
+const $ = id => document.getElementById(id);
+
+function generateOrderId() {
+  return 'ORD-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8).toUpperCase();
+}
+
+function showMessage(text, type) {
+  $('messageContainer').innerHTML =
+    `<div class="message ${type}">${text}</div>`;
+}
+
+function saveDraft() {
+  const draft = {
+    firstName: $('firstName').value.trim(),
+    lastName: $('lastName').value.trim(),
+    phone: $('phone').value.trim(),
+    email: $('email').value.trim(),
+    city: $('city').value.trim(),
+    wilaya: $('wilaya').value,
+    message: $('message').value.trim()
+  };
+  localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+}
+
+function loadDraft() {
+  const raw = localStorage.getItem(DRAFT_KEY);
+  if (!raw) return;
+  try {
+    const d = JSON.parse(raw);
+    $('firstName').value = d.firstName || '';
+    $('lastName').value = d.lastName || '';
+    $('phone').value = d.phone || '';
+    $('email').value = d.email || '';
+    $('city').value = d.city || '';
+    $('wilaya').value = d.wilaya || '';
+    $('message').value = d.message || '';
+  } catch {}
+}
+
+function clearDraft() {
+  localStorage.removeItem(DRAFT_KEY);
+}
+
+function enableForm() {
+  document.querySelector('.order-section').classList.add('active');
+  ['firstName','lastName','phone','email','city','wilaya','message']
+    .forEach(id => $(id).disabled = false);
+  $('submitBtn').disabled = false;
+}
+
+function disableForm() {
+  document.querySelector('.order-section').classList.remove('active');
+  ['firstName','lastName','phone','email','city','wilaya','message']
+    .forEach(id => $(id).disabled = true);
+  $('submitBtn').disabled = true;
+}
+
+/* ========= PRODUCT SELECT ========= */
+document.querySelectorAll('.product-card').forEach(card => {
+  card.querySelector('.product-btn').addEventListener('click', () => {
+    document.querySelectorAll('.product-card').forEach(c => {
+      c.classList.remove('selected');
+      c.querySelector('.product-btn').classList.remove('selected');
+    });
+
+    card.classList.add('selected');
+    card.querySelector('.product-btn').classList.add('selected');
+
+    selectedProduct = {
+      name: card.dataset.product,
+      price: card.dataset.price
+    };
+
+    $('selectedProduct').value = selectedProduct.name;
+    $('selectedPrice').value = selectedProduct.price;
+
+    currentOrderId = generateOrderId();
+    $('orderId').value = currentOrderId;
+
+    enableForm();
+    loadDraft();
+    showMessage('', 'info');
+    document.getElementById('order').scrollIntoView({behavior:'smooth'});
+  });
+});
+
+/* ========= DRAFT AUTOSAVE ========= */
+['firstName','lastName','phone','email','city','wilaya','message']
+.forEach(id => {
+  $(id).addEventListener('input', saveDraft);
+});
+
+/* ========= PREVIEW ========= */
+$('orderForm').addEventListener('submit', e => {
+  e.preventDefault();
+
+  if (!selectedProduct) {
+    showMessage('يرجى اختيار منتج أولاً','error');
+    return;
+  }
+
+  const phone = $('phone').value.trim();
+  if (!/^0[5-7][0-9]{8}$/.test(phone)) {
+    showMessage('رقم الهاتف غير صحيح','error');
+    return;
+  }
+
+  $('summaryProduct').textContent = selectedProduct.name;
+  $('summaryPrice').textContent = selectedProduct.price;
+  $('summaryName').textContent =
+    ($('firstName').value + ' ' + $('lastName').value).trim();
+  $('summaryPhone').textContent = phone;
+  $('summaryWilaya').textContent =
+    $('wilaya').selectedOptions[0].text;
+
+  $('orderSummary').classList.add('visible');
+  $('confirmBtn').classList.add('visible');
+  $('submitBtn').style.display = 'none';
+});
+
+/* ========= CONFIRM & SEND ========= */
+$('confirmBtn').addEventListener('click', async () => {
+  if (isSubmitting) return;
+
+  if (document.querySelector('input[name="website"]').value) {
+    return;
+  }
+
+  isSubmitting = true;
+  $('confirmBtn').disabled = true;
+  showMessage('جاري إرسال الطلب...','info');
+
+  const payload = {
+    orderId: currentOrderId,
+    product: selectedProduct.name,
+    price: selectedProduct.price,
+    firstName: $('firstName').value.trim(),
+    lastName: $('lastName').value.trim(),
+    phone: $('phone').value.trim(),
+    email: $('email').value.trim(),
+    city: $('city').value.trim(),
+    wilayaName: $('wilaya').selectedOptions[0].text,
+    message: $('message').value.trim(),
+    timestamp: new Date().toISOString()
+  };
+
+  try {
+    const res = await fetch(WORKER_URL, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
+    const json = await res.json();
+
+    if (!json.success) throw new Error();
+
+    showMessage('تم استلام طلبك بنجاح','success');
+    $('orderForm').reset();
+    clearDraft();
+    disableForm();
+    $('orderSummary').classList.remove('visible');
+    $('confirmBtn').classList.remove('visible');
+    $('submitBtn').style.display = 'block';
+
+    document.querySelectorAll('.product-card').forEach(c => {
+      c.classList.remove('selected');
+      c.querySelector('.product-btn').classList.remove('selected');
+    });
+
+    selectedProduct = null;
+    currentOrderId = null;
+
+  } catch {
+    showMessage('فشل إرسال الطلب، حاول لاحقاً','error');
+  } finally {
+    isSubmitting = false;
+    $('confirmBtn').disabled = false;
+  }
+});
+
+})();
+</script>
+
 </body>
 </html>
