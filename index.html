@@ -981,10 +981,14 @@
                     };
 
                     fetch(WORKER_URL, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    })
+  method: 'POST',
+  mode: 'cors',
+  cache: 'no-store',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(payload)
+})
                     .then(function(response) {
                         if (!response.ok) throw new Error('Network error');
                         var contentType = response.headers.get('content-type');
