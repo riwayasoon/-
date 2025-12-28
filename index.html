@@ -140,17 +140,11 @@
             flex-direction: column;
             align-items: center;
             position: relative;
-            cursor: pointer;
         }
 
         .product-card:hover {
             border-color: #808080;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
-
-        .product-card.selected {
-            border-color: #000000;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
         }
 
         .product-image {
@@ -187,24 +181,45 @@
             letter-spacing: 0.2px;
         }
 
+        .product-actions {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+        }
+
         .product-btn {
             background-color: #000000;
             color: #ffffff;
             border: none;
-            padding: 8px 20px;
+            padding: 8px 16px;
             font-size: 9px;
             letter-spacing: 0.8px;
             cursor: pointer;
             transition: all 0.3s;
             font-weight: 300;
+            flex: 1;
         }
 
         .product-btn:hover {
             background-color: #333333;
         }
 
-        .product-btn.selected {
-            background-color: #333333;
+        .preview-btn {
+            background-color: #ffffff;
+            color: #000000;
+            border: 1px solid #d0d0d0;
+            padding: 8px 16px;
+            font-size: 9px;
+            letter-spacing: 0.8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 300;
+            flex: 1;
+        }
+
+        .preview-btn:hover {
+            background-color: #f5f5f5;
+            border-color: #000000;
         }
 
         /* ===== CONTACT SECTION ===== */
@@ -244,209 +259,6 @@
             border-bottom-color: #808080;
         }
 
-        /* ===== ORDER SECTION ===== */
-        .order-section {
-            background-color: #ffffff;
-            padding: 40px 20px;
-            border: 1px solid #e0e0e0;
-            opacity: 0.5;
-            pointer-events: none;
-            transition: all 0.5s;
-        }
-
-        .order-section.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .form-title {
-            font-size: 14px;
-            font-weight: 300;
-            letter-spacing: 1px;
-            margin-bottom: 30px;
-            color: #000000;
-            text-align: center;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #d0d0d0;
-        }
-
-        .form-container {
-            max-width: 600px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .form-row-full {
-            display: grid;
-            grid-template-columns: 1fr;
-        }
-
-        label {
-            font-size: 10px;
-            font-weight: 500;
-            letter-spacing: 0.8px;
-            margin-bottom: 6px;
-            color: #000000;
-            text-transform: uppercase;
-        }
-
-        input[type="text"],
-        input[type="email"],
-        input[type="tel"],
-        select,
-        textarea {
-            padding: 10px 12px;
-            border: 1px solid #c0c0c0;
-            background-color: #ffffff;
-            font-size: 10px;
-            font-family: inherit;
-            letter-spacing: 0.3px;
-            transition: all 0.3s;
-            color: #000000;
-            width: 100%;
-        }
-
-        input[type="text"]:focus,
-        input[type="email"]:focus,
-        input[type="tel"]:focus,
-        select:focus,
-        textarea:focus {
-            outline: none;
-            border-color: #000000;
-            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 80px;
-            font-family: inherit;
-        }
-
-        select {
-            cursor: pointer;
-            appearance: none;
-            background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="black" stroke-width="1.5"><path d="M7 8l6 6 6-6"/></svg>');
-            background-repeat: no-repeat;
-            background-position: right 8px center;
-            padding-left: 25px;
-            padding-right: 12px;
-        }
-
-        /* ===== ORDER SUMMARY ===== */
-        .order-summary {
-            background-color: #f8f8f8;
-            border: 1px solid #e0e0e0;
-            padding: 20px;
-            margin-bottom: 25px;
-            display: none;
-        }
-
-        .order-summary.visible {
-            display: block;
-        }
-
-        .order-summary h3 {
-            font-size: 12px;
-            font-weight: 500;
-            letter-spacing: 0.8px;
-            margin-bottom: 15px;
-            color: #000000;
-            text-align: center;
-            text-transform: uppercase;
-        }
-
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #e0e0e0;
-            font-size: 10px;
-            letter-spacing: 0.3px;
-        }
-
-        .summary-item:last-child {
-            border-bottom: none;
-            font-weight: 500;
-            margin-top: 5px;
-        }
-
-        .summary-label {
-            color: #666666;
-        }
-
-        .summary-value {
-            color: #000000;
-            font-weight: 500;
-        }
-
-        /* ===== BUTTONS ===== */
-        .submit-btn {
-            background-color: #000000;
-            color: #ffffff;
-            border: none;
-            padding: 12px 30px;
-            font-size: 10px;
-            font-weight: 400;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 15px;
-            width: 100%;
-            text-transform: uppercase;
-        }
-
-        .submit-btn:hover:not(:disabled) {
-            background-color: #333333;
-        }
-
-        .submit-btn:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-
-        .confirm-btn {
-            background-color: #000000;
-            color: #ffffff;
-            border: none;
-            padding: 12px 30px;
-            font-size: 10px;
-            font-weight: 400;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 15px;
-            width: 100%;
-            text-transform: uppercase;
-            display: none;
-        }
-
-        .confirm-btn.visible {
-            display: block;
-        }
-
-        .confirm-btn:hover:not(:disabled) {
-            background-color: #333333;
-        }
-
-        .confirm-btn:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-
         /* ===== MESSAGES ===== */
         .message {
             font-size: 10px;
@@ -473,10 +285,6 @@
             color: #333333;
             background-color: #f8f8f8;
             border: 1px solid #e0e0e0;
-        }
-
-        .input-error {
-            border-color: #808080 !important;
         }
 
         .honeypot {
@@ -516,7 +324,7 @@
             margin: 15px auto;
         }
 
-        /* ===== PRODUCT MODAL ===== */
+        /* ===== PRODUCT PREVIEW MODAL ===== */
         .product-modal {
             position: fixed;
             inset: 0;
@@ -668,6 +476,251 @@
             background-color: #333333;
         }
 
+        /* ===== ORDER MODAL ===== */
+        .order-modal {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
+
+        .order-modal.visible {
+            display: flex;
+        }
+
+        .order-modal__backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .order-modal__dialog {
+            position: relative;
+            background: #ffffff;
+            border: 1px solid #d0d0d0;
+            width: calc(100% - 40px);
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            margin: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .order-modal__close {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            border: none;
+            background: transparent;
+            font-size: 22px;
+            cursor: pointer;
+            color: #000000;
+        }
+
+        .order-modal__title {
+            font-size: 14px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            color: #000000;
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #d0d0d0;
+        }
+
+        .order-modal__selected-product {
+            background-color: #f8f8f8;
+            border: 1px solid #e0e0e0;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .order-modal__product-name {
+            font-size: 12px;
+            font-weight: 500;
+            color: #000000;
+            margin-bottom: 5px;
+        }
+
+        .order-modal__product-price {
+            font-size: 11px;
+            color: #666666;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-row-full {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        label {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.8px;
+            margin-bottom: 6px;
+            color: #000000;
+            text-transform: uppercase;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        select,
+        textarea {
+            padding: 10px 12px;
+            border: 1px solid #c0c0c0;
+            background-color: #ffffff;
+            font-size: 10px;
+            font-family: inherit;
+            letter-spacing: 0.3px;
+            transition: all 0.3s;
+            color: #000000;
+            width: 100%;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #000000;
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="black" stroke-width="1.5"><path d="M7 8l6 6 6-6"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            padding-left: 25px;
+            padding-right: 12px;
+        }
+
+        .order-summary {
+            background-color: #f8f8f8;
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .order-summary.visible {
+            display: block;
+        }
+
+        .order-summary h3 {
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.8px;
+            margin-bottom: 15px;
+            color: #000000;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 10px;
+            letter-spacing: 0.3px;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+
+        .summary-label {
+            color: #666666;
+        }
+
+        .summary-value {
+            color: #000000;
+            font-weight: 500;
+        }
+
+        .submit-btn {
+            background-color: #000000;
+            color: #ffffff;
+            border: none;
+            padding: 12px 30px;
+            font-size: 10px;
+            font-weight: 400;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            width: 100%;
+            text-transform: uppercase;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            background-color: #333333;
+        }
+
+        .submit-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .confirm-btn {
+            background-color: #000000;
+            color: #ffffff;
+            border: none;
+            padding: 12px 30px;
+            font-size: 10px;
+            font-weight: 400;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            width: 100%;
+            text-transform: uppercase;
+            display: none;
+        }
+
+        .confirm-btn.visible {
+            display: block;
+        }
+
+        .confirm-btn:hover:not(:disabled) {
+            background-color: #333333;
+        }
+
+        .confirm-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
         /* ===== RESPONSIVE ===== */
         @media (max-width: 992px) {
             .product-modal__content {
@@ -702,7 +755,8 @@
                 gap: 15px;
             }
 
-            .product-modal__dialog {
+            .product-modal__dialog,
+            .order-modal__dialog {
                 width: calc(100% - 20px);
                 max-height: 100vh;
                 border-radius: 0;
@@ -710,6 +764,10 @@
                 border-right: none;
                 padding: 16px;
                 margin: 0 10px;
+            }
+
+            .product-actions {
+                flex-direction: column;
             }
         }
 
@@ -737,7 +795,6 @@
                 <a href="#home">الرئيسية</a>
                 <a href="#products">المنتجات</a>
                 <a href="#contact">اتصل بنا</a>
-                <a href="#order">طلب</a>
             </nav>
         </div>
     </header>
@@ -755,42 +812,60 @@
                     <div class="product-image">صورة منتج</div>
                     <div class="product-name">منتج متميز 1</div>
                     <div class="product-price">السعر: 5,000 د.ج</div>
-                    <button class="product-btn">أضف للسلة</button>
+                    <div class="product-actions">
+                        <button class="preview-btn">معاينة</button>
+                        <button class="product-btn">اطلب الآن</button>
+                    </div>
                 </div>
                 
                 <div class="product-card" data-product="منتج متميز 2" data-price="7,500 د.ج">
                     <div class="product-image">صورة منتج</div>
                     <div class="product-name">منتج متميز 2</div>
                     <div class="product-price">السعر: 7,500 د.ج</div>
-                    <button class="product-btn">أضف للسلة</button>
+                    <div class="product-actions">
+                        <button class="preview-btn">معاينة</button>
+                        <button class="product-btn">اطلب الآن</button>
+                    </div>
                 </div>
                 
                 <div class="product-card" data-product="منتج متميز 3" data-price="6,000 د.ج">
                     <div class="product-image">صورة منتج</div>
                     <div class="product-name">منتج متميز 3</div>
                     <div class="product-price">السعر: 6,000 د.ج</div>
-                    <button class="product-btn">أضف للسلة</button>
+                    <div class="product-actions">
+                        <button class="preview-btn">معاينة</button>
+                        <button class="product-btn">اطلب الآن</button>
+                    </div>
                 </div>
                 
                 <div class="product-card" data-product="منتج متميز 4" data-price="8,500 د.ج">
                     <div class="product-image">صورة منتج</div>
                     <div class="product-name">منتج متميز 4</div>
                     <div class="product-price">السعر: 8,500 د.ج</div>
-                    <button class="product-btn">أضف للسلة</button>
+                    <div class="product-actions">
+                        <button class="preview-btn">معاينة</button>
+                        <button class="product-btn">اطلب الآن</button>
+                    </div>
                 </div>
                 
                 <div class="product-card" data-product="منتج متميز 5" data-price="5,500 د.ج">
                     <div class="product-image">صورة منتج</div>
                     <div class="product-name">منتج متميز 5</div>
                     <div class="product-price">السعر: 5,500 د.ج</div>
-                    <button class="product-btn">أضف للسلة</button>
+                    <div class="product-actions">
+                        <button class="preview-btn">معاينة</button>
+                        <button class="product-btn">اطلب الآن</button>
+                    </div>
                 </div>
                 
                 <div class="product-card" data-product="منتج متميز 6" data-price="9,000 د.ج">
                     <div class="product-image">صورة منتج</div>
                     <div class="product-name">منتج متميز 6</div>
                     <div class="product-price">السعر: 9,000 د.ج</div>
-                    <button class="product-btn">أضف للسلة</button>
+                    <div class="product-actions">
+                        <button class="preview-btn">معاينة</button>
+                        <button class="product-btn">اطلب الآن</button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -804,169 +879,175 @@
                 <p>رقم الهاتف: <a href="tel:0774843237" class="phone-link">0774843237</a></p>
             </div>
             <div class="contact-info">
-                <p style="font-size: 10px; margin-top: 15px; letter-spacing: 0.3px;">اختر منتجك ثم أكمل بياناتك أدناه • سنتواصل معك خلال 24 ساعة</p>
+                <p style="font-size: 10px; margin-top: 15px; letter-spacing: 0.3px;">اختر منتجك ثم أكمل بياناتك • سنتواصل معك خلال 24 ساعة</p>
             </div>
         </section>
     </div>
 
-    <section class="order-section" id="order">
-        <h2 class="form-title">نموذج الطلب</h2>
-        <form class="form-container" id="orderForm">
-            <div id="messageContainer"></div>
-            
-            <input type="hidden" id="selectedProduct" name="selectedProduct">
-            <input type="hidden" id="selectedPrice" name="selectedPrice">
-            <input type="hidden" id="orderId" name="orderId">
-            
-            <input type="text" name="website" class="honeypot" tabindex="-1" autocomplete="off">
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="firstName">الاسم</label>
-                    <input type="text" id="firstName" name="firstName" placeholder="أدخل اسمك" required disabled>
-                </div>
-                <div class="form-group">
-                    <label for="lastName">اللقب</label>
-                    <input type="text" id="lastName" name="lastName" placeholder="أدخل لقبك" disabled>
-                </div>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="phone">رقم الهاتف</label>
-                    <input type="tel" id="phone" name="phone" placeholder="مثال: 0774843237" required inputmode="numeric" pattern="[0-9]{10}" disabled>
-                </div>
-                <div class="form-group">
-                    <label for="email">البريد الإلكتروني</label>
-                    <input type="email" id="email" name="email" placeholder="مثال: example@email.com" disabled>
-                </div>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="city">المدينة</label>
-                    <input type="text" id="city" name="city" placeholder="أدخل مدينتك" disabled>
-                </div>
-                <div class="form-group">
-                    <label for="wilaya">الولاية</label>
-                    <select id="wilaya" name="wilaya" required disabled>
-                        <option value="">-- اختر الولاية --</option>
-                        <option value="أدرار">1 - أدرار</option>
-                        <option value="الشلف">2 - الشلف</option>
-                        <option value="الأغواط">3 - الأغواط</option>
-                        <option value="أم البواقي">4 - أم البواقي</option>
-                        <option value="باتنة">5 - باتنة</option>
-                        <option value="بجاية">6 - بجاية</option>
-                        <option value="بسكرة">7 - بسكرة</option>
-                        <option value="بشار">8 - بشار</option>
-                        <option value="البليدة">9 - البليدة</option>
-                        <option value="البويرة">10 - البويرة</option>
-                        <option value="تمنراست">11 - تمنراست</option>
-                        <option value="تبسة">12 - تبسة</option>
-                        <option value="تلمسان">13 - تلمسان</option>
-                        <option value="تيارت">14 - تيارت</option>
-                        <option value="تيزي وزو">15 - تيزي وزو</option>
-                        <option value="الجزائر">16 - الجزائر</option>
-                        <option value="الجلفة">17 - الجلفة</option>
-                        <option value="جيجل">18 - جيجل</option>
-                        <option value="سطيف">19 - سطيف</option>
-                        <option value="سعيدة">20 - سعيدة</option>
-                        <option value="سكيكدة">21 - سكيكدة</option>
-                        <option value="سيدي بلعباس">22 - سيدي بلعباس</option>
-                        <option value="عنابة">23 - عنابة</option>
-                        <option value="قالمة">24 - قالمة</option>
-                        <option value="قسنطينة">25 - قسنطينة</option>
-                        <option value="المدية">26 - المدية</option>
-                        <option value="مستغانم">27 - مستغانم</option>
-                        <option value="المسيلة">28 - المسيلة</option>
-                        <option value="معسكر">29 - معسكر</option>
-                        <option value="ورقلة">30 - ورقلة</option>
-                        <option value="وهران">31 - وهران</option>
-                        <option value="البيض">32 - البيض</option>
-                        <option value="إليزي">33 - إليزي</option>
-                        <option value="برج بوعريريج">34 - برج بوعريريج</option>
-                        <option value="بومرداس">35 - بومرداس</option>
-                        <option value="الطارف">36 - الطارف</option>
-                        <option value="تندوف">37 - تندوف</option>
-                        <option value="تيسمسيلت">38 - تيسمسيلت</option>
-                        <option value="الوادي">39 - الوادي</option>
-                        <option value="خنشلة">40 - خنشلة</option>
-                        <option value="سوق أهراس">41 - سوق أهراس</option>
-                        <option value="تيبازة">42 - تيبازة</option>
-                        <option value="ميلة">43 - ميلة</option>
-                        <option value="عين الدفلى">44 - عين الدفلى</option>
-                        <option value="النعامة">45 - النعامة</option>
-                        <option value="عين تموشنت">46 - عين تموشنت</option>
-                        <option value="غرداية">47 - غرداية</option>
-                        <option value="غليزان">48 - غليزان</option>
-                    </select>
-                </div>
-            </div>
-            
-            <div class="form-row-full">
-                <div class="form-group">
-                    <label for="message">ملاحظات إضافية (اختياري)</label>
-                    <textarea id="message" name="message" placeholder="أي ملاحظات أو طلبات خاصة..." disabled></textarea>
-                </div>
-            </div>
-            
-            <div class="order-summary" id="orderSummary">
-                <h3>ملخص الطلب</h3>
-                <div class="summary-item">
-                    <span class="summary-label">المنتج:</span>
-                    <span class="summary-value" id="summaryProduct">-</span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-label">السعر:</span>
-                    <span class="summary-value" id="summaryPrice">-</span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-label">الاسم الكامل:</span>
-                    <span class="summary-value" id="summaryName">-</span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-label">رقم الهاتف:</span>
-                    <span class="summary-value" id="summaryPhone">-</span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-label">الولاية:</span>
-                    <span class="summary-value" id="summaryWilaya">-</span>
-                </div>
-            </div>
-            
-            <button type="submit" class="submit-btn" id="submitBtn" disabled>معاينة الطلب</button>
-            <button type="button" class="confirm-btn" id="confirmBtn">تأكيد و إرسال الطلب</button>
-        </form>
-    </section>
-
+    <!-- Product Preview Modal -->
     <div class="product-modal" id="productModal" aria-hidden="true">
-      <div class="product-modal__backdrop" data-modal-close></div>
-      <div class="product-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="productModalTitle">
-        <button class="product-modal__close" type="button" data-modal-close>&times;</button>
+        <div class="product-modal__backdrop" data-modal-close="preview"></div>
+        <div class="product-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="productModalTitle">
+            <button class="product-modal__close" type="button" data-modal-close="preview">&times;</button>
 
-        <div class="product-modal__content">
-          <div class="product-modal__gallery">
-            <div class="product-modal__image-main">
-              <img id="modalMainImage" src="" alt="صورة المنتج">
+            <div class="product-modal__content">
+                <div class="product-modal__gallery">
+                    <div class="product-modal__image-main">
+                        <img id="modalMainImage" src="" alt="صورة المنتج">
+                    </div>
+                    <div class="product-modal__thumbs" id="modalThumbs"></div>
+                </div>
+
+                <div class="product-modal__info">
+                    <h3 id="productModalTitle" class="product-modal__title"></h3>
+                    <p class="product-modal__price" id="modalPrice"></p>
+                    <p class="product-modal__desc" id="modalDescription"></p>
+                    <ul class="product-modal__features" id="modalFeatures"></ul>
+                    <button type="button" class="product-modal__add-btn" id="modalAddToCartBtn">اطلب الآن</button>
+                </div>
             </div>
-            <div class="product-modal__thumbs" id="modalThumbs">
-            </div>
-          </div>
-
-          <div class="product-modal__info">
-            <h3 id="productModalTitle" class="product-modal__title"></h3>
-            <p class="product-modal__price" id="modalPrice"></p>
-            <p class="product-modal__desc" id="modalDescription"></p>
-
-            <ul class="product-modal__features" id="modalFeatures">
-            </ul>
-
-            <button type="button" class="product-modal__add-btn" id="modalAddToCartBtn">
-              أضف للسلة
-            </button>
-          </div>
         </div>
-      </div>
+    </div>
+
+    <!-- Order Modal -->
+    <div class="order-modal" id="orderModal" aria-hidden="true">
+        <div class="order-modal__backdrop" data-modal-close="order"></div>
+        <div class="order-modal__dialog" role="dialog" aria-modal="true">
+            <button class="order-modal__close" type="button" data-modal-close="order">&times;</button>
+            
+            <h2 class="order-modal__title">نموذج الطلب</h2>
+            
+            <div class="order-modal__selected-product" id="selectedProductDisplay">
+                <div class="order-modal__product-name" id="selectedProductName">-</div>
+                <div class="order-modal__product-price" id="selectedProductPrice">-</div>
+            </div>
+
+            <form id="orderForm">
+                <div id="messageContainer"></div>
+                
+                <input type="hidden" id="selectedProduct" name="selectedProduct">
+                <input type="hidden" id="selectedPrice" name="selectedPrice">
+                <input type="hidden" id="orderId" name="orderId">
+                <input type="text" name="website" class="honeypot" tabindex="-1" autocomplete="off">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">الاسم</label>
+                        <input type="text" id="firstName" name="firstName" placeholder="أدخل اسمك" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">اللقب</label>
+                        <input type="text" id="lastName" name="lastName" placeholder="أدخل لقبك">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">رقم الهاتف</label>
+                        <input type="tel" id="phone" name="phone" placeholder="مثال: 0774843237" required inputmode="numeric" pattern="[0-9]{10}">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">البريد الإلكتروني</label>
+                        <input type="email" id="email" name="email" placeholder="مثال: example@email.com">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="city">المدينة</label>
+                        <input type="text" id="city" name="city" placeholder="أدخل مدينتك">
+                    </div>
+                    <div class="form-group">
+                        <label for="wilaya">الولاية</label>
+                        <select id="wilaya" name="wilaya" required>
+                            <option value="">-- اختر الولاية --</option>
+                            <option value="أدرار">1 - أدرار</option>
+                            <option value="الشلف">2 - الشلف</option>
+                            <option value="الأغواط">3 - الأغواط</option>
+                            <option value="أم البواقي">4 - أم البواقي</option>
+                            <option value="باتنة">5 - باتنة</option>
+                            <option value="بجاية">6 - بجاية</option>
+                            <option value="بسكرة">7 - بسكرة</option>
+                            <option value="بشار">8 - بشار</option>
+                            <option value="البليدة">9 - البليدة</option>
+                            <option value="البويرة">10 - البويرة</option>
+                            <option value="تمنراست">11 - تمنراست</option>
+                            <option value="تبسة">12 - تبسة</option>
+                            <option value="تلمسان">13 - تلمسان</option>
+                            <option value="تيارت">14 - تيارت</option>
+                            <option value="تيزي وزو">15 - تيزي وزو</option>
+                            <option value="الجزائر">16 - الجزائر</option>
+                            <option value="الجلفة">17 - الجلفة</option>
+                            <option value="جيجل">18 - جيجل</option>
+                            <option value="سطيف">19 - سطيف</option>
+                            <option value="سعيدة">20 - سعيدة</option>
+                            <option value="سكيكدة">21 - سكيكدة</option>
+                            <option value="سيدي بلعباس">22 - سيدي بلعباس</option>
+                            <option value="عنابة">23 - عنابة</option>
+                            <option value="قالمة">24 - قالمة</option>
+                            <option value="قسنطينة">25 - قسنطينة</option>
+                            <option value="المدية">26 - المدية</option>
+                            <option value="مستغانم">27 - مستغانم</option>
+                            <option value="المسيلة">28 - المسيلة</option>
+                            <option value="معسكر">29 - معسكر</option>
+                            <option value="ورقلة">30 - ورقلة</option>
+                            <option value="وهران">31 - وهران</option>
+                            <option value="البيض">32 - البيض</option>
+                            <option value="إليزي">33 - إليزي</option>
+                            <option value="برج بوعريريج">34 - برج بوعريريج</option>
+                            <option value="بومرداس">35 - بومرداس</option>
+                            <option value="الطارف">36 - الطارف</option>
+                            <option value="تندوف">37 - تندوف</option>
+                            <option value="تيسمسيلت">38 - تيسمسيلت</option>
+                            <option value="الوادي">39 - الوادي</option>
+                            <option value="خنشلة">40 - خنشلة</option>
+                            <option value="سوق أهراس">41 - سوق أهراس</option>
+                            <option value="تيبازة">42 - تيبازة</option>
+                            <option value="ميلة">43 - ميلة</option>
+                            <option value="عين الدفلى">44 - عين الدفلى</option>
+                            <option value="النعامة">45 - النعامة</option>
+                            <option value="عين تموشنت">46 - عين تموشنت</option>
+                            <option value="غرداية">47 - غرداية</option>
+                            <option value="غليزان">48 - غليزان</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row-full">
+                    <div class="form-group">
+                        <label for="message">ملاحظات إضافية (اختياري)</label>
+                        <textarea id="message" name="message" placeholder="أي ملاحظات أو طلبات خاصة..."></textarea>
+                    </div>
+                </div>
+                
+                <div class="order-summary" id="orderSummary">
+                    <h3>ملخص الطلب</h3>
+                    <div class="summary-item">
+                        <span class="summary-label">المنتج:</span>
+                        <span class="summary-value" id="summaryProduct">-</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">السعر:</span>
+                        <span class="summary-value" id="summaryPrice">-</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">الاسم الكامل:</span>
+                        <span class="summary-value" id="summaryName">-</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">رقم الهاتف:</span>
+                        <span class="summary-value" id="summaryPhone">-</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">الولاية:</span>
+                        <span class="summary-value" id="summaryWilaya">-</span>
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submitBtn">معاينة الطلب</button>
+                <button type="button" class="confirm-btn" id="confirmBtn">تأكيد و إرسال الطلب</button>
+            </form>
+        </div>
     </div>
 
     <footer>
@@ -989,14 +1070,13 @@ document.addEventListener('DOMContentLoaded', function () {
   const q = sel => document.querySelector(sel);
   const qa = sel => Array.from(document.querySelectorAll(sel));
 
-  const orderSection   = q('.order-section');
   const orderForm      = byId('orderForm');
   const submitBtn      = byId('submitBtn');
   const confirmBtn     = byId('confirmBtn');
   const orderSummary   = byId('orderSummary');
   const messageContainer = byId('messageContainer');
 
-  const modal          = byId('productModal');
+  const productModal   = byId('productModal');
   const modalMainImage = byId('modalMainImage');
   const modalThumbs    = byId('modalThumbs');
   const modalTitle     = byId('productModalTitle');
@@ -1005,7 +1085,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const modalFeatures  = byId('modalFeatures');
   const modalAddBtn    = byId('modalAddToCartBtn');
 
-  if (!orderForm || !orderSection) {
+  const orderModal     = byId('orderModal');
+
+  if (!orderForm || !productModal || !orderModal) {
     return;
   }
 
@@ -1028,6 +1110,26 @@ document.addEventListener('DOMContentLoaded', function () {
       images: ['img/p2-1.jpg','img/p2-2.jpg'],
       description: 'وصف مخصص لمنتج متميز 2.',
       features: ['جودة عالية','سعر مناسب','ضمان محدود']
+    },
+    'منتج متميز 3': {
+      images: [],
+      description: 'منتج متميز بجودة عالية وأداء ممتاز.',
+      features: ['متين','عملي','أنيق']
+    },
+    'منتج متميز 4': {
+      images: [],
+      description: 'منتج عصري بتصميم فريد.',
+      features: ['تصميم عصري','مواد عالية الجودة']
+    },
+    'منتج متميز 5': {
+      images: [],
+      description: 'منتج مميز بسعر تنافسي.',
+      features: ['سعر مناسب','جودة ممتازة']
+    },
+    'منتج متميز 6': {
+      images: [],
+      description: 'منتج فاخر للاستخدام اليومي.',
+      features: ['فخامة','راحة','متانة']
     }
   };
 
@@ -1038,24 +1140,6 @@ document.addEventListener('DOMContentLoaded', function () {
   function showMessage(text, type) {
     if (!messageContainer || !text) return;
     messageContainer.innerHTML = '<div class="message ' + type + '">' + text + '</div>';
-  }
-
-  function enableForm() {
-    orderSection.classList.add('active');
-    ['firstName','lastName','phone','email','city','wilaya','message'].forEach(id => {
-      const el = byId(id);
-      if (el) el.disabled = false;
-    });
-    if (submitBtn) submitBtn.disabled = false;
-  }
-
-  function disableForm() {
-    orderSection.classList.remove('active');
-    ['firstName','lastName','phone','email','city','wilaya','message'].forEach(id => {
-      const el = byId(id);
-      if (el) el.disabled = true;
-    });
-    if (submitBtn) submitBtn.disabled = true;
   }
 
   function saveDraft() {
@@ -1089,7 +1173,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function openProductModal(card) {
-    if (!modal || !card) return;
+    if (!productModal || !card) return;
 
     currentModalProductCard = card;
     const name  = card.dataset.product || '';
@@ -1134,68 +1218,100 @@ document.addEventListener('DOMContentLoaded', function () {
       modalFeatures.appendChild(li);
     });
 
-    modal.classList.add('visible');
+    productModal.classList.add('visible');
     document.body.style.overflow = 'hidden';
   }
 
   function closeProductModal() {
-    if (!modal) return;
-    modal.classList.remove('visible');
-    document.body.style.overflow = '';
+    if (!productModal) return;
+    productModal.classList.remove('visible');
+    if (!orderModal.classList.contains('visible')) {
+      document.body.style.overflow = '';
+    }
   }
 
-  qa('[data-modal-close]').forEach(el => {
+  function openOrderModal(productName, productPrice) {
+    if (!orderModal) return;
+
+    selectedProduct = {
+      name: productName,
+      price: productPrice
+    };
+
+    byId('selectedProduct').value = productName;
+    byId('selectedPrice').value   = productPrice;
+    byId('selectedProductName').textContent = productName;
+    byId('selectedProductPrice').textContent = 'السعر: ' + productPrice;
+
+    currentOrderId = generateOrderId();
+    byId('orderId').value = currentOrderId;
+
+    loadDraft();
+
+    orderSummary.classList.remove('visible');
+    confirmBtn.classList.remove('visible');
+    submitBtn.style.display = 'block';
+    messageContainer.innerHTML = '';
+
+    orderModal.classList.add('visible');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeOrderModal() {
+    if (!orderModal) return;
+    orderModal.classList.remove('visible');
+    if (!productModal.classList.contains('visible')) {
+      document.body.style.overflow = '';
+    }
+  }
+
+  qa('[data-modal-close="preview"]').forEach(el => {
     el.addEventListener('click', closeProductModal);
   });
 
+  qa('[data-modal-close="order"]').forEach(el => {
+    el.addEventListener('click', closeOrderModal);
+  });
+
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && modal?.classList.contains('visible')) {
-      closeProductModal();
+    if (e.key === 'Escape') {
+      if (orderModal?.classList.contains('visible')) {
+        closeOrderModal();
+      } else if (productModal?.classList.contains('visible')) {
+        closeProductModal();
+      }
     }
   });
 
   if (modalAddBtn) {
     modalAddBtn.addEventListener('click', function () {
       if (!currentModalProductCard) return;
-      const button = currentModalProductCard.querySelector('.product-btn');
-      if (button) button.click();
+      const name  = currentModalProductCard.dataset.product || '';
+      const price = currentModalProductCard.dataset.price  || '';
       closeProductModal();
+      openOrderModal(name, price);
     });
   }
 
   qa('.product-card').forEach(card => {
-    const btn = card.querySelector('.product-btn');
-    if (!btn) return;
+    const previewBtn = card.querySelector('.preview-btn');
+    const orderBtn = card.querySelector('.product-btn');
 
-    card.addEventListener('click', function (evt) {
-      if (evt.target === btn) return;
-      openProductModal(card);
-    });
-
-    btn.addEventListener('click', function () {
-      qa('.product-card').forEach(c => {
-        c.classList.remove('selected');
-        c.querySelector('.product-btn')?.classList.remove('selected');
+    if (previewBtn) {
+      previewBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        openProductModal(card);
       });
+    }
 
-      card.classList.add('selected');
-      btn.classList.add('selected');
-
-      selectedProduct = {
-        name: card.dataset.product || '',
-        price: card.dataset.price || ''
-      };
-
-      byId('selectedProduct').value = selectedProduct.name;
-      byId('selectedPrice').value   = selectedProduct.price;
-
-      currentOrderId = generateOrderId();
-      byId('orderId').value = currentOrderId;
-
-      enableForm();
-      loadDraft();
-      byId('order')?.scrollIntoView({ behavior: 'smooth' });
-    });
+    if (orderBtn) {
+      orderBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        const name  = card.dataset.product || '';
+        const price = card.dataset.price  || '';
+        openOrderModal(name, price);
+      });
+    }
   });
 
   ['firstName','lastName','phone','email','city','wilaya','message'].forEach(id => {
@@ -1268,19 +1384,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
       orderForm.reset();
       clearDraft();
-      disableForm();
 
       orderSummary.classList.remove('visible');
       confirmBtn.classList.remove('visible');
       submitBtn.style.display = 'block';
 
-      qa('.product-card').forEach(c => {
-        c.classList.remove('selected');
-        c.querySelector('.product-btn')?.classList.remove('selected');
-      });
-
       selectedProduct = null;
       currentOrderId  = null;
+
+      setTimeout(() => {
+        closeOrderModal();
+      }, 2000);
     })
     .catch(err => {
       showMessage(
