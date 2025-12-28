@@ -801,16 +801,16 @@
 
     <section class="hero" id="home">
         <h1>ZAKI SHOPPING</h1>
-        <p>تجربة تسوق فاخرة وعصرية • الدفع عند الاستلام متوفر • لا حاجة للتسجيل</p>
+        <p>تجربة تسوق بسيطة و الدفع عند الاستلام و لا حاجة للتسجيل</p>
     </section>
 
     <div class="container">
         <section id="products">
             <h2 class="section-title">منتجاتنا</h2>
             <div class="products-grid">
-                <div class="product-card" data-product="منتج متميز 1" data-price="5,000 د.ج">
+                <div class="product-card" data-product="المنتج الأول" data-price="5,000 د.ج">
                     <div class="product-image">صورة منتج</div>
-                    <div class="product-name">منتج متميز 1</div>
+                    <div class="product-name">المنتج الأول</div>
                     <div class="product-price">السعر: 5,000 د.ج</div>
                     <div class="product-actions">
                         <button class="preview-btn">معاينة</button>
@@ -818,9 +818,9 @@
                     </div>
                 </div>
                 
-                <div class="product-card" data-product="منتج متميز 2" data-price="7,500 د.ج">
+                <div class="product-card" data-product="المنتج الثاني" data-price="7,500 د.ج">
                     <div class="product-image">صورة منتج</div>
-                    <div class="product-name">منتج متميز 2</div>
+                    <div class="product-name">المنتج الثاني</div>
                     <div class="product-price">السعر: 7,500 د.ج</div>
                     <div class="product-actions">
                         <button class="preview-btn">معاينة</button>
@@ -828,9 +828,9 @@
                     </div>
                 </div>
                 
-                <div class="product-card" data-product="منتج متميز 3" data-price="6,000 د.ج">
+                <div class="product-card" data-product="المنتج الثالث" data-price="6,000 د.ج">
                     <div class="product-image">صورة منتج</div>
-                    <div class="product-name">منتج متميز 3</div>
+                    <div class="product-name">المنتج الثالث</div>
                     <div class="product-price">السعر: 6,000 د.ج</div>
                     <div class="product-actions">
                         <button class="preview-btn">معاينة</button>
@@ -838,9 +838,9 @@
                     </div>
                 </div>
                 
-                <div class="product-card" data-product="منتج متميز 4" data-price="8,500 د.ج">
+                <div class="product-card" data-product="المنتج الرابع" data-price="8,500 د.ج">
                     <div class="product-image">صورة منتج</div>
-                    <div class="product-name">منتج متميز 4</div>
+                    <div class="product-name">المنتج الرابع</div>
                     <div class="product-price">السعر: 8,500 د.ج</div>
                     <div class="product-actions">
                         <button class="preview-btn">معاينة</button>
@@ -848,9 +848,9 @@
                     </div>
                 </div>
                 
-                <div class="product-card" data-product="منتج متميز 5" data-price="5,500 د.ج">
+                <div class="product-card" data-product="المنتج الخامس" data-price="5,500 د.ج">
                     <div class="product-image">صورة منتج</div>
-                    <div class="product-name">منتج متميز 5</div>
+                    <div class="product-name">المنتج الخامس</div>
                     <div class="product-price">السعر: 5,500 د.ج</div>
                     <div class="product-actions">
                         <button class="preview-btn">معاينة</button>
@@ -858,9 +858,9 @@
                     </div>
                 </div>
                 
-                <div class="product-card" data-product="منتج متميز 6" data-price="9,000 د.ج">
+                <div class="product-card" data-product="المنتج السادس" data-price="9,000 د.ج">
                     <div class="product-image">صورة منتج</div>
-                    <div class="product-name">منتج متميز 6</div>
+                    <div class="product-name">المنتج السادس</div>
                     <div class="product-price">السعر: 9,000 د.ج</div>
                     <div class="product-actions">
                         <button class="preview-btn">معاينة</button>
@@ -1097,39 +1097,39 @@ document.addEventListener('DOMContentLoaded', function () {
   let currentModalProductCard = null;
 
   const productData = {
-    'منتج متميز 1': {
-      images: ['img/p1-1.jpg','img/p1-2.jpg','img/p1-3.jpg'],
-      description: 'وصف مختصر لمنتج متميز 1 يوضح أهم المزايا.',
+    'منتج رقم واحد': {
+      images: ['img/p1-1.jpg','img/p1-2.jpg'],
+      description: 'وصف عام للمنتج',
       features: [
         'ميزة أولى للمنتج',
         'ميزة ثانية للمنتج',
-        'مناسب للاستخدام اليومي'
+        'ميزة ثالثة للمنتج'
       ]
     },
-    'منتج متميز 2': {
+    'منتج رقم اثنان': {
       images: ['img/p2-1.jpg','img/p2-2.jpg'],
-      description: 'وصف مخصص لمنتج متميز 2.',
-      features: ['جودة عالية','سعر مناسب','ضمان محدود']
+      description: 'وصف عام للمنتج',
+      features: ['ميزة أولى للمنتج','ميزة ثانية للمنتج','ميزة ثالثة للمنتج ']
     },
-    'منتج متميز 3': {
-      images: [],
-      description: 'منتج متميز بجودة عالية وأداء ممتاز.',
-      features: ['متين','عملي','أنيق']
+    'منتج رقم ثلاثة': {
+      images: ['img/p2-1.jpg','img/p2-2.jpg'],
+      description: 'وصف عام للمنتج',
+      features: ['ميزة أولى للمنتج','ميزة ثانية للمنتج','ميزة ثالثة للمنتج']
     },
-    'منتج متميز 4': {
-      images: [],
-      description: 'منتج عصري بتصميم فريد.',
-      features: ['تصميم عصري','مواد عالية الجودة']
+    'منتج رقم أربعة': {
+      images: ['img/p2-1.jpg','img/p2-2.jpg'],
+      description: 'وصف عام للمنتج',
+      features: ['ميزة أولى للمنتج','ميزة ثانية للمنتج']
     },
-    'منتج متميز 5': {
-      images: [],
-      description: 'منتج مميز بسعر تنافسي.',
-      features: ['سعر مناسب','جودة ممتازة']
+    'منتج رقم خمسة': {
+      images: ['img/p2-1.jpg','img/p2-2.jpg'],
+      description: 'وصف عام للمنتج',
+      features: ['ميزة أولى للمنتج','ميزة ثانية للمنتج']
     },
-    'منتج متميز 6': {
-      images: [],
-      description: 'منتج فاخر للاستخدام اليومي.',
-      features: ['فخامة','راحة','متانة']
+    'منتج رقم ستة': {
+      images: ['img/p2-1.jpg','img/p2-2.jpg'],
+      description: 'وصف عام للمنتج',
+      features: ['ميزة أولى للمنتج','ميزة ثانية للمنتج','ميزة ثالثة للمنتج']
     }
   };
 
